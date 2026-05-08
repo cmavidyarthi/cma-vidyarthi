@@ -1,0 +1,7 @@
+{
+    "liveServer.settings.ignoreFiles": [
+        "**/*.json",
+        "data.json",
+        "cma-data/**"
+    ]
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Profile</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #0a1f44, #1746a2);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* MAIN CONTAINER */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+}
+
+/* CARD */
+.profile-card {
+    background: white;
+    width: 350px;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* AVATAR */
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1746a2, #2563eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    color: white;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+/* NAME */
+.name {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+/* INFO */
+.info {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.info p {
+    margin: 10px 0;
+    font-size: 15px;
+    color: #475569;
+}
+
+/* BUTTON */
+.edit-btn {
+    margin-top: 25px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1746a2, #2563eb);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.edit-btn:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    🎓 Student Profile
+</div>
+
+<div class="container">
+
+    <div class="profile-card">
+        
+        <div class="avatar" id="avatar">👤</div>
+
+        <div class="name" id="name">Loading...</div>
+
+        <div class="info" id="profileBox">
+            <p>Loading data...</p>
+        </div>
+
+        <button class="edit-btn" onclick="editProfile()">✏️ Edit Profile</button>
+
+    </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+  authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+  projectId: "cma-vidyarthi-3c892",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let userId = localStorage.getItem("userId");
+
+if (!userId) {
+    alert("Login first");
+    window.location.href = "login.html";
+}
+
+async function loadProfile() {
+
+    const ref = doc(db, "users", userId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+        document.getElementById("profileBox").innerHTML = "❌ No profile found";
+        return;
+    }
+
+    let d = snap.data();
+
+    // Set name
+    document.getElementById("name").innerText = d.name;
+
+    // Set avatar letter
+    document.getElementById("avatar").innerText = d.name.charAt(0).toUpperCase();
+
+    // Set details
+    document.getElementById("profileBox").innerHTML = `
+        <p>📱 <b>Mobile:</b> ${d.mobile}</p>
+        <p>🎯 <b>Level:</b> ${d.level}</p>
+    `;
+}
+
+loadProfile();
+
+window.editProfile = function () {
+    localStorage.setItem("editMode", "true"); // 🔥 FLAG
+    window.location.href = "profile.html";
+};
+
+</script>
+
+</body>
+</html>

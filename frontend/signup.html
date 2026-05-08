@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CMA Vidyarthi - Create Account</title>
+    <style>
+        body { margin: 0; font-family: Arial; background: #f5f7fa; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .signup-box { width: 350px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h2 { color: #1f3c88; text-align: center; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #1f3c88; color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; }
+        button:hover { background: #0a1f44; }
+        .footer-link { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+        .footer-link a { color: #1f3c88; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="signup-box">
+        <h2>Join CMA Vidyarthi</h2>
+        <form onsubmit="handleSignup(event)">
+            <input type="text" id="regName" placeholder="Full Name" required>
+            <input type="email" id="regEmail" placeholder="Email Address" required>
+            <input type="password" id="regPassword" placeholder="Create Password" required>
+            <button type="submit">Create Account</button>
+        </form>
+        <div class="footer-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+<script>
+function signup() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        window.location.href = "login.html";
+    });
+}
+</script>
+
+    <script type="module">
+  // 1. Import the Firebase functions
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  // 2. Your specific configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+    projectId: "cma-vidyarthi-3c892",
+    storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
+    messagingSenderId: "752274115998",
+    appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
+    measurementId: "G-8P3QWMYSXY"
+  };
+
+  // 3. Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 4. Create the Signup Function
+  // Note: We attach it to 'window' so the HTML form can see it
+  window.handleSignup = function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+    const name = document.getElementById("regName").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Successfully created in the Cloud!
+        alert("Account created Successfully");
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        alert("Error: " + error.message);
+      });
+  };
+</script>
+
+
+
+</body>
+</html>

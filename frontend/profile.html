@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left {
+    width: 50%;
+    background: #1e3a6d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.logo-circle {
+    width: 160px;
+    height: 160px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-circle img {
+    width: 110px;
+}
+
+.right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1f5eff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left">
+        <div>
+            <div class="logo-circle">
+                <img src="logo.png">
+            </div>
+            <h2 style="text-align:center;margin-top:15px;">CMA Vidyarthi</h2>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="card">
+
+            <h2>Create Profile</h2>
+
+            <div class="input-group">
+                <input type="text" id="name" placeholder="Enter Name">
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="mobile" placeholder="Enter Mobile">
+            </div>
+
+            <div class="input-group">
+<select id="level">
+    <option>CMA Foundation</option>
+    <option>CMA Inter</option>
+    <option>CMA Final</option>
+    <option>CMA Qualified</option>
+</select>
+
+            <button onclick="saveProfile()">Save Profile</button>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- 🔥 FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+console.log("Saving data:", name, mobile, level);
+const firebaseConfig = {
+  apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+  authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+  projectId: "cma-vidyarthi-3c892",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* 🔐 CHECK LOGIN */
+let userId = localStorage.getItem("userId");
+
+if (!userId) {
+    window.location.href = "login.html";
+}
+
+/* 🔥 LOAD PROFILE */
+window.onload = async function () {
+
+    let userId = localStorage.getItem("userId");
+    let editMode = localStorage.getItem("editMode");
+
+    if (!userId) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    try {
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+
+        // ✅ IF PROFILE EXISTS AND NOT EDIT MODE → REDIRECT
+        if (docSnap.exists() && !editMode) {
+            window.location.href = "Student.html";
+            return;
+        }
+
+        // ✅ IF EDIT MODE → LOAD DATA INTO INPUTS
+        if (docSnap.exists()) {
+            let data = docSnap.data();
+
+            document.getElementById("name").value = data.name || "";
+            document.getElementById("mobile").value = data.mobile || "";
+            document.getElementById("level").value = data.level || data.subject || "";
+        }
+
+        // 🔥 CLEAR FLAG AFTER USE
+        localStorage.removeItem("editMode");
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+/* 🔥 SAVE PROFILE */
+window.saveProfile = async function () {
+
+    let name = document.getElementById("name").value;
+    let mobile = document.getElementById("mobile").value;
+    let level = document.getElementById("level").value;
+
+    if (!name || !mobile) {
+        alert("Fill all fields");
+        return;
+    }
+
+    try {
+
+
+        await setDoc(doc(db, "users", userId), {
+    name: name,
+    mobile: mobile,
+    level: level
+});
+
+        alert("Profile Saved ✅");
+
+        window.location.href = "Student.html";
+
+    } catch (error) {
+        alert("Error saving profile");
+    }
+
+};
+
+</script>
+
+</body>
+</html>
