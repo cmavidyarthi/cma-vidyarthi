@@ -1,172 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <title>My Performance Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <style>
-
-body{
-    font-family:'Segoe UI';
-    background:#f5f7fb;
-    padding:20px;
+body {
+    font-family: 'Segoe UI';
+    background: #f5f7fb;
+    padding: 20px;
 }
 
-.header{
-    text-align:center;
-}
+.header { text-align:center; }
 
-.card{
-    background:white;
-    border-radius:18px;
-    padding:20px;
-    margin-top:20px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.08);
+.card {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    transition: 0.3s;
 }
+.card:hover { transform: translateY(-4px); }
 
-.stats-grid{
+.stats-grid {
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:15px;
 }
 
-.stat-box{
+.stat-box {
     background:#1746a2;
     color:white;
     padding:15px;
-    border-radius:12px;
+    border-radius:10px;
     text-align:center;
 }
 
-.exam{
+.exam {
     border-bottom:1px solid #eee;
-    padding:15px 0;
+    padding:10px;
 }
 
-.good{
-    color:green;
-}
+.good {color:green;}
+.avg {color:orange;}
+.bad {color:red;}
 
-.avg{
-    color:orange;
+.insight {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
 }
-
-.bad{
-    color:red;
-}
-
-.insight{
-    padding:12px;
-    border-radius:10px;
-    margin-bottom:10px;
-    font-size:14px;
-}
-
-.goodInsight{
-    background:#ecfdf5;
-    color:#16a34a;
-}
-
-.warnInsight{
-    background:#fff7ed;
-    color:#d97706;
-}
-
-.badInsight{
-    background:#fef2f2;
-    color:#dc2626;
-}
-
+.goodInsight { background:#ecfdf5; color:#16a34a; }
+.warnInsight { background:#fff7ed; color:#d97706; }
+.badInsight { background:#fef2f2; color:#dc2626; }
 </style>
 </head>
 
 <body>
 
-<h1 class="header">
-📊 My Performance Dashboard
-</h1>
+<h1 class="header">📊 My Performance Dashboard</h1>
 
 <div class="stats-grid">
+  <div class="stat-box">
+    <h2 id="totalExams">0</h2>
+    <p>Total Exams</p>
+  </div>
 
-    <div class="stat-box">
-        <h2 id="totalExams">0</h2>
-        <p>Total Exams</p>
-    </div>
+  <div class="stat-box">
+    <h2 id="avgScore">0%</h2>
+    <p>Average</p>
+  </div>
 
-    <div class="stat-box">
-        <h2 id="avgScore">0%</h2>
-        <p>Average</p>
-    </div>
-
-    <div class="stat-box">
-        <h2 id="bestScore">0%</h2>
-        <p>Best</p>
-    </div>
-
+  <div class="stat-box">
+    <h2 id="bestScore">0%</h2>
+    <p>Best</p>
+  </div>
 </div>
 
-<!-- MAIN GRAPH -->
 <div class="card">
-    <canvas id="chart"></canvas>
+  <canvas id="chart"></canvas>
 </div>
 
-<!-- CHAPTER GRAPH -->
 <div class="card">
-    <h3>📊 Chapter Performance</h3>
-    <canvas id="chapterChart"></canvas>
+  <h3>📊 Chapter Performance</h3>
+  <canvas id="chapterChart"></canvas>
 </div>
 
-<!-- INSIGHTS -->
 <div class="card">
-    <h3>🧠 Smart Insights</h3>
-    <div id="insightsBox">
-        Analyzing...
-    </div>
+  <h3>🧠 Smart Insights</h3>
+  <div id="insightsBox">Analyzing...</div>
 </div>
 
-<!-- HISTORY -->
 <div class="card">
-    <h3>📚 Exam History</h3>
-    <div id="examList"></div>
+  <h3>📚 Exam History</h3>
+  <div id="examList"></div>
 </div>
 
+<script>
 
-<!-- FIREBASE -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    getDocs
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// FIREBASE CONFIG
 const firebaseConfig = {
     apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
     authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
     projectId: "cma-vidyarthi-3c892",
-    storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
-    messagingSenderId: "752274115998",
-    appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
-    measurementId: "G-8P3QWMYSXY"
 };
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-// INIT
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-// USER ID
 const userId = localStorage.getItem("userId");
 
 if (!userId) {
@@ -174,336 +123,132 @@ if (!userId) {
     window.location.href = "login.html";
 }
 
+// 🚀 FIRESTORE FETCH
+db.collection("exams")
+.where("student_id", "==", userId)
+.onSnapshot(snapshot => {
 
-// LOAD STATS
-async function loadStats(){
+    let data = [];
 
-    try{
+    snapshot.forEach(doc => {
+        data.push(doc.data());
+    });
 
-        const examsRef = collection(db, "exams");
-
-        const q = query(
-            examsRef,
-            where("student_id", "==", userId)
-        );
-
-        const querySnapshot = await getDocs(q);
-
-        let data = [];
-
-        querySnapshot.forEach((doc)=>{
-            data.push(doc.data());
-        });
-
-        data.sort((a,b)=>
-            new Date(b.date) - new Date(a.date)
-        );
-
-        if(data.length === 0){
-            document.getElementById("examList").innerHTML =
-            "<h3>No exams attempted yet</h3>";
-            return;
-        }
-
-        let labels = [];
-        let scores = [];
-
-        let total = data.length;
-        let sum = 0;
-        let best = 0;
-
-        let chapterStats = {};
-
-        let list = document.getElementById("examList");
-        list.innerHTML = "";
-
-        data.forEach(e=>{
-
-            let percent = Number(e.percentage) || 0;
-
-            let paper = e.paper || "Paper";
-            let subject = e.subject || "Unknown";
-            let chapter = e.chapter || "No Chapter";
-
-            let name = `${paper} - ${subject}`;
-
-            labels.push(name);
-            scores.push(percent);
-
-            sum += percent;
-
-            if(percent > best){
-                best = percent;
-            }
-
-            if(!chapterStats[chapter]){
-                chapterStats[chapter] = {
-                    total:0,
-                    sum:0
-                };
-            }
-
-            chapterStats[chapter].total++;
-            chapterStats[chapter].sum += percent;
-
-            let cls =
-                percent >= 70 ? "good" :
-                percent >= 40 ? "avg" :
-                "bad";
-
-            list.innerHTML += `
-            <div class="exam">
-
-                <b>${name}</b><br>
-
-                📘 ${chapter}<br>
-
-                <span class="${cls}">
-                    ${percent.toFixed(2)}%
-                </span><br>
-
-                ✅ Correct: ${e.correct || 0}<br>
-
-                ❌ Wrong: ${e.wrong || 0}<br>
-
-                ⏭ Skipped: ${e.skipped || 0}<br>
-
-                📅 ${new Date(e.date).toLocaleString()}
-
-            </div>
-            `;
-        });
-
-
-        // TOP STATS
-        document.getElementById("totalExams").textContent = total;
-
-        document.getElementById("avgScore").textContent =
-            (sum/total).toFixed(1) + "%";
-
-        document.getElementById("bestScore").textContent =
-            best.toFixed(1) + "%";
-
-
-        // MAIN GRAPH
-        const ctx = document.getElementById("chart").getContext("2d");
-
-        const gradient = ctx.createLinearGradient(0,0,0,300);
-
-        gradient.addColorStop(0,"rgba(37,99,235,0.5)");
-        gradient.addColorStop(1,"rgba(37,99,235,0)");
-
-        new Chart(ctx,{
-            type:"line",
-
-            data:{
-                labels,
-
-                datasets:[{
-                    label:"Performance %",
-                    data:scores,
-                    borderColor:"#2563eb",
-                    backgroundColor:gradient,
-                    fill:true,
-                    tension:0.4
-                }]
-            }
-        });
-
-
-        // CHAPTER GRAPH
-        let chLabels = [];
-        let chData = [];
-
-        for(let ch in chapterStats){
-
-            chLabels.push(ch);
-
-            chData.push(
-                (
-                    chapterStats[ch].sum /
-                    chapterStats[ch].total
-                ).toFixed(1)
-            );
-        }
-
-        new Chart(document.getElementById("chapterChart"),{
-
-            type:"bar",
-
-            data:{
-                labels:chLabels,
-
-                datasets:[{
-                    label:"Average %",
-                    data:chData,
-                    borderRadius:8
-                }]
-            },
-
-            options:{
-                plugins:{
-                    legend:{
-                        display:false
-                    }
-                },
-
-                scales:{
-                    y:{
-                        min:0,
-                        max:100,
-
-                        ticks:{
-                            callback:v => v + "%"
-                        }
-                    }
-                }
-            }
-        });
-
-
-        // INSIGHTS
-        generateInsights(
-            data,
-            sum,
-            total,
-            chapterStats
-        );
-
+    if (data.length === 0) {
+        document.getElementById("examList").innerHTML = "No exams yet";
+        return;
     }
 
-    catch(err){
+    data.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-        console.error(err);
+    let labels = [], scores = [];
+    let total = data.length, sum = 0, best = 0;
 
-        document.getElementById("examList").innerHTML =
-        "<h3>Failed to load exams</h3>";
+    let list = document.getElementById("examList");
+    list.innerHTML = "";
+
+    let chapterStats = {};
+
+    data.forEach(e => {
+
+        let percent = Number(e.percentage) || 0;
+        let name = `${e.paper} - ${e.subject}`;
+        let chapter = e.chapter || "No Chapter";
+
+        labels.push(name);
+        scores.push(percent);
+
+        sum += percent;
+        if (percent > best) best = percent;
+
+        if (!chapterStats[chapter]) {
+            chapterStats[chapter] = { total: 0, sum: 0 };
+        }
+        chapterStats[chapter].total++;
+        chapterStats[chapter].sum += percent;
+
+        let cls = percent >= 70 ? "good" :
+                  percent >= 40 ? "avg" : "bad";
+
+        list.innerHTML += `
+        <div class="exam">
+            <b>${name}</b><br>
+            📘 ${chapter}<br>
+            <span class="${cls}">${percent.toFixed(2)}%</span><br>
+            📅 ${new Date(e.date).toLocaleString()}
+        </div>`;
+    });
+
+    document.getElementById("totalExams").textContent = total;
+    document.getElementById("avgScore").textContent = (sum/total).toFixed(1) + "%";
+    document.getElementById("bestScore").textContent = best.toFixed(1) + "%";
+
+    // 📈 LINE CHART
+    new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+            labels,
+            datasets: [{
+                label: "Performance %",
+                data: scores,
+                borderColor: "#2563eb",
+                fill: true,
+                tension: 0.4
+            }]
+        }
+    });
+
+    // 📊 CHAPTER CHART
+    let chLabels = [], chData = [];
+
+    for (let ch in chapterStats) {
+        chLabels.push(ch);
+        chData.push((chapterStats[ch].sum / chapterStats[ch].total).toFixed(1));
     }
-}
 
+    new Chart(document.getElementById("chapterChart"), {
+        type: "bar",
+        data: {
+            labels: chLabels,
+            datasets: [{
+                label: "Avg %",
+                data: chData
+            }]
+        }
+    });
 
-loadStats();
+    generateInsights(data, sum, total, chapterStats);
+});
 
-
-// INSIGHTS
-function generateInsights(data,sum,total,chapterStats){
-
-    let insights = [];
+function generateInsights(data, sum, total, chapterStats) {
 
     let avg = sum / total;
-
-
-    insights.push(`
-    <div class="insight ${avg>=60?'goodInsight':'warnInsight'}">
-
-        📊 Average Score:
-        <b>${avg.toFixed(1)}%</b>
-
-    </div>
-    `);
-
-
     let weakest = "";
     let min = 101;
 
-    for(let ch in chapterStats){
-
-        let v =
-            chapterStats[ch].sum /
-            chapterStats[ch].total;
-
-        if(v < min){
+    for (let ch in chapterStats) {
+        let v = chapterStats[ch].sum / chapterStats[ch].total;
+        if (v < min) {
             min = v;
             weakest = ch;
         }
     }
 
-    insights.push(`
-    <div class="insight badInsight">
+    let insights = [];
 
-        🎯 Weakest Chapter:
-        <b>${weakest}</b>
+    insights.push(`<div class="insight ${avg>=60?'goodInsight':'warnInsight'}">
+    📊 Average Score: <b>${avg.toFixed(1)}%</b>
+    </div>`);
 
-        (${min.toFixed(1)}%)
+    insights.push(`<div class="insight badInsight">
+    🎯 Weakest Chapter: <b>${weakest}</b>
+    </div>`);
 
-    </div>
-    `);
+    insights.push(`<div class="insight goodInsight">
+    🚀 Next Target: <b>${Math.min(avg+10,100).toFixed(1)}%</b>
+    </div>`);
 
-
-    if(data.length >= 2){
-
-        let trend =
-            data[0].percentage >
-            data[1].percentage;
-
-        insights.push(`
-        <div class="insight ${trend?'goodInsight':'warnInsight'}">
-
-            ${trend
-                ? '📈 Improving Performance'
-                : '⚠️ Performance Dropped'}
-
-        </div>
-        `);
-    }
-
-
-    let predicted = Math.min(avg + 10,100);
-
-    insights.push(`
-    <div class="insight goodInsight">
-
-        🚀 Predicted Next Score:
-        <b>${predicted.toFixed(1)}%</b>
-
-    </div>
-    `);
-
-
-    let rank =
-        avg >= 80 ? "Top 10%" :
-        avg >= 60 ? "Top 25%" :
-        avg >= 40 ? "Top 50%" :
-        "Below Average";
-
-    insights.push(`
-    <div class="insight warnInsight">
-
-        🏆 Estimated Rank:
-        <b>${rank}</b>
-
-    </div>
-    `);
-
-
-    let streak = 1;
-
-    for(let i=1;i<data.length;i++){
-
-        let d1 =
-            new Date(data[i-1].date).toDateString();
-
-        let d2 =
-            new Date(data[i].date).toDateString();
-
-        if(d1 !== d2){
-            break;
-        }
-
-        streak++;
-    }
-
-    insights.push(`
-    <div class="insight goodInsight">
-
-        🔥 Current Streak:
-        <b>${streak}</b>
-
-    </div>
-    `);
-
-    document.getElementById("insightsBox").innerHTML =
-        insights.join("");
+    document.getElementById("insightsBox").innerHTML = insights.join("");
 }
 
 </script>
