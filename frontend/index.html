@@ -20,7 +20,7 @@
     <div class="bb-close" onclick="hideBanner()">×</div>
 </div>
 
-    <!-- ✅ Auto hide script -->
+
 
 
 
@@ -141,6 +141,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
   display:flex;align-items:center;gap:14px;height:64px;
 }
 
+
 .beta-banner{
     position: fixed;
     top: 80px;
@@ -201,7 +202,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
     }
 }
 
-    
+
+
+
+
+
+
 .logoCircle{
   width:44px;height:44px;border-radius:50%;
   background:white;flex-shrink:0;overflow:hidden;
@@ -604,6 +610,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 </head>
 <body>
 
+
+
+
+
 <div class="user-menu">
 
     <div class="profile-icon" onclick="toggleMenu()">
@@ -642,7 +652,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
              onerror="this.style.display='none';document.getElementById('pFB').style.display='flex';">
         <div class="pLogoFB" id="pFB" style="display:none;">CMA<small>VIDYARTHI</small></div>
       </div>
-      <div class="pTitle">Interactive learning Platform</div>
+      <div class="pTitle">Interactive learning <span>Platform</span></div>
       <div class="pSub">The Institute of Cost Accountants of India • CMA VIDYARTHI </div>
       <div class="pChips">
         <span class="pChip">⚡ 15 Questions</span>
@@ -733,7 +743,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
           <div class="gBannerSub">Paper 9 · Paper 10 · Paper 11 · Paper 12</div>
         </div>
        
-      </div>
             <div class="paperGrid">
               <div class="paperCard gr2" onclick="openPaper('p9')">
           <div class="pcBar gr2"></div>
@@ -888,8 +897,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 
 <script>
 
+// 🔒 LOGIN GUARD (MUST BE FIRST)
+let userId = localStorage.getItem("userId");
 
+if (!userId) {
+    window.location.replace("login.html");
+}
 
+ 
 
 
 
@@ -3416,6 +3431,11 @@ const LETTERS = ['A','B','C','D'];
 
 
 
+
+
+
+
+
 function hideBanner(){
     document.getElementById("betaBanner").style.display = "none";
 }
@@ -3429,7 +3449,7 @@ setTimeout(() => {
 
 
 
-const userId = localStorage.getItem("userId");
+
 
 function addExam() {
     let exam_name = document.getElementById("exam_name").value;
@@ -3701,7 +3721,6 @@ function submitTest() {
 
   clearInterval(timerInterval);
 
-  const userId = localStorage.getItem("userId");
 
   let correct = 0, wrong = 0, skipped = 0;
 
