@@ -819,7 +819,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
   </div>
 </div>
 
-<script type="module">
+<script>
 
 
 
@@ -3635,95 +3635,53 @@ function confirmSubmit() {
 
 
 
-
-
-
-import { db } from "./firebase-config.js";
-
-import {
-  collection,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 function submitTest() {
 
   clearInterval(timerInterval);
 
   const userId = localStorage.getItem("userId");
 
-  let correct = 0,
-      wrong = 0,
-      skipped = 0;
+  let correct = 0, wrong = 0, skipped = 0;
 
   testQuestions.forEach((q,i) => {
-
-    if (answers[i] === -1)
-      skipped++;
-
-    else if (answers[i] === q.a)
-      correct++;
-
-    else
-      wrong++;
+    if (answers[i] === -1) skipped++;
+    else if (answers[i] === q.a) correct++;
+    else wrong++;
   });
 
   let score = correct * 2;
-
   let total = 30;
-
   let percentage = (score / total) * 100;
 
+  // ✅ SHOW RESULT IMMEDIATELY (FIRST)
   buildResults();
-
   showScreen('resultScreen');
 
-  addDoc(collection(db, "exams"), {
-
-    student_id: userId,
-
-    paper: activePaper.paper,
-
-    subject: activePaper.name,
-
-    chapter:
-      selectedChapter === 'all'
-      ? "Mixed"
-      : activePaper.chapters[selectedChapter],
-
-    score,
-
-    total,
-
-    percentage,
-
-    correct,
-
-    wrong,
-
-    skipped,
-
-    date: new Date().toISOString()
-
+  // ✅ SEND DATA IN BACKGROUND (NO WAIT)
+  fetch("http://localhost:5000/addExam", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      student_id: userId,
+      paper: activePaper.paper,
+      subject: activePaper.name,
+      chapter: selectedChapter === 'all'
+        ? "Mixed"
+        : activePaper.chapters[selectedChapter],
+      score,
+      total,
+      percentage,
+      correct,
+      wrong,
+      skipped,
+      date: new Date().toISOString()
+    })
   })
+  .catch(err => console.error("❌ Save failed:", err));
 
-  .then(() => {
-
-    console.log("✅ Exam Saved");
-
-  })
-
-  .catch((err) => {
-
-    console.error(err);
-
-  });
-}
-
-window.submitTest = submitTest;
-
-
-
-
+} 
 
 
 /*function saveExamResult() {
