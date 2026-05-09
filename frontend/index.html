@@ -818,31 +818,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
     </div>
   </div>
 </div>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
-    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
-    projectId: "cma-vidyarthi-3c892",
-    storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
-    messagingSenderId: "752274115998",
-    appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
-    measurementId: "G-8P3QWMYSXY"
-  };
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Firestore DB
-const db = firebase.firestore();
-
-</script>
-
-    
-<script>
 
 
 
@@ -3644,25 +3622,12 @@ function navQ(dir) {
   currentQ += dir; renderQuestion();
 }
 
-
-    
 function confirmSubmit() {
+  const u = answers.filter(a=>a===-1).length;
 
-  const u = answers.filter(a => a === -1).length;
+  if (u > 0 && !confirm(`You have ${u} unanswered question(s). Submit anyway?`)) return;
 
-  if (u > 0) {
-
-    const ok = confirm(
-      `You have ${u} unanswered question(s).\nSubmit anyway?`
-    );
-
-    if (!ok) {
-      document.getElementById("submitBtn").disabled = false;
-      return;
-    }
-  }
-
-  // prevent double click
+  // ✅ disable button to prevent multiple clicks
   document.getElementById("submitBtn").disabled = true;
 
   submitTest();
@@ -3670,8 +3635,53 @@ function confirmSubmit() {
 
 
 
+function submitTest() {
 
+  clearInterval(timerInterval);
 
+  const userId = localStorage.getItem("userId");
+
+  let correct = 0, wrong = 0, skipped = 0;
+
+  testQuestions.forEach((q,i) => {
+    if (answers[i] === -1) skipped++;
+    else if (answers[i] === q.a) correct++;
+    else wrong++;
+  });
+
+  let score = correct * 2;
+  let total = 30;
+  let percentage = (score / total) * 100;
+
+  // ✅ SHOW RESULT IMMEDIATELY (FIRST)
+  buildResults();
+  showScreen('resultScreen');
+
+  // ✅ SEND DATA IN BACKGROUND (NO WAIT)
+  fetch("http://localhost:5000/addExam", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      student_id: userId,
+      paper: activePaper.paper,
+      subject: activePaper.name,
+      chapter: selectedChapter === 'all'
+        ? "Mixed"
+        : activePaper.chapters[selectedChapter],
+      score,
+      total,
+      percentage,
+      correct,
+      wrong,
+      skipped,
+      date: new Date().toISOString()
+    })
+  })
+  .catch(err => console.error("❌ Save failed:", err));
+
+} 
 
 
 /*function saveExamResult() {
@@ -3827,118 +3837,7 @@ window.onclick = function(e) {
     }
 }
 
-// FIREBASE IMPORTS
-const db = firebase.firestore();
 
-// Prevent double submit
-let isSubmitted = false;
-
-async function submitTest() {
-
-    if (isSubmitted) return;
-
-    isSubmitted = true;
-
-    clearInterval(timerInterval);
-
-    const userId = localStorage.getItem("userId");
-
-    let correct = 0;
-    let wrong = 0;
-    let skipped = 0;
-
-    testQuestions.forEach((q, i) => {
-
-        if (answers[i] === -1 || answers[i] === undefined) {
-            skipped++;
-        }
-        else if (answers[i] === q.a) {
-            correct++;
-        }
-        else {
-            wrong++;
-        }
-
-    });
-
-    let score = correct * 2;
-    let total = 30;
-    let percentage = ((score / total) * 100).toFixed(2);
-
-    // RESULT UI
-    document.getElementById("rScore").innerHTML =
-        `${score}<span>/30</span>`;
-
-    document.getElementById("rCorrect").innerText = correct;
-    document.getElementById("rWrong").innerText = wrong;
-    document.getElementById("rSkipped").innerText = skipped;
-
-    // VERDICT
-    if (percentage >= 75) {
-        document.getElementById("rVerdict").innerText =
-            "Excellent Performance!";
-    }
-    else if (percentage >= 50) {
-        document.getElementById("rVerdict").innerText =
-            "Good Job!";
-    }
-    else {
-        document.getElementById("rVerdict").innerText =
-            "Keep Practicing!";
-    }
-
-    // SHOW RESULT SCREEN
-    showScreen("resultScreen");
-
-    // SAVE TO FIRESTORE
-    try {
-
-        await db.collection("exams").add({
-
-            student_id: userId || "guest",
-
-            paper: activePaper.paper,
-
-            subject: activePaper.name,
-
-            chapter:
-                selectedChapter === 'all'
-                ? "Mixed"
-                : activePaper.chapters[selectedChapter],
-
-            score: score,
-
-            total: total,
-
-            percentage: percentage,
-
-            correct: correct,
-
-            wrong: wrong,
-
-            skipped: skipped,
-
-            date: new Date().toISOString()
-
-        });
-
-        console.log("✅ Exam Saved Successfully");
-
-    }
-    catch (err) {
-
-        console.error("❌ Firestore Error:", err);
-
-    }
-
-}
-
-// GLOBAL ACCESS
-window.submitTest = submitTest;
-window.toggleMenu = toggleMenu;
-window.goProfile = goProfile;
-window.goStats = goStats;
-window.logout = logout;
 
 </script>
 
