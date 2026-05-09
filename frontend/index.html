@@ -845,11 +845,6 @@ const db = firebase.firestore();
 <script>
 
 
-const firebaseConfig = {
-   // your config
-};
-
-firebase.initializeApp(firebaseConfig);
 
 
 
@@ -3649,12 +3644,25 @@ function navQ(dir) {
   currentQ += dir; renderQuestion();
 }
 
+
+    
 function confirmSubmit() {
-  const u = answers.filter(a=>a===-1).length;
 
-  if (u > 0 && !confirm(`You have ${u} unanswered question(s). Submit anyway?`)) return;
+  const u = answers.filter(a => a === -1).length;
 
-  // ✅ disable button to prevent multiple clicks
+  if (u > 0) {
+
+    const ok = confirm(
+      `You have ${u} unanswered question(s).\nSubmit anyway?`
+    );
+
+    if (!ok) {
+      document.getElementById("submitBtn").disabled = false;
+      return;
+    }
+  }
+
+  // prevent double click
   document.getElementById("submitBtn").disabled = true;
 
   submitTest();
@@ -3825,94 +3833,78 @@ const db = firebase.firestore();
 // Prevent double submit
 let isSubmitted = false;
 
-// SUBMIT TEST
 async function submitTest() {
 
-    // Prevent multiple submissions
     if (isSubmitted) return;
 
     isSubmitted = true;
 
-    // Stop timer
     clearInterval(timerInterval);
 
-    // Get logged user
     const userId = localStorage.getItem("userId");
 
-    // Result counters
     let correct = 0;
     let wrong = 0;
     let skipped = 0;
 
-    // Calculate result
     testQuestions.forEach((q, i) => {
 
-        if (answers[i] === -1) {
-
+        if (answers[i] === -1 || answers[i] === undefined) {
             skipped++;
-
         }
         else if (answers[i] === q.a) {
-
             correct++;
-
         }
         else {
-
             wrong++;
-
         }
 
     });
 
-    // Score calculation
     let score = correct * 2;
-
     let total = 30;
-
     let percentage = ((score / total) * 100).toFixed(2);
 
-    console.log("✅ Submit Started");
+    // RESULT UI
+    document.getElementById("rScore").innerHTML =
+        `${score}<span>/30</span>`;
 
-    console.log("Correct:", correct);
-    console.log("Wrong:", wrong);
-    console.log("Skipped:", skipped);
+    document.getElementById("rCorrect").innerText = correct;
+    document.getElementById("rWrong").innerText = wrong;
+    document.getElementById("rSkipped").innerText = skipped;
 
-    // SHOW RESULT SCREEN FIRST
-    try {
-
-        buildResults();
-
-        showScreen('resultScreen');
-
-        console.log("✅ Result Screen Opened");
-
+    // VERDICT
+    if (percentage >= 75) {
+        document.getElementById("rVerdict").innerText =
+            "Excellent Performance!";
     }
-    catch (err) {
-
-        console.error("❌ Result Error:", err);
-
-        alert("Result Error: " + err);
-
-        return;
-
+    else if (percentage >= 50) {
+        document.getElementById("rVerdict").innerText =
+            "Good Job!";
+    }
+    else {
+        document.getElementById("rVerdict").innerText =
+            "Keep Practicing!";
     }
 
-    // SAVE TO FIREBASE
+    // SHOW RESULT SCREEN
+    showScreen("resultScreen");
+
+    // SAVE TO FIRESTORE
     try {
 
         await db.collection("exams").add({
 
             student_id: userId || "guest",
 
-            paper: activePaper?.paper || "Unknown",
+            paper: activePaper.paper,
 
-            subject: activePaper?.name || "Unknown",
+            subject: activePaper.name,
 
             chapter:
                 selectedChapter === 'all'
                 ? "Mixed"
-                : activePaper?.chapters[selectedChapter] || "Unknown",
+                : activePaper.chapters[selectedChapter],
 
             score: score,
 
