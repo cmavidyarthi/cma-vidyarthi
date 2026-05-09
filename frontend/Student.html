@@ -23,6 +23,33 @@ body {
     font-weight: bold;
     letter-spacing: 0.5px;
 }
+.header{
+    position: relative;
+}
+
+.home-btn{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+
+    background: white;
+    color: #1746a2;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.home-btn:hover{
+    background: #e2e8f0;
+    transform: translateY(-50%) scale(1.05);
+}
 
 /* MAIN CONTAINER */
 .container {
@@ -104,7 +131,13 @@ body {
 <body>
 
 <div class="header">
+
     🎓 Student Profile
+
+    <button class="home-btn" onclick="goHome()">
+        🏠 Home
+    </button>
+
 </div>
 
 <div class="container">
@@ -177,6 +210,10 @@ loadProfile();
 window.editProfile = function () {
     localStorage.setItem("editMode", "true"); // 🔥 FLAG
     window.location.href = "profile.html";
+};
+
+window.goHome = function () {
+    window.location.href = "index.html";
 };
 
 </script>
