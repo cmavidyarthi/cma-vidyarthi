@@ -892,13 +892,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 
 
 
-const userId = localStorage.getItem("userId");
 
-if (!userId) {
-  window.location.replace("/login.html");
-} else {
-  window.location.replace("/dashboard.html");
-}
 
 
 
@@ -3908,6 +3902,13 @@ window.onclick = function(e) {
     }
 }
 
+    const userId = localStorage.getItem("userId");
+
+if (!userId) {
+  window.location.replace("/login.html");
+} else {
+  window.location.replace("/dashboard.html");
+}
 
 
 </script>
