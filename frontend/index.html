@@ -891,13 +891,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 
 
 
-const userId = localStorage.getItem("userId");
 
-if (!userId) {
+window.onload = function () {
   window.location.replace("/login.html");
-} else {
-  window.location.replace("/dashboard.html");
-}
+};
 
 
 
