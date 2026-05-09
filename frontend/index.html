@@ -818,11 +818,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
     </div>
   </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script type="module">
+    
+<script>
 
 
+const firebaseConfig = {
+   // your config
+};
 
+firebase.initializeApp(firebaseConfig);
 
 
 
@@ -3636,95 +3643,7 @@ function confirmSubmit() {
 
 
 
-    import { db } from "./firebase-config.js";
 
-import {
-  collection,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-async function submitTest() {
-
-  isSubmitted = true;
-
-  clearInterval(timerInterval);
-
-  const userId = localStorage.getItem("userId");
-
-  let correct = 0;
-  let wrong = 0;
-  let skipped = 0;
-
-  testQuestions.forEach((q, i) => {
-
-    if (answers[i] === -1) {
-      skipped++;
-    }
-
-    else if (answers[i] === q.a) {
-      correct++;
-    }
-
-    else {
-      wrong++;
-    }
-
-  });
-
-  let score = correct * 2;
-
-  let total = 30;
-
-  let percentage = ((score / total) * 100).toFixed(2);
-
-  // ✅ Build Result Screen
-  buildResults();
-
-  showScreen('resultScreen');
-
-  // ✅ Save to Firebase
-  try {
-
-    await addDoc(collection(db, "exams"), {
-
-      student_id: userId,
-
-      paper: activePaper.paper,
-
-      subject: activePaper.name,
-
-      chapter:
-        selectedChapter === 'all'
-        ? "Mixed"
-        : activePaper.chapters[selectedChapter],
-
-      score: score,
-
-      total: total,
-
-      percentage: percentage,
-
-      correct: correct,
-
-      wrong: wrong,
-
-      skipped: skipped,
-
-      date: new Date().toISOString()
-
-    });
-
-    console.log("✅ Exam Saved Successfully");
-
-  }
-
-  catch (err) {
-
-    console.error("❌ Firebase Error:", err);
-
-  }
-
-}
 
 
 /*function saveExamResult() {
@@ -3880,18 +3799,95 @@ window.onclick = function(e) {
     }
 }
 
-window.openPaper = openPaper;
-window.startTest = startTest;
-window.selectChapter = selectChapter;
-window.navQ = navQ;
-window.jumpToQ = jumpToQ;
-window.selectAnswer = selectAnswer;
-window.confirmSubmit = confirmSubmit;
+// FIREBASE IMPORTS
+const db = firebase.firestore();
+
+// Prevent double submit
+let isSubmitted = false;
+
+// SUBMIT TEST
+async function submitTest() {
+
+    if (isSubmitted) return;
+
+    isSubmitted = true;
+
+    clearInterval(timerInterval);
+
+    const userId = localStorage.getItem("userId");
+
+    let correct = 0;
+    let wrong = 0;
+    let skipped = 0;
+
+    testQuestions.forEach((q, i) => {
+
+        if (answers[i] === -1) {
+            skipped++;
+        }
+        else if (answers[i] === q.a) {
+            correct++;
+        }
+        else {
+            wrong++;
+        }
+
+    });
+
+    let score = correct * 2;
+    let total = 30;
+    let percentage = ((score / total) * 100).toFixed(2);
+
+    // BUILD RESULT UI
+    buildResults();
+
+    // SHOW RESULT SCREEN
+    showScreen('resultScreen');
+
+    try {
+
+        await db.collection("exams").add({
+
+            student_id: userId,
+
+            paper: activePaper.paper,
+
+            subject: activePaper.name,
+
+            chapter:
+                selectedChapter === 'all'
+                ? "Mixed"
+                : activePaper.chapters[selectedChapter],
+
+            score: score,
+
+            total: total,
+
+            percentage: percentage,
+
+            correct: correct,
+
+            wrong: wrong,
+
+            skipped: skipped,
+
+            date: new Date().toISOString()
+
+        });
+
+        console.log("✅ Exam Saved Successfully");
+
+    }
+    catch (err) {
+
+        console.error("❌ Firestore Error:", err);
+
+    }
+
+}
+
+// GLOBAL ACCESS
 window.submitTest = submitTest;
-window.toggleReview = toggleReview;
-window.goToPlatform = goToPlatform;
-window.goToPaper = goToPaper;
-window.retakeTest = retakeTest;
 window.toggleMenu = toggleMenu;
 window.goProfile = goProfile;
 window.goStats = goStats;
