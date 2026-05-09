@@ -821,6 +821,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
+<script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+    projectId: "cma-vidyarthi-3c892",
+    storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
+    messagingSenderId: "752274115998",
+    appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
+    measurementId: "G-8P3QWMYSXY"
+  };
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Firestore DB
+const db = firebase.firestore();
+
+</script>
+
     
 <script>
 
@@ -3808,56 +3828,91 @@ let isSubmitted = false;
 // SUBMIT TEST
 async function submitTest() {
 
+    // Prevent multiple submissions
     if (isSubmitted) return;
 
     isSubmitted = true;
 
+    // Stop timer
     clearInterval(timerInterval);
 
+    // Get logged user
     const userId = localStorage.getItem("userId");
 
+    // Result counters
     let correct = 0;
     let wrong = 0;
     let skipped = 0;
 
+    // Calculate result
     testQuestions.forEach((q, i) => {
 
         if (answers[i] === -1) {
+
             skipped++;
+
         }
         else if (answers[i] === q.a) {
+
             correct++;
+
         }
         else {
+
             wrong++;
+
         }
 
     });
 
+    // Score calculation
     let score = correct * 2;
+
     let total = 30;
+
     let percentage = ((score / total) * 100).toFixed(2);
 
-    // BUILD RESULT UI
-    buildResults();
+    console.log("✅ Submit Started");
 
-    // SHOW RESULT SCREEN
-    showScreen('resultScreen');
+    console.log("Correct:", correct);
+    console.log("Wrong:", wrong);
+    console.log("Skipped:", skipped);
 
+    // SHOW RESULT SCREEN FIRST
+    try {
+
+        buildResults();
+
+        showScreen('resultScreen');
+
+        console.log("✅ Result Screen Opened");
+
+    }
+    catch (err) {
+
+        console.error("❌ Result Error:", err);
+
+        alert("Result Error: " + err);
+
+        return;
+
+    }
+
+    // SAVE TO FIREBASE
     try {
 
         await db.collection("exams").add({
 
-            student_id: userId,
+            student_id: userId || "guest",
 
-            paper: activePaper.paper,
+            paper: activePaper?.paper || "Unknown",
 
-            subject: activePaper.name,
+            subject: activePaper?.name || "Unknown",
 
             chapter:
                 selectedChapter === 'all'
                 ? "Mixed"
-                : activePaper.chapters[selectedChapter],
+                : activePaper?.chapters[selectedChapter] || "Unknown",
 
             score: score,
 
