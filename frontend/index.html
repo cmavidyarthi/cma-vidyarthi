@@ -20,10 +20,22 @@
     <div class="bb-close" onclick="hideBanner()">×</div>
 </div>
 
+    <!-- ✅ Auto hide script -->
 
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+    projectId: "cma-vidyarthi-3c892",
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
 
 
 <meta charset="UTF-8">
@@ -610,10 +622,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 </head>
 <body>
 
-
-
-
-
 <div class="user-menu">
 
     <div class="profile-icon" onclick="toggleMenu()">
@@ -742,7 +750,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
           <div class="gBannerTitle">Group 2</div>
           <div class="gBannerSub">Paper 9 · Paper 10 · Paper 11 · Paper 12</div>
         </div>
-       </div>
+        <div class="gBannerRight"><div class="gBannerBadge">Coming Soon</div></div>
+      </div>
             <div class="paperGrid">
               <div class="paperCard gr2" onclick="openPaper('p9')">
           <div class="pcBar gr2"></div>
@@ -897,14 +906,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 
 <script>
 
-// 🔒 LOGIN GUARD (MUST BE FIRST)
-let userId = localStorage.getItem("userId");
 
-if (!userId) {
-    window.location.replace("login.html");
-}
 
- 
+
 
 
 
@@ -3449,7 +3453,7 @@ setTimeout(() => {
 
 
 
-
+const userId = localStorage.getItem("userId");
 
 function addExam() {
     let exam_name = document.getElementById("exam_name").value;
@@ -3715,42 +3719,50 @@ function confirmSubmit() {
   submitTest();
 }
 
+let isSubmitted = false;
 
 
-function submitTest() {
+
+async function submitTest() {
+
+  if (isSubmitted) return;
+  isSubmitted = true;
 
   clearInterval(timerInterval);
 
+  try {
 
-  let correct = 0, wrong = 0, skipped = 0;
+    const userId = localStorage.getItem("userId");
 
-  testQuestions.forEach((q,i) => {
-    if (answers[i] === -1) skipped++;
-    else if (answers[i] === q.a) correct++;
-    else wrong++;
-  });
+    if (!userId) {
+      alert("User not logged in!");
+      return;
+    }
 
-  let score = correct * 2;
-  let total = 30;
-  let percentage = (score / total) * 100;
+    let correct = 0;
+    let wrong = 0;
+    let skipped = 0;
 
-  // ✅ SHOW RESULT IMMEDIATELY (FIRST)
-  buildResults();
-  showScreen('resultScreen');
+    // 📊 calculate result
+    testQuestions.forEach((q, i) => {
+      if (answers[i] === -1) skipped++;
+      else if (answers[i] === q.a) correct++;
+      else wrong++;
+    });
 
-  // ✅ SEND DATA IN BACKGROUND (NO WAIT)
-  fetch("http://localhost:5000/addExam", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+    const score = correct * 2;
+    const total = testQuestions.length * 2;
+    const percentage = (score / total) * 100;
+
+    // 📦 prepare payload
+    const payload = {
       student_id: userId,
       paper: activePaper.paper,
       subject: activePaper.name,
       chapter: selectedChapter === 'all'
         ? "Mixed"
         : activePaper.chapters[selectedChapter],
+
       score,
       total,
       percentage,
@@ -3758,58 +3770,26 @@ function submitTest() {
       wrong,
       skipped,
       date: new Date().toISOString()
-    })
-  })
-  .catch(err => console.error("❌ Save failed:", err));
-
-} 
-
-
-/*function saveExamResult() {
-    const userId = localStorage.getItem("userId");
-
-    // 🔥 GET VALUES FROM YOUR RESULT PAGE
-    const score = 2;     // replace dynamically
-    const total = 30;
-
-    const correct = 1;
-    const wrong = 7;
-    const skipped = 7;
-
-    const percentage = ((score / total) * 100).toFixed(2);
-
-    const examData = {
-        student_id: userId,
-        paper: "Paper 7",
-        subject: "CMA",
-        chapter: "Mixed Chapters", // or dynamic
-        score: score,
-        total: total,
-        correct: correct,
-        wrong: wrong,
-        skipped: skipped,
-        percentage: percentage,
-        date: new Date().toLocaleString()
     };
 
-    console.log("📤 Sending Data:", examData);
+    console.log("⏳ Saving result...", payload);
 
-    fetch("http://localhost:5000/addExam", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(examData)
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("✅ Saved:", data);
+    // 🚀 async firestore save
+    const docRef = await db.collection("exams").add(payload);
 
-        // 🔥 GO TO STATS AFTER SAVE
-        window.location.href = "stats.html";
-    })
-    .catch(err => console.error(err));
-}*/
+    console.log("✅ Saved successfully with ID:", docRef.id);
+
+    // 🎯 show result screen only after save starts (or you can move before await if you want instant UI)
+    buildResults();
+    showScreen('resultScreen');
+
+  } catch (error) {
+    console.error("❌ Error saving exam:", error);
+    alert("Failed to save result. Check console.");
+  }
+}
+
+
 
 // ════════════════════════════════════════════════════
 // RESULTS
