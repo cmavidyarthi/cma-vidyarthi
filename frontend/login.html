@@ -1,202 +1,393 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>CMA Vidyarthi Login</title>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
-        body { margin: 0; font-family: Arial; }
-        .container { display: flex; height: 100vh; }
 
-        .left {
-            width: 50%;
-            background: linear-gradient(135deg, #0a1f44, #1f3c88);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
         }
 
-        .left img {
-            width: 170px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 3px solid white;
+        body{
+    background:linear-gradient(135deg,#0a1f44,#1746a2);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    overflow-y:auto;
+
+    padding:20px;
+}
+
+        /* TOP SECTION */
+
+        .top-section{
+            text-align:center;
+            color:white;
+            margin-bottom:30px;
+            animation:fadeDown 0.8s ease;
         }
 
-        .right {
-            width: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f5f7fa;
+        .top-section img{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid white;
+            margin-bottom:15px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.25);
         }
 
-        .login-box {
-            width: 320px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        .top-section h1{
+            font-size:40px;
+            margin-bottom:10px;
         }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+        .top-section p{
+            font-size:16px;
+            max-width:500px;
+            line-height:1.6;
+            opacity:0.95;
         }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #1f3c88;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        /* LOGIN BOX */
+
+        .login-box{
+            width:380px;
+            background:white;
+            padding:35px;
+            border-radius:22px;
+            box-shadow:0 20px 50px rgba(0,0,0,0.2);
+            animation:fadeUp 0.8s ease;
         }
 
-        .google-btn {
-            background: #db4437;
-            margin-top: 10px;
+        .login-box h2{
+            text-align:center;
+            margin-bottom:25px;
+            color:#0a1f44;
+            font-size:28px;
         }
 
-        .signup-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
+        input,
+        select{
+            width:100%;
+            padding:14px;
+            margin:10px 0;
+            border:1px solid #dbeafe;
+            border-radius:12px;
+            font-size:15px;
+            transition:0.3s;
         }
 
-        .signup-link a {
-            color: #1f3c88;
-            text-decoration: none;
-            font-weight: bold;
+        input:focus,
+        select:focus{
+            outline:none;
+            border-color:#2563eb;
+            box-shadow:0 0 0 4px rgba(37,99,235,0.12);
         }
+
+        button{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            font-size:15px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .login-btn{
+            background:#1746a2;
+            color:white;
+            margin-top:10px;
+        }
+
+        .login-btn:hover{
+            background:#0a1f44;
+            transform:translateY(-2px);
+        }
+
+        .google-btn{
+            background:#db4437;
+            color:white;
+            margin-top:12px;
+        }
+
+        .google-btn:hover{
+            transform:translateY(-2px);
+        }
+
+        .signup-link{
+            text-align:center;
+            margin-top:18px;
+            font-size:14px;
+            color:#64748b;
+        }
+
+        .signup-link a{
+            color:#1746a2;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes fadeUp{
+            from{
+                opacity:0;
+                transform:translateY(40px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        @keyframes fadeDown{
+            from{
+                opacity:0;
+                transform:translateY(-40px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        /* MOBILE */
+
+        @media(max-width:600px){
+
+            body{
+                padding:20px;
+            }
+
+            .top-section img{
+                width:95px;
+                height:95px;
+            }
+
+            .top-section h1{
+                font-size:30px;
+            }
+
+            .top-section p{
+                font-size:14px;
+                padding:0 10px;
+            }
+
+            .login-box{
+                width:100%;
+                padding:25px;
+            }
+
+        }
+
     </style>
+
 </head>
 
 <body>
 
-<div class="container">
+    <!-- TOP -->
 
-    <!-- LEFT -->
-    <div class="left">
+    <div class="top-section">
+
         <img src="logo.png">
+
         <h1>CMA Vidyarthi</h1>
+
         <p>
-            Welcome to the Interactive Learning Platform.  
-            Practice tests and track your performance easily.
+            Welcome to the Interactive Learning Platform.
+            Practice tests, track performance,
+            and improve your CMA preparation smarter.
         </p>
+
     </div>
 
-    <!-- RIGHT -->
-    <div class="right">
-        <div class="login-box">
+    <!-- LOGIN BOX -->
 
-            <h2>Login</h2>
+    <div class="login-box">
 
-            <select id="role">
-                <option value="user">Student</option>
-                <option value="admin">Admin</option>
-            </select>
+        <h2>Login</h2>
 
-            <form onsubmit="login(event)">
-                <input type="email" id="email" placeholder="Enter Email" required>
-                <input type="password" id="password" placeholder="Enter Password" required>
-                <button type="submit">Login</button>
-            </form>
+        <select id="role">
+            <option value="user">Student</option>
+            <option value="admin">Admin</option>
+        </select>
 
-            <!-- ✅ GOOGLE LOGIN BUTTON (NEW CLEAN WAY) -->
-            <button class="google-btn" onclick="googleLogin()">
-                Sign in with Google
+        <form onsubmit="login(event)">
+
+            <input type="email"
+                   id="email"
+                   placeholder="Enter Email"
+                   required>
+
+            <input type="password"
+                   id="password"
+                   placeholder="Enter Password"
+                   required>
+
+            <button type="submit" class="login-btn">
+                Login
             </button>
 
-            <div class="signup-link">
-                Don't have an account? <a href="signup.html">Sign up</a>
-            </div>
+        </form>
 
+        <!-- GOOGLE LOGIN -->
+
+        <button class="google-btn" onclick="googleLogin()">
+            Sign in with Google
+        </button>
+
+        <div class="signup-link">
+            Don't have an account?
+            <a href="signup.html">Sign up</a>
         </div>
+
     </div>
 
-</div>
+    <!-- FIREBASE -->
 
-<!-- FIREBASE SCRIPT -->
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-    getAuth, 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import {
+    getAuth,
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+}
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
-  authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
-  projectId: "cma-vidyarthi-3c892",
-  storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
-  messagingSenderId: "752274115998",
-  appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
-  measurementId: "G-8P3QWMYSXY"
+
+    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+
+    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+
+    projectId: "cma-vidyarthi-3c892",
+
+    storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
+
+    messagingSenderId: "752274115998",
+
+    appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
+
+    measurementId: "G-8P3QWMYSXY"
 };
 
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 
+
 /* EMAIL LOGIN */
-window.login = function(event) {
+
+window.login = function(event){
+
     event.preventDefault();
 
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-    let role = document.getElementById("role").value;
+    let email =
+        document.getElementById("email").value;
 
-    if (role === "admin" && email === "admin@gmail.com" && password === "admin123") {
-        localStorage.setItem("userId", "admin");
+    let password =
+        document.getElementById("password").value;
+
+    let role =
+        document.getElementById("role").value;
+
+
+    // ADMIN LOGIN
+
+    if(
+        role === "admin" &&
+        email === "admin@gmail.com" &&
+        password === "admin123"
+    ){
+
+        localStorage.setItem("userId","admin");
+
         window.location.href = "index.html";
+
         return;
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
 
-            let user = userCredential.user;
+    // USER LOGIN
 
-            localStorage.setItem("userId", user.uid);
-            localStorage.setItem("userEmail", user.email);
+    signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+    )
 
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            alert("Login failed: " + error.message);
-        });
+    .then((userCredential)=>{
+
+        let user = userCredential.user;
+
+        localStorage.setItem("userId", user.uid);
+
+        localStorage.setItem("userEmail", user.email);
+
+        window.location.href = "index.html";
+
+    })
+
+    .catch((error)=>{
+
+        alert("Login failed: " + error.message);
+
+    });
+
 };
 
-/* ✅ GOOGLE LOGIN (CORRECT WAY) */
-window.googleLogin = function() {
+
+/* GOOGLE LOGIN */
+
+window.googleLogin = function(){
 
     const provider = new GoogleAuthProvider();
 
     signInWithPopup(auth, provider)
-        .then((result) => {
 
-            const user = result.user;
+    .then((result)=>{
 
-            localStorage.setItem("userId", user.uid);
-            localStorage.setItem("userEmail", user.email);
-            localStorage.setItem("userName", user.displayName);
+        const user = result.user;
 
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            console.error(error);
-            alert("Google login failed: " + error.message);
-        });
+        localStorage.setItem("userId", user.uid);
+
+        localStorage.setItem("userEmail", user.email);
+
+        localStorage.setItem("userName", user.displayName);
+
+        window.location.href = "index.html";
+
+    })
+
+    .catch((error)=>{
+
+        console.error(error);
+
+        alert("Google login failed: " + error.message);
+
+    });
+
 };
 
 </script>
