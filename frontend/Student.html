@@ -1,138 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Student Profile</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f7fb;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+    radial-gradient(circle at top left,#dbeafe 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#dbeafe 0%,transparent 25%),
+    #f4f7fb;
+
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
 /* HEADER */
-.header {
-    background: linear-gradient(135deg, #0a1f44, #1746a2);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
+
 .header{
-    position: relative;
+    width:100%;
+    background:linear-gradient(135deg,#081f5c,#1746a2,#2563eb);
+    color:#fff;
+
+    padding:18px 20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo span{
+    font-size:34px;
+}
+
+.logo h1{
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:.5px;
 }
 
 .home-btn{
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    border:none;
+    background:#fff;
+    color:#1746a2;
 
-    padding: 10px 16px;
-    border: none;
-    border-radius: 10px;
+    padding:12px 22px;
+    border-radius:16px;
 
-    background: white;
-    color: #1746a2;
+    font-size:16px;
+    font-weight:600;
 
-    font-weight: bold;
-    cursor: pointer;
+    cursor:pointer;
 
-    transition: 0.3s;
+    transition:0.3s;
+
+    box-shadow:0 6px 20px rgba(255,255,255,0.15);
 }
 
 .home-btn:hover{
-    background: #e2e8f0;
-    transform: translateY(-50%) scale(1.05);
+    transform:translateY(-2px) scale(1.03);
 }
 
-/* MAIN CONTAINER */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 80px);
+/* MAIN */
+
+.container{
+    width:100%;
+    min-height:calc(100vh - 90px);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:50px 20px;
 }
 
 /* CARD */
-.profile-card {
-    background: white;
-    width: 350px;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: 0.3s;
+
+.profile-card{
+    width:100%;
+    max-width:520px;
+
+    background:rgba(255,255,255,0.92);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:32px;
+
+    padding:45px 35px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 20px 60px rgba(37,99,235,0.12),
+    0 8px 25px rgba(0,0,0,0.08);
+
+    animation:fadeUp 0.6s ease;
 }
 
-.profile-card:hover {
-    transform: translateY(-5px);
+.profile-card::before{
+    content:"";
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    background:linear-gradient(135deg,#2563eb,#60a5fa);
+
+    opacity:0.08;
+
+    border-radius:50%;
+
+    top:-60px;
+    right:-60px;
+}
+
+.profile-card::after{
+    content:"";
+    position:absolute;
+
+    width:120px;
+    height:120px;
+
+    border:10px solid rgba(37,99,235,0.05);
+    border-radius:50%;
+
+    bottom:-40px;
+    left:-40px;
 }
 
 /* AVATAR */
-.avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #1746a2, #2563eb);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 35px;
-    color: white;
-    margin: auto;
-    margin-bottom: 15px;
+
+.avatar-wrap{
+    position:relative;
+    width:max-content;
+    margin:auto;
+}
+
+.avatar{
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#1746a2,#2563eb);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:52px;
+    color:white;
+
+    font-weight:600;
+
+    border:6px solid #fff;
+
+    box-shadow:0 10px 25px rgba(37,99,235,0.25);
+}
+
+.online-dot{
+    width:22px;
+    height:22px;
+
+    background:#22c55e;
+
+    border:4px solid white;
+
+    border-radius:50%;
+
+    position:absolute;
+    bottom:10px;
+    right:6px;
 }
 
 /* NAME */
-.name {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #1e293b;
+
+.name{
+    text-align:center;
+
+    margin-top:22px;
+
+    font-size:36px;
+    font-weight:700;
+
+    color:#0f172a;
 }
 
-/* INFO */
-.info {
-    text-align: left;
-    margin-top: 20px;
+.underline{
+    width:80px;
+    height:5px;
+
+    border-radius:20px;
+
+    background:linear-gradient(to right,#2563eb,#60a5fa);
+
+    margin:14px auto 30px auto;
 }
 
-.info p {
-    margin: 10px 0;
-    font-size: 15px;
-    color: #475569;
+/* INFO BOX */
+
+.info-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+
+    margin-top:10px;
+}
+
+.info-card{
+    background:#f8fbff;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    transition:0.3s;
+}
+
+.info-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.icon{
+    width:55px;
+    height:55px;
+
+    border-radius:16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+
+    flex-shrink:0;
+}
+
+.blue{
+    background:#dbeafe;
+}
+
+.green{
+    background:#dcfce7;
+}
+
+.info-title{
+    font-size:14px;
+    color:#64748b;
+    font-weight:600;
+}
+
+.info-value{
+    font-size:18px;
+    color:#0f172a;
+    font-weight:600;
+
+    margin-top:3px;
 }
 
 /* BUTTON */
-.edit-btn {
-    margin-top: 25px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #1746a2, #2563eb);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+
+.edit-btn{
+    width:100%;
+
+    margin-top:32px;
+
+    padding:16px;
+
+    border:none;
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#1746a2,#2563eb);
+
+    color:white;
+
+    font-size:18px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:0 12px 30px rgba(37,99,235,0.25);
 }
 
-.edit-btn:hover {
-    transform: scale(1.05);
+.edit-btn:hover{
+    transform:translateY(-3px);
 }
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .header{
+        padding:14px 16px;
+    }
+
+    .logo h1{
+        font-size:24px;
+    }
+
+    .home-btn{
+        padding:10px 14px;
+        font-size:14px;
+        border-radius:14px;
+    }
+
+    .container{
+        align-items:flex-start;
+        padding:30px 14px;
+    }
+
+    .profile-card{
+        padding:35px 22px;
+        border-radius:28px;
+    }
+
+    .avatar{
+        width:100px;
+        height:100px;
+        font-size:42px;
+    }
+
+    .name{
+        font-size:30px;
+    }
+
+    .info-box{
+        grid-template-columns:1fr;
+    }
+
+    .info-card{
+        padding:16px;
+    }
+
+}
+
+/* EXTRA SMALL */
+
+@media(max-width:480px){
+
+    .logo{
+        gap:8px;
+    }
+
+    .logo span{
+        font-size:24px;
+    }
+
+    .logo h1{
+        font-size:20px;
+    }
+
+    .home-btn{
+        font-size:13px;
+        padding:9px 12px;
+    }
+
+    .profile-card{
+        padding:28px 18px;
+    }
+
+    .name{
+        font-size:28px;
+    }
+
+    .edit-btn{
+        font-size:16px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+
 <div class="header">
 
-    🎓 Student Profile
+    <div class="logo">
+        <span>🎓</span>
+        <h1>Student Profile</h1>
+    </div>
 
     <button class="home-btn" onclick="goHome()">
         🏠 Home
@@ -140,19 +438,73 @@ body {
 
 </div>
 
+<!-- MAIN -->
+
 <div class="container">
 
     <div class="profile-card">
-        
-        <div class="avatar" id="avatar">👤</div>
 
-        <div class="name" id="name">Loading...</div>
+        <!-- AVATAR -->
 
-        <div class="info" id="profileBox">
-            <p>Loading data...</p>
+        <div class="avatar-wrap">
+
+            <div class="avatar" id="avatar">
+                K
+            </div>
+
+            <div class="online-dot"></div>
+
         </div>
 
-        <button class="edit-btn" onclick="editProfile()">✏️ Edit Profile</button>
+        <!-- NAME -->
+
+        <div class="name" id="name">
+            Kumar
+        </div>
+
+        <div class="underline"></div>
+
+        <!-- INFO -->
+
+        <div class="info-box" id="profileBox">
+
+            <div class="info-card">
+
+                <div class="icon blue">
+                    📱
+                </div>
+
+                <div>
+                    <div class="info-title">Mobile</div>
+                    <div class="info-value" id="mobileText">
+                        Not Provided
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="info-card">
+
+                <div class="icon green">
+                    🎯
+                </div>
+
+                <div>
+                    <div class="info-title">Level</div>
+                    <div class="info-value" id="levelText">
+                        CMA Final
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button class="edit-btn" onclick="editProfile()">
+            ✏️ Edit Profile
+        </button>
 
     </div>
 
@@ -161,16 +513,23 @@ body {
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
+import {
+    getFirestore,
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
-  authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
-  projectId: "cma-vidyarthi-3c892",
+    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+
+    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+
+    projectId: "cma-vidyarthi-3c892",
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 
 let userId = localStorage.getItem("userId");
@@ -183,37 +542,48 @@ if (!userId) {
 async function loadProfile() {
 
     const ref = doc(db, "users", userId);
+
     const snap = await getDoc(ref);
 
     if (!snap.exists()) {
-        document.getElementById("profileBox").innerHTML = "❌ No profile found";
+        alert("No profile found");
         return;
     }
 
     let d = snap.data();
 
-    // Set name
-    document.getElementById("name").innerText = d.name;
+    // Name
+    document.getElementById("name").innerText =
+    d.name || "Student";
 
-    // Set avatar letter
-    document.getElementById("avatar").innerText = d.name.charAt(0).toUpperCase();
+    // Avatar Letter
+    document.getElementById("avatar").innerText =
+    d.name ? d.name.charAt(0).toUpperCase() : "S";
 
-    // Set details
-    document.getElementById("profileBox").innerHTML = `
-        <p>📱 <b>Mobile:</b> ${d.mobile}</p>
-        <p>🎯 <b>Level:</b> ${d.level}</p>
-    `;
+    // Mobile
+    document.getElementById("mobileText").innerText =
+    d.mobile || "Not Provided";
+
+    // Level
+    document.getElementById("levelText").innerText =
+    d.level || "Not Set";
+
 }
 
 loadProfile();
 
 window.editProfile = function () {
-    localStorage.setItem("editMode", "true"); // 🔥 FLAG
+
+    localStorage.setItem("editMode", "true");
+
     window.location.href = "profile.html";
+
 };
 
 window.goHome = function () {
+
     window.location.href = "index.html";
+
 };
 
 </script>
