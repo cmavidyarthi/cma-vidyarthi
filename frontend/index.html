@@ -1,52 +1,33 @@
 <!DOCTYPE html>
-
-
-<html>
+<html lang="en">
 <head>
-    <title>CMA Vidyarthi - Dashboard</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMA Vidyarthi | Interactive Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" onerror="console.warn('Firebase app SDK failed to load')"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" onerror="console.warn('Firebase firestore SDK failed to load')"></script>
+    <script>
+    var db = null;
+    try {
+        if (typeof firebase !== 'undefined') {
+            const firebaseConfig = {
+                apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+                authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+                projectId: "cma-vidyarthi-3c892",
+            };
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        }
+    } catch(e) {
+        console.warn("Firebase init failed (offline or CDN blocked):", e.message);
+    }
+    </script>
 
-<body style="font-family: Arial; text-align: center; padding-top: 50px;">
-
-    <!-- ✅ Wrap message -->
-<div id="betaBanner" class="beta-banner">
-    <div class="bb-icon">🎓</div>
-    <div class="bb-text">
-        <div class="bb-title">Welcome to Interactive Learning Platform</div>
-        <div class="bb-sub">
-            Logged in successfully • CMA Inter students only (Beta Version)
-        </div>
-    </div>
-    <div class="bb-close" onclick="hideBanner()">×</div>
-</div>
-
-    <!-- ✅ Auto hide script -->
-
-
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
-    authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
-    projectId: "cma-vidyarthi-3c892",
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-</script>
-
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMA Vidyarthi | Foundation Mock Test Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+    <!-- styles below -->
 <style>
 
-
-
-    
   /* USER MENU (RIGHT SIDE) */
 .user-menu {
     position: absolute;
@@ -119,13 +100,33 @@ const db = firebase.firestore();
   --g600: #475569;
   --g700: #334155;
   --g800: #1e293b;
-  /* Group colors */
+  /* Group colors - Inter */
   --gr1: #1746a2;
   --gr1l: #dbeafe;
   --gr1d: #06112b;
   --gr2: #7c3aed;
   --gr2l: #ede9fe;
   --gr2d: #2e1065;
+  /* Group colors - Foundation */
+  --gf1: #0d7a4e;
+  --gf1l: #d1fae5;
+  --gf1d: #022c22;
+  --gf2: #059669;
+  --gf2l: #a7f3d0;
+  --gf2d: #064e3b;
+  /* Group colors - Final */
+  --gn1: #b45309;
+  --gn1l: #fef3c7;
+  --gn1d: #451a03;
+  --gn2: #dc2626;
+  --gn2l: #fee2e2;
+  --gn2d: #450a0a;
+  --gn3: #7c3aed;
+  --gn3l: #ede9fe;
+  --gn3d: #2e1065;
+  --gn4: #0369a1;
+  --gn4l: #e0f2fe;
+  --gn4d: #0c4a6e;
   /* Radii */
   --r-sm: 8px;
   --r:    14px;
@@ -622,15 +623,281 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
 .actionBtn.secondary{background:white;border:2px solid var(--g200);color:var(--g700);}
 .actionBtn.secondary:hover{background:var(--g50);}
 
+/* ══════════════════════════════════════════
+   FOUNDATION / FINAL GROUP COLOR CLASSES
+══════════════════════════════════════════ */
+.pcNum.gf1{color:var(--gf1);}
+.pcNum.gf2{color:var(--gf2);}
+.pcNum.gn1{color:var(--gn1);}
+.pcNum.gn2{color:var(--gn2);}
+.pcNum.gn3{color:var(--gn3);}
+.pcNum.gn4{color:var(--gn4);}
+.pcBar.gf1{background:linear-gradient(90deg,var(--gf1d),var(--gf1));}
+.pcBar.gf2{background:linear-gradient(90deg,var(--gf2d),var(--gf2));}
+.pcBar.gn1{background:linear-gradient(90deg,var(--gn1d),var(--gn1));}
+.pcBar.gn2{background:linear-gradient(90deg,var(--gn2d),var(--gn2));}
+.pcBar.gn3{background:linear-gradient(90deg,var(--gn3d),var(--gn3));}
+.pcBar.gn4{background:linear-gradient(90deg,var(--gn4d),var(--gn4));}
+.pcArrow.gf1{background:var(--gf1l);color:var(--gf1);}
+.pcArrow.gf2{background:var(--gf2l);color:var(--gf2);}
+.pcArrow.gn1{background:var(--gn1l);color:var(--gn1);}
+.pcArrow.gn2{background:var(--gn2l);color:var(--gn2);}
+.pcArrow.gn3{background:var(--gn3l);color:var(--gn3);}
+.pcArrow.gn4{background:var(--gn4l);color:var(--gn4);}
+.paperCard.gf1:hover{border-color:var(--gf1);}
+.paperCard.gf2:hover{border-color:var(--gf2);}
+.paperCard.gn1:hover{border-color:var(--gn1);}
+.paperCard.gn2:hover{border-color:var(--gn2);}
+.paperCard.gn3:hover{border-color:var(--gn3);}
+.paperCard.gn4:hover{border-color:var(--gn4);}
+.groupBannerHeader.gf1{background:linear-gradient(135deg,var(--gf1d),var(--gf1));}
+.groupBannerHeader.gf2{background:linear-gradient(135deg,var(--gf2d),var(--gf2));}
+.groupBannerHeader.gn1{background:linear-gradient(135deg,var(--gn1d),var(--gn1));}
+.groupBannerHeader.gn2{background:linear-gradient(135deg,var(--gn2d),var(--gn2));}
+.groupBannerHeader.gn3{background:linear-gradient(135deg,var(--gn3d),var(--gn3));}
+.groupBannerHeader.gn4{background:linear-gradient(135deg,var(--gn4d),var(--gn4));}
+.sHeadTag.gf{background:var(--gf1l);color:var(--gf1);}
+.sHeadTag.gn{background:var(--gn1l);color:var(--gn1);}
+.sHeadTag.gn2c{background:var(--gn2l);color:var(--gn2);}
+.sHeadTag.gn3c{background:var(--gn3l);color:var(--gn3);}
+.sHeadTag.gn4c{background:var(--gn4l);color:var(--gn4);}
 
+/* ch/allChBtn gf/gn classes */
+.allChBtn.sel.gf1{border-color:var(--gf1);background:var(--gf1l);}
+.allChBtn.sel.gf2{border-color:var(--gf2);background:var(--gf2l);}
+.allChBtn.sel.gn1{border-color:var(--gn1);background:var(--gn1l);}
+.allChBtn.sel.gn2{border-color:var(--gn2);background:var(--gn2l);}
+.allChBtn.sel.gn3{border-color:var(--gn3);background:var(--gn3l);}
+.allChBtn.sel.gn4{border-color:var(--gn4);background:var(--gn4l);}
+.acbIcon.gf1{background:linear-gradient(135deg,var(--gf1),var(--gf2));}
+.acbIcon.gf2{background:linear-gradient(135deg,var(--gf2),var(--gf1));}
+.acbIcon.gn1{background:linear-gradient(135deg,var(--gn1d),var(--gn1));}
+.acbIcon.gn2{background:linear-gradient(135deg,var(--gn2d),var(--gn2));}
+.acbIcon.gn3{background:linear-gradient(135deg,var(--gn3d),var(--gn3));}
+.acbIcon.gn4{background:linear-gradient(135deg,var(--gn4d),var(--gn4));}
+.chCard.gf1:hover{box-shadow:var(--sh);transform:translateY(-2px);}
+.chCard.gf1::after{background:linear-gradient(90deg,var(--gf1),var(--gf2));}
+.chCard.gf1.sel{border-color:var(--gf1);background:var(--gf1l);}
+.chCard.gf1.sel .ccCheck{background:var(--gf1);border-color:var(--gf1);}
+.ccNum.gf1{color:var(--gf1);}
+.ccNum.gf2{color:var(--gf2);}
+.ccNum.gn1{color:var(--gn1);}
+.ccNum.gn2{color:var(--gn2);}
+.ccNum.gn3{color:var(--gn3);}
+.ccNum.gn4{color:var(--gn4);}
+.chCard.gn1::after{background:linear-gradient(90deg,var(--gn1d),var(--gn1));}
+.chCard.gn1.sel{border-color:var(--gn1);background:var(--gn1l);}
+.chCard.gn1.sel .ccCheck{background:var(--gn1);border-color:var(--gn1);}
+.startCard.gf1{background:linear-gradient(135deg,var(--gf1d),var(--gf1));}
+.startCard.gf2{background:linear-gradient(135deg,var(--gf2d),var(--gf2));}
+.startCard.gn1{background:linear-gradient(135deg,var(--gn1d),var(--gn1));}
+.startCard.gn2{background:linear-gradient(135deg,var(--gn2d),var(--gn2));}
+.startCard.gn3{background:linear-gradient(135deg,var(--gn3d),var(--gn3));}
+.startCard.gn4{background:linear-gradient(135deg,var(--gn4d),var(--gn4));}
+.startBtn.gf1{color:var(--gf1);}
+.startBtn.gf2{color:var(--gf2);}
+.startBtn.gn1{color:var(--gn1);}
+.startBtn.gn2{color:var(--gn2);}
+.startBtn.gn3{color:var(--gn3);}
+.startBtn.gn4{color:var(--gn4);}
+.paperHero.gf1{background:linear-gradient(160deg,var(--gf1d) 0%,var(--gf1) 100%);}
+.paperHero.gf2{background:linear-gradient(160deg,var(--gf2d) 0%,var(--gf2) 100%);}
+.paperHero.gn1{background:linear-gradient(160deg,var(--gn1d) 0%,var(--gn1) 100%);}
+.paperHero.gn2{background:linear-gradient(160deg,var(--gn2d) 0%,var(--gn2) 100%);}
+.paperHero.gn3{background:linear-gradient(160deg,var(--gn3d) 0%,var(--gn3) 100%);}
+.paperHero.gn4{background:linear-gradient(160deg,var(--gn4d) 0%,var(--gn4) 100%);}
+.resultHero.gf1{background:linear-gradient(160deg,var(--gf1d),var(--gf1));}
+.resultHero.gf2{background:linear-gradient(160deg,var(--gf2d),var(--gf2));}
+.resultHero.gn1{background:linear-gradient(160deg,var(--gn1d),var(--gn1));}
+.resultHero.gn2{background:linear-gradient(160deg,var(--gn2d),var(--gn2));}
+.resultHero.gn3{background:linear-gradient(160deg,var(--gn3d),var(--gn3));}
+.resultHero.gn4{background:linear-gradient(160deg,var(--gn4d),var(--gn4));}
+.actionBtn.primary.gf1{background:linear-gradient(135deg,var(--gf1d),var(--gf1));color:white;box-shadow:0 4px 14px rgba(13,122,78,.3);}
+.actionBtn.primary.gn1{background:linear-gradient(135deg,var(--gn1d),var(--gn1));color:white;box-shadow:0 4px 14px rgba(180,83,9,.3);}
+.tpFill.gf1{background:linear-gradient(90deg,var(--gf1),var(--gf2));}
+.tpFill.gn1{background:linear-gradient(90deg,var(--gn1d),var(--gn1));}
+.tpNums.gf1{color:var(--gf1);}
+.tpNums.gn1{color:var(--gn1);}
+.timerDisplay.gf1.normal,.timerDisplay.gf2.normal,.timerDisplay.gn1.normal{background:var(--gf1l);color:var(--gf1);}
+.navBtn.primary.gf1{background:linear-gradient(135deg,var(--gf1),var(--gf2));color:white;}
+.navBtn.primary.gn1{background:linear-gradient(135deg,var(--gn1d),var(--gn1));color:white;}
+.optBtn.gf1{border-color:var(--gf1);color:var(--gf1);}
+.optBtn.gf1:hover{background:var(--gf1l);}
+.optBtn.gn1{border-color:var(--gn1);color:var(--gn1);}
+.optBtn.gn1:hover{background:var(--gn1l);}
+.qHeader.gf1{background:var(--gf1);}
+.qHeader.gn1{background:var(--gn1);}
+.qDot.answered.gf1{background:var(--gf1);color:white;}
+.qDot.answered.gn1{background:var(--gn1);color:white;}
+.qDot.current.gf1{background:var(--gf1);color:white;transform:scale(1.15);}
+.qDot.current.gn1{background:var(--gn1);color:white;transform:scale(1.15);}
 
+/* ══════════════════════════════════════════
+   LEVEL SELECTOR SCREEN
+══════════════════════════════════════════ */
+.levelScreen{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 50%,#0a1833 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:50px 20px 70px;
+  position:relative;overflow:hidden;
+}
+.levelScreen::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 10% 70%,rgba(37,99,235,.2) 0%,transparent 55%),
+    radial-gradient(ellipse at 90% 20%,rgba(124,58,237,.15) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(13,122,78,.12) 0%,transparent 55%);
+  pointer-events:none;
+}
+.levelLogoWrap{
+  width:90px;height:90px;border-radius:50%;background:white;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;overflow:hidden;
+  box-shadow:0 0 0 5px rgba(255,255,255,.1),0 8px 36px rgba(0,0,0,.5);
+  position:relative;z-index:1;
+}
+.levelLogoWrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.levelLogoFB{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(145deg,var(--azure),var(--navy));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:16px;font-weight:900;color:white;
+}
+.levelTitle{
+  font-family:'Sora',sans-serif;font-size:clamp(20px,5vw,32px);
+  font-weight:800;color:white;text-align:center;line-height:1.15;
+  margin-bottom:6px;position:relative;z-index:1;
+}
+.levelTitle span{color:var(--ice);}
+.levelSub{
+  font-size:13px;color:rgba(255,255,255,.6);text-align:center;
+  margin-bottom:36px;font-weight:500;position:relative;z-index:1;
+}
+.levelGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;width:100%;max-width:880px;
+  position:relative;z-index:1;
+}
+.levelCard{
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:28px 24px;
+  cursor:pointer;transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;gap:14px;
+  backdrop-filter:blur(6px);
+}
+.levelCard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  border-radius:20px 20px 0 0;opacity:.9;
+}
+.levelCard.foundation::before{background:linear-gradient(90deg,#0d7a4e,#34d399);}
+.levelCard.inter::before{background:linear-gradient(90deg,#1746a2,#7c3aed);}
+.levelCard.final::before{background:linear-gradient(90deg,#b45309,#dc2626);}
+.levelCard:hover{
+  background:rgba(255,255,255,.11);
+  border-color:rgba(255,255,255,.28);
+  transform:translateY(-5px);
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+}
+.lcBadge{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:20px;padding:5px 13px;
+  font-family:'Sora',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:.7px;text-transform:uppercase;width:fit-content;
+}
+.lcBadge.foundation{background:rgba(13,122,78,.25);color:#34d399;border:1px solid rgba(52,211,153,.25);}
+.lcBadge.inter{background:rgba(23,70,162,.3);color:var(--ice);border:1px solid rgba(147,197,253,.25);}
+.lcBadge.final{background:rgba(180,83,9,.25);color:#fbbf24;border:1px solid rgba(251,191,36,.25);}
+.lcEmoji{font-size:36px;line-height:1;}
+.lcName{
+  font-family:'Sora',sans-serif;font-size:22px;font-weight:800;
+  color:white;line-height:1.1;
+}
+.lcDesc{font-size:12px;color:rgba(255,255,255,.55);font-weight:500;line-height:1.5;}
+.lcMeta{
+  display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;
+}
+.lcMetaTag{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;
+  color:rgba(255,255,255,.7);
+}
+.lcArrow{
+  margin-top:auto;
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;
+}
+.lcArrow.foundation{color:#34d399;}
+.lcArrow.inter{color:var(--ice);}
+.lcArrow.final{color:#fbbf24;}
+.platformBackBtn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:20px;padding:6px 14px;
+  font-size:11px;font-weight:700;color:white;cursor:pointer;
+  transition:all .18s;margin-bottom:18px;
+}
+.platformBackBtn:hover{background:rgba(255,255,255,.2);}
 
+/* ══════════════════════════════════════════
+   SOCIAL BAR
+══════════════════════════════════════════ */
+.socialBar{
+  display:flex;align-items:center;justify-content:center;
+  gap:14px;margin-top:36px;position:relative;z-index:1;
+}
+.socialBtn{
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  text-decoration:none;border:1.5px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);backdrop-filter:blur(6px);
+}
+.socialBtn:hover{transform:translateY(-5px) scale(1.12);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.16);}
+.socialBtn svg{width:22px;height:22px;fill:white;}
+.socialBtn.tg{background:rgba(0,136,204,.35);border-color:rgba(0,136,204,.5);}
+.socialBtn.tg:hover{background:rgba(0,136,204,.65);}
+.socialBtn.wa{background:rgba(37,211,102,.25);border-color:rgba(37,211,102,.45);}
+.socialBtn.wa:hover{background:rgba(37,211,102,.55);}
+.socialBtn.ig{background:rgba(193,53,132,.25);border-color:rgba(193,53,132,.4);}
+.socialBtn.ig:hover{background:rgba(193,53,132,.55);}
+.socialBtn.yt{background:rgba(255,0,0,.25);border-color:rgba(255,0,0,.4);}
+.socialBtn.yt:hover{background:rgba(255,0,0,.55);}
+.socialLabel{
+  font-size:10px;color:rgba(255,255,255,.4);font-weight:600;
+  letter-spacing:.9px;text-transform:uppercase;
+  margin-top:14px;margin-bottom:4px;text-align:center;position:relative;z-index:1;
+}
 
+/* level indicator badge on platform hero */
+.levelIndicator{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:20px;padding:5px 14px;
+  font-family:'Sora',sans-serif;font-size:11px;font-weight:800;
+  letter-spacing:.5px;margin-bottom:14px;
+}
+.levelIndicator.foundation{background:rgba(13,122,78,.2);color:#34d399;border:1px solid rgba(52,211,153,.2);}
+.levelIndicator.inter{background:rgba(37,99,235,.2);color:var(--ice);border:1px solid rgba(147,197,253,.2);}
+.levelIndicator.final{background:rgba(180,83,9,.2);color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
 
-    
 </style>
 </head>
 <body>
+
+<!-- ✅ Welcome banner -->
+<div id="betaBanner" class="beta-banner">
+    <div class="bb-icon">🎓</div>
+    <div class="bb-text">
+        <div class="bb-title">Welcome to Interactive Learning Platform</div>
+        <div class="bb-sub">
+            Logged in successfully • Foundation · Inter · Final (Beta Version)
+        </div>
+    </div>
+    <div class="bb-close" onclick="hideBanner()">×</div>
+</div>
 
 <div class="user-menu">
 
@@ -662,154 +929,120 @@ body{font-family:'DM Sans',sans-serif;background:var(--g50);color:var(--g800);mi
   </div>
 </header>
 
-<div id="platformScreen" class="screen active">
+<div id="levelScreen" class="screen active">
+  <div class="levelScreen">
+    <div class="levelLogoWrap">
+      <img src="https://i.postimg.cc/VN4vmgr0/IMG-20260331-230419-988.jpg" alt="CMA Vidyarthi"
+           onerror="this.style.display='none';document.getElementById('lvFB').style.display='flex';">
+      <div class="levelLogoFB" id="lvFB" style="display:none;">CMA<br><span style="font-size:8px">VID</span></div>
+    </div>
+    <div class="levelTitle">CMA Vidyarthi <span>Platform</span></div>
+    <div class="levelSub">Choose your CMA level to begin</div>
+    <div class="levelGrid">
+
+      <!-- FOUNDATION -->
+      <div class="levelCard foundation" onclick="openLevel('foundation')">
+        <div class="lcBadge foundation">🌱 Foundation</div>
+        <div class="lcEmoji">📗</div>
+        <div class="lcName">CMA Foundation</div>
+        <div class="lcDesc">Start your CMA journey. 4 papers covering fundamentals of accounting, economics, business mathematics, and law.</div>
+        <div class="lcMeta">
+          <span class="lcMetaTag">4 Papers</span>
+          <span class="lcMetaTag">ICMAI Syllabus 2022</span>
+        </div>
+        <div class="lcArrow foundation">Enter Foundation →</div>
+      </div>
+
+      <!-- INTER -->
+      <div class="levelCard inter" onclick="openLevel('inter')">
+        <div class="lcBadge inter">⚡ Intermediate</div>
+        <div class="lcEmoji">📘</div>
+        <div class="lcName">CMA Inter</div>
+        <div class="lcDesc">Step up your game. 8 papers across cost accounting, taxation, financial accounting, laws, and management.</div>
+        <div class="lcMeta">
+          <span class="lcMetaTag">8 Papers</span>
+          <span class="lcMetaTag">2 Groups</span>
+          <span class="lcMetaTag">2000+ Questions</span>
+        </div>
+        <div class="lcArrow inter">Enter Inter →</div>
+      </div>
+
+      <!-- FINAL -->
+      <div class="levelCard final" onclick="openLevel('final')">
+        <div class="lcBadge final">🏆 Final</div>
+        <div class="lcEmoji">📕</div>
+        <div class="lcName">CMA Final</div>
+        <div class="lcDesc">The ultimate challenge. 8 papers covering strategic finance, corporate law, advanced costing, and management.</div>
+        <div class="lcMeta">
+          <span class="lcMetaTag">8 Papers</span>
+          <span class="lcMetaTag">Group 3 & Group 4</span>
+          <span class="lcMetaTag">ICMAI Syllabus 2022</span>
+        </div>
+        <div class="lcArrow final">Enter Final →</div>
+      </div>
+
+    </div>
+
+    <!-- Social Media Bar -->
+    <div class="socialLabel">Follow us on</div>
+    <div class="socialBar">
+
+      <!-- Telegram -->
+      <a class="socialBtn tg" href="https://t.me/+IVavpGoaz7VkYTA1" target="_blank" rel="noopener" title="Telegram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm5.992 8.196-2.012 9.48c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.875.741z"/>
+        </svg>
+      </a>
+
+      <!-- WhatsApp -->
+      <a class="socialBtn wa" href="https://whatsapp.com/channel/0029VamMtTGChq6KCBBh2f3Q" target="_blank" rel="noopener" title="WhatsApp Channel">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+      </a>
+
+      <!-- Instagram -->
+      <a class="socialBtn ig" href="https://www.instagram.com/cmavidyarthi?igsh=a2UxNjdoaHVpdmxh" target="_blank" rel="noopener" title="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+        </svg>
+      </a>
+
+      <!-- YouTube -->
+      <a class="socialBtn yt" href="https://youtube.com/@cmavidyarthi?si=8fHJUyc_YCdTjMzZ" target="_blank" rel="noopener" title="YouTube">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<div id="platformScreen" class="screen">
   <div class="pHero">
     <div class="pHeroContent">
+      <div class="platformBackBtn" onclick="goToLevelSelect()">← Back</div>
+      <div class="levelIndicator inter" id="platformLevelBadge">⚡ CMA Inter</div>
       <div class="pLogoWrap">
         <img src="https://i.postimg.cc/VN4vmgr0/IMG-20260331-230419-988.jpg" alt="CMA Vidyarthi"
              onerror="this.style.display='none';document.getElementById('pFB').style.display='flex';">
         <div class="pLogoFB" id="pFB" style="display:none;">CMA<small>VIDYARTHI</small></div>
       </div>
-      <div class="pTitle">Interactive learning <span>Platform</span></div>
-      <div class="pSub">The Institute of Cost Accountants of India • CMA VIDYARTHI </div>
+      <div class="pTitle">Interactive learning <span id="pLevelName">Inter</span></div>
+      <div class="pSub" id="pLevelSub">The Institute of Cost Accountants of India • CMA VIDYARTHI</div>
       <div class="pChips">
         <span class="pChip">⚡ 15 Questions</span>
         <span class="pChip">⏱ 30 Minutes</span>
         <span class="pChip">📝 2 Marks Each</span>
         <span class="pChip">🎯 30 Total Marks</span>
-        <span class="pChip">📚 2 Groups · 8 Papers</span>
+        <span class="pChip" id="pPaperCount">📚 2 Groups · 8 Papers</span>
       </div>
     </div>
   </div>
 
-  <div class="pBody">
-    <div class="sHead">
-      <div class="sHeadLine"></div>
-      <div class="sHeadTag gr1">📘 Group 1</div>
-      <div class="sHeadLine"></div>
-    </div>
-    <div class="groupBanner">
-      <div class="groupBannerHeader gr1">
-        <div class="gBannerIcon">📘</div>
-        <div>
-          <div class="gBannerTitle">Group 1</div>
-          <div class="gBannerSub">Paper 5 · Paper 6 · Paper 7 · Paper 8</div>
-        </div>
-        <div class="gBannerRight"><div class="gBannerBadge">4 Papers</div></div>
-      </div>
-      <div class="paperGrid">
-        <div class="paperCard gr1" onclick="openPaper('p5')">
-          <div class="pcBar gr1"></div>
-          <div class="pcTop">
-            <div class="pcNum gr1">Paper 5</div>
-            <div class="pcName">Business Laws &amp; Ethics</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">395+ Questions</span>
-            <div class="pcArrow gr1">→</div>
-          </div>
-        </div>
-        <div class="paperCard gr1" onclick="openPaper('p6')">
-          <div class="pcBar gr1"></div>
-          <div class="pcTop">
-            <div class="pcNum gr1">Paper 6</div>
-            <div class="pcName">Financial Accounting</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">140 Questions</span>
-            <div class="pcArrow gr1">→</div>
-          </div>
-        </div>
-        
-                  <div class="paperCard gr1" onclick="openPaper('p7')">
-          <div class="pcBar gr1"></div>
-          <div class="pcTop">
-            <div class="pcNum gr1">Paper 7</div>
-            <div class="pcName">Direct &amp; Indirect Taxation</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">267 Questions</span>
-            <div class="pcArrow gr1">→</div>
-          </div>
-        </div>
-                <div class="paperCard gr1" onclick="openPaper('p8')">
-          <div class="pcBar gr1"></div>
-          <div class="pcTop">
-            <div class="pcNum gr1">Paper 8</div>
-            <div class="pcName">Cost Accounting</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">392 Questions</span>
-            <div class="pcArrow gr1">→</div>
-          </div>
-        </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="sHead" style="margin-top:32px;">
-      <div class="sHeadLine"></div>
-      <div class="sHeadTag gr2">📗 Group 2</div>
-      <div class="sHeadLine"></div>
-    </div>
-    <div class="groupBanner">
-      <div class="groupBannerHeader gr2">
-        <div class="gBannerIcon">📗</div>
-        <div>
-          <div class="gBannerTitle">Group 2</div>
-          <div class="gBannerSub">Paper 9 · Paper 10 · Paper 11 · Paper 12</div>
-        </div>
-        
-      </div>
-            <div class="paperGrid">
-              <div class="paperCard gr2" onclick="openPaper('p9')">
-          <div class="pcBar gr2"></div>
-          <div class="pcTop">
-            <div class="pcNum gr2">Paper 9</div>
-            <div class="pcName">OM &amp; SM</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">342 Questions</span>
-            <div class="pcArrow gr2">→</div>
-          </div>
-        </div>
-             <div class="paperCard gr2" onclick="openPaper('p10')">
-          <div class="pcBar gr2"></div>
-          <div class="pcTop">
-            <div class="pcNum gr2">Paper 10</div>
-            <div class="pcName">Corporate Acct &amp; Auditing</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">240 Questions</span>
-            <div class="pcArrow gr2">→</div>
-          </div>
-        </div>   
-                <div class="paperCard gr2" onclick="openPaper('p11')">
-          <div class="pcBar gr2"></div>
-          <div class="pcTop">
-            <div class="pcNum gr2">Paper 11</div>
-            <div class="pcName">FM &amp; Business Data Analytics</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">245 Questions</span>
-            <div class="pcArrow gr2">→</div>
-          </div>
-        </div>
-                <div class="paperCard gr2" onclick="openPaper('p12')">
-          <div class="pcBar gr2"></div>
-          <div class="pcTop">
-            <div class="pcNum gr2">Paper 12</div>
-            <div class="pcName">Management Accounting</div>
-          </div>
-          <div class="pcBottom">
-            <span class="pcQCount">303 Questions</span>
-            <div class="pcArrow gr2">→</div>
-          </div>
-        </div>
-      </div>
-      </div>
-    </div>
+  <div class="pBody" id="platformBody">
+    <!-- dynamically rendered by renderPlatformGroups() -->
   </div>
 </div>
 
@@ -3423,8 +3656,392 @@ const PAPERS = {
   p10: { id:'p10', name:'Corporate Acct & Auditing', paper:'Paper 10', group:'Group 2', grClass:'gr2', chapters:P10_CHAPTERS, data:P10 },
   p11: { id:'p11', name:'FM & Business Data Analytics', paper:'Paper 11', group:'Group 2', grClass:'gr2', chapters:P11_CHAPTERS, data:P11 },
   p12: { id:'p12', name:'Management Accounting', paper:'Paper 12', group:'Group 2', grClass:'gr2', chapters:P12_CHAPTERS, data:P12 },
-
 };
+
+// ════════════════════════════════════════════════════
+// FOUNDATION PAPER DATA (Placeholder — add questions)
+// ════════════════════════════════════════════════════
+const PF1_CHAPTERS = ["Fundamentals of Accounting","Double Entry System","Financial Statements","Basic Concepts"];
+const PF1 = [
+  {c:0,q:"Which of the following is a real account?",o:["Cash Account","Capital Account","Sales Account","Rent Account"],a:0},
+  {c:0,q:"The concept of 'Going Concern' assumes that:",o:["Business will close soon","Business will continue indefinitely","Business has limited life","None of the above"],a:1},
+  {c:0,q:"Debit the receiver, credit the giver — this rule applies to:",o:["Real Accounts","Nominal Accounts","Personal Accounts","None"],a:2},
+  {c:0,q:"Which financial statement shows profitability?",o:["Balance Sheet","Cash Flow Statement","Profit & Loss Account","Trial Balance"],a:2},
+  {c:0,q:"Goodwill is an example of:",o:["Tangible Asset","Current Asset","Intangible Asset","Fictitious Asset"],a:2},
+  {c:1,q:"Double entry system records every transaction in:",o:["One account","Two accounts","Three accounts","Multiple accounts"],a:1},
+  {c:1,q:"Which of the following is the fundamental equation of accounting?",o:["Assets = Liabilities","Assets = Capital + Liabilities","Assets = Capital","Liabilities = Capital"],a:1},
+  {c:1,q:"A trial balance is prepared to check:",o:["Profitability","Arithmetical accuracy","Liquidity","All of the above"],a:1},
+  {c:1,q:"The journal entry for depreciation is:",o:["Dr Asset, Cr Depreciation","Dr Depreciation, Cr Asset","Dr P&L, Cr Asset","Dr Depreciation, Cr P&L"],a:1},
+  {c:2,q:"Which of the following is NOT a current asset?",o:["Stock","Debtors","Machinery","Cash"],a:2},
+  {c:2,q:"The balance sheet equation states:",o:["Assets = Liabilities + Owner's Equity","Liabilities = Assets + Owner's Equity","Owner's Equity = Assets + Liabilities","None"],a:0},
+  {c:2,q:"Closing stock appears in:",o:["Trading Account only","Balance Sheet only","Both Trading Account and Balance Sheet","P&L Account"],a:2},
+  {c:3,q:"The money measurement concept states that only those events are recorded that:",o:["Can be expressed in money terms","Affect cash","Are material","Relate to assets"],a:0},
+  {c:3,q:"Consistency concept means:",o:["Same accounting policies each year","Recording all transactions","Matching income and expenses","None"],a:0},
+  {c:3,q:"Accrual concept requires recording of:",o:["Only cash transactions","Transactions when cash is received","Transactions when they occur","None"],a:2},
+  {c:3,q:"The prudence concept requires:",o:["Anticipating profits","Anticipating losses but not profits","Recording all assets at market value","None"],a:1},
+];
+const PF2_CHAPTERS = ["Fundamentals of Economics","National Income","Money & Banking","Public Finance"];
+const PF2 = [
+  {c:0,q:"Economics is the science of:",o:["Production","Distribution","Consumption","Scarcity and choice"],a:3},
+  {c:0,q:"Demand curve slopes downward due to:",o:["Law of Diminishing Marginal Utility","Substitution effect","Income effect","All of the above"],a:3},
+  {c:0,q:"Price elasticity of demand is measured as:",o:["% change in quantity / % change in price","% change in price / % change in quantity","Change in demand / Change in supply","None"],a:0},
+  {c:0,q:"Which market has a single seller?",o:["Perfect Competition","Oligopoly","Monopoly","Duopoly"],a:2},
+  {c:1,q:"GDP stands for:",o:["Gross Domestic Product","Gross Domestic Production","General Domestic Product","None"],a:0},
+  {c:1,q:"NNP = GNP minus:",o:["Depreciation","Taxes","Imports","Exports"],a:0},
+  {c:1,q:"Which method is used to calculate national income?",o:["Income method","Product method","Expenditure method","All of the above"],a:3},
+  {c:2,q:"Money supply M1 includes:",o:["Currency + Demand deposits","Currency only","Savings deposits","All deposits"],a:0},
+  {c:2,q:"The central bank of India is:",o:["SBI","RBI","NABARD","SEBI"],a:1},
+  {c:2,q:"CRR refers to:",o:["Credit Ratio Reserve","Cash Reserve Ratio","Central Reserve Rate","None"],a:1},
+  {c:3,q:"A direct tax is paid by:",o:["Producer to consumer","The person on whom it is imposed","Government to public","None"],a:1},
+  {c:3,q:"Fiscal policy is related to:",o:["Money supply","Government revenue and expenditure","Exchange rate","Interest rates"],a:1},
+  {c:3,q:"VAT is an example of:",o:["Direct tax","Progressive tax","Indirect tax","None"],a:2},
+  {c:3,q:"Public debt is:",o:["Money borrowed by government","Money lent by government","Taxes collected","None"],a:0},
+  {c:3,q:"Deficit financing means:",o:["Government spending equals revenue","Government spending exceeds revenue","Revenue exceeds spending","None"],a:1},
+  {c:3,q:"An expansionary fiscal policy includes:",o:["Increasing taxes","Decreasing government spending","Decreasing taxes and increasing spending","None"],a:2},
+];
+const PF3_CHAPTERS = ["Business Mathematics","Statistics","Basic Calculus","Index Numbers"];
+const PF3 = [
+  {c:0,q:"If a + b = 10 and a - b = 4, then a =",o:["3","7","6","4"],a:1},
+  {c:0,q:"Simple interest on ₹10,000 at 8% p.a. for 3 years is:",o:["₹2,400","₹800","₹3,200","₹2,000"],a:0},
+  {c:0,q:"The compound interest on ₹5,000 at 10% p.a. for 2 years is:",o:["₹1,000","₹1,050","₹1,000.50","₹1,025"],a:1},
+  {c:0,q:"log(100) to base 10 equals:",o:["1","2","10","0.01"],a:1},
+  {c:1,q:"The mean of 4, 7, 10, 13, 16 is:",o:["10","9","11","12"],a:0},
+  {c:1,q:"Mode is the value that:",o:["Occurs most frequently","Divides the data equally","Is the average","Is the highest value"],a:0},
+  {c:1,q:"Standard deviation measures:",o:["Central tendency","Dispersion","Correlation","Regression"],a:1},
+  {c:1,q:"Coefficient of variation = (SD / Mean) × :",o:["10","100","1000","50"],a:1},
+  {c:2,q:"The derivative of x² is:",o:["x","2x","2","x³/3"],a:1},
+  {c:2,q:"The integral of 2x dx is:",o:["x²","x² + C","2","2x² + C"],a:1},
+  {c:3,q:"A price index helps measure:",o:["Inflation","GDP","Money supply","None"],a:0},
+  {c:3,q:"Laspeyres index uses base year:",o:["Quantities","Prices","Both","None"],a:0},
+  {c:3,q:"Fisher's ideal index is the geometric mean of:",o:["Laspeyres and Paasche","Mean and Median","Mode and Mean","None"],a:0},
+  {c:3,q:"If the price index rises from 100 to 150, inflation is:",o:["50%","150%","15%","0.5%"],a:0},
+  {c:3,q:"The base year index is always taken as:",o:["0","50","100","200"],a:2},
+  {c:3,q:"Paasche index uses current year:",o:["Quantities","Prices","Both","None"],a:0},
+];
+const PF4_CHAPTERS = ["Business Laws","Contract Act","Company Law Basics","Consumer Protection"];
+const PF4 = [
+  {c:0,q:"Law that governs business operations in India is called:",o:["Criminal Law","Business Law / Commercial Law","Constitutional Law","None"],a:1},
+  {c:0,q:"A valid contract must have:",o:["Offer and acceptance","Lawful consideration","Competent parties","All of the above"],a:3},
+  {c:1,q:"An agreement enforceable by law is called a:",o:["Promise","Contract","Offer","None"],a:1},
+  {c:1,q:"Consideration means:",o:["Monetary value only","Something in return","Love and affection","None"],a:1},
+  {c:1,q:"A minor is a person below the age of:",o:["16","18","21","25"],a:1},
+  {c:1,q:"An agreement with a minor is:",o:["Void","Voidable","Valid","Enforceable"],a:0},
+  {c:2,q:"A company is incorporated under:",o:["Partnership Act","Companies Act","Contract Act","SEBI Act"],a:1},
+  {c:2,q:"The minimum number of members to form a private company is:",o:["1","2","7","50"],a:1},
+  {c:2,q:"A company has perpetual succession which means:",o:["It never files taxes","Members can come and go but company continues","Directors are permanent","None"],a:1},
+  {c:3,q:"Consumer Protection Act protects rights of:",o:["Sellers","Manufacturers","Consumers","Government"],a:2},
+  {c:3,q:"A consumer is one who buys goods for:",o:["Resale","Personal use","Both","Investment"],a:1},
+  {c:3,q:"COPRA stands for:",o:["Consumer Protection Act","Consumer Rights Act","Commercial Protection Act","None"],a:0},
+  {c:3,q:"National Consumer Disputes Redressal Commission deals with cases above:",o:["₹20 lakhs","₹1 crore","₹10 crore","₹50 lakhs"],a:1},
+  {c:3,q:"The limitation period for filing a consumer complaint is:",o:["1 year","2 years","3 years","5 years"],a:1},
+  {c:3,q:"Right to information is a right under:",o:["Consumer Protection Act","RTI Act","Contract Act","None"],a:0},
+  {c:3,q:"Which court handles consumer disputes up to ₹1 crore?",o:["National Commission","State Commission","District Forum","High Court"],a:2},
+];
+
+const FOUNDATION_PAPERS = {
+  pf1:{ id:'pf1', name:'Fundamentals of Accounting', paper:'Paper 1', group:'Group 1', grClass:'gf1', chapters:PF1_CHAPTERS, data:PF1 },
+  pf2:{ id:'pf2', name:'Fundamentals of Economics', paper:'Paper 2', group:'Group 1', grClass:'gf1', chapters:PF2_CHAPTERS, data:PF2 },
+  pf3:{ id:'pf3', name:'Business Mathematics & Statistics', paper:'Paper 3', group:'Group 2', grClass:'gf2', chapters:PF3_CHAPTERS, data:PF3 },
+  pf4:{ id:'pf4', name:'Fundamentals of Business Laws', paper:'Paper 4', group:'Group 2', grClass:'gf2', chapters:PF4_CHAPTERS, data:PF4 },
+};
+
+// ════════════════════════════════════════════════════
+// FINAL PAPER DATA (Placeholder — add questions)
+// ════════════════════════════════════════════════════
+const PN13_CHAPTERS = ["Corporate Law","IBC 2016","SEBI Regulations","FEMA","Competition Act","DPDP Act"];
+const PN13 = [
+  {c:0,q:"Minimum paid-up capital for a public company under Companies Act 2013 is:",o:["₹1 lakh","₹5 lakh","No minimum prescribed","₹10 lakh"],a:2},
+  {c:0,q:"A company can be wound up under Companies Act by:",o:["Tribunal only","Members only","Creditors only","Both Tribunal and voluntarily"],a:3},
+  {c:1,q:"IBC 2016 stands for:",o:["Insolvency and Bankruptcy Code","Indian Business Code","Insolvency Banking Code","None"],a:0},
+  {c:1,q:"CIRP under IBC must be completed within:",o:["90 days","180 days (extendable to 330)","1 year","6 months"],a:1},
+  {c:1,q:"The Insolvency Professional is appointed by:",o:["NCLT","Creditors","Debtor","IBBI"],a:0},
+  {c:2,q:"SEBI was established in the year:",o:["1988","1992","1990","1996"],a:0},
+  {c:2,q:"SEBI (LODR) Regulations govern:",o:["Listing Obligations and Disclosure Requirements","Loan Obligations","Licensing of Dealers","None"],a:0},
+  {c:3,q:"FEMA stands for:",o:["Foreign Exchange Management Act","Foreign Economy Management Act","Federal Exchange Management Act","None"],a:0},
+  {c:3,q:"Under FEMA, transactions are classified as:",o:["Current account and Capital account","Revenue and Capital","Domestic and International","None"],a:0},
+  {c:4,q:"Competition Act 2002 prohibits:",o:["Cartels and abuse of dominant position","Foreign investment","Mergers","None"],a:0},
+  {c:4,q:"CCI stands for:",o:["Competition Commission of India","Corporate Commission of India","Credit Commission of India","None"],a:0},
+  {c:5,q:"DPDP Act 2023 relates to:",o:["Digital data protection","Drug Policy","Defence Procurement","None"],a:0},
+  {c:5,q:"Under DPDP Act, a Data Principal is:",o:["The data processor","The person whose data is collected","Government","None"],a:1},
+  {c:5,q:"Data Fiduciary under DPDP Act must provide:",o:["Notice and consent to data principal","Free internet","Tax exemption","None"],a:0},
+  {c:0,q:"Doctrine of Ultra Vires means an act:",o:["Beyond the powers of the company","Within powers","Approved by directors","None"],a:0},
+  {c:0,q:"A Memorandum of Association defines the:",o:["Internal rules","External scope and objects of company","Dividend policy","None"],a:1},
+];
+const PN14_CHAPTERS = ["Strategic Financial Management","Portfolio Management","Derivatives","International Finance","Corporate Valuation"];
+const PN14 = [
+  {c:0,q:"WACC stands for:",o:["Weighted Average Cost of Capital","Working Average Capital Cost","Wide Area Capital Cost","None"],a:0},
+  {c:0,q:"NPV method considers:",o:["Time value of money","Accounting profit","Payback only","None"],a:0},
+  {c:1,q:"Markowitz portfolio theory aims to:",o:["Maximise risk","Minimise risk for a given return","Ignore diversification","None"],a:1},
+  {c:1,q:"Beta measures:",o:["Total risk","Systematic risk","Unsystematic risk","None"],a:1},
+  {c:2,q:"A call option gives the holder the right to:",o:["Sell at strike price","Buy at strike price","Do nothing","Borrow"],a:1},
+  {c:2,q:"A futures contract is:",o:["An option","A forward traded on exchange","A bond","None"],a:1},
+  {c:3,q:"PPP stands for:",o:["Purchasing Power Parity","Public Private Partnership","Price Parity Principle","None"],a:0},
+  {c:3,q:"Interest rate parity relates:",o:["Forward and spot exchange rates","Stock prices","Bond yields","None"],a:0},
+  {c:4,q:"DCF valuation uses:",o:["Book value","Market value","Discounted future cash flows","None"],a:2},
+  {c:4,q:"EV/EBITDA is a:",o:["Leverage ratio","Valuation multiple","Profitability ratio","None"],a:1},
+  {c:0,q:"IRR is the rate at which NPV equals:",o:["Maximum","Zero","Minimum","One"],a:1},
+  {c:0,q:"Modified Duration measures:",o:["Yield","Price sensitivity to interest rates","Credit risk","None"],a:1},
+  {c:1,q:"Sharpe ratio measures:",o:["Absolute return","Return per unit of total risk","Return per unit of beta","None"],a:1},
+  {c:2,q:"Put-Call parity links:",o:["Put and call prices","Bond and equity","Futures and options","None"],a:0},
+  {c:4,q:"Terminal value in DCF is calculated using:",o:["Gordon Growth Model","CAPM","APT","None"],a:0},
+  {c:4,q:"CAPM formula: Expected Return = Rf + β × :",o:["Market Return","Market Risk Premium","Standard Deviation","None"],a:1},
+];
+const PN15_CHAPTERS = ["Direct Tax","GST","Customs","Transfer Pricing","International Taxation"];
+const PN15 = [
+  {c:0,q:"Income Tax Act in India was enacted in:",o:["1956","1961","1972","1982"],a:1},
+  {c:0,q:"The assessment year 2024-25 corresponds to previous year:",o:["2022-23","2023-24","2024-25","2025-26"],a:1},
+  {c:1,q:"GST in India was introduced from:",o:["1 April 2017","1 July 2017","1 January 2018","1 April 2016"],a:1},
+  {c:1,q:"CGST and SGST are levied on:",o:["Intra-state supply","Inter-state supply","Import","Export"],a:0},
+  {c:1,q:"IGST is levied on:",o:["Intra-state supply","Inter-state supply","Both","None"],a:1},
+  {c:2,q:"Customs duty is levied on:",o:["Domestic goods","Imported and exported goods","Services","None"],a:1},
+  {c:2,q:"BCD stands for:",o:["Basic Customs Duty","Business Credit Duty","Bank Charges Deduction","None"],a:0},
+  {c:3,q:"Transfer pricing rules apply to:",o:["Related party international transactions","Domestic transactions","Both","None"],a:0},
+  {c:3,q:"Arm's Length Price is determined using:",o:["Market price","Transfer pricing methods","Book value","None"],a:1},
+  {c:4,q:"DTAA stands for:",o:["Double Taxation Avoidance Agreement","Domestic Tax Accounting Act","Direct Tax Arrangement Act","None"],a:0},
+  {c:4,q:"POEM stands for:",o:["Place of Effective Management","Principal Office of Entity Management","None","Both a and b"],a:0},
+  {c:0,q:"Section 80C deductions are available under:",o:["Income Tax Act","GST Act","Companies Act","None"],a:0},
+  {c:1,q:"Input Tax Credit under GST can be availed on:",o:["Exempt supplies","Zero-rated supplies","Taxable supplies","Blocked credits"],a:2},
+  {c:1,q:"Reverse charge mechanism means tax is paid by:",o:["Supplier","Recipient","Government","None"],a:1},
+  {c:2,q:"SVB stands for in customs context:",o:["Special Valuation Branch","Standard Value Base","None","Both"],a:0},
+  {c:4,q:"BEPS stands for:",o:["Base Erosion and Profit Shifting","Business Earnings Per Share","None","Both"],a:0},
+];
+const PN16_CHAPTERS = ["Strategic Cost Management","Activity Based Costing","Value Chain Analysis","Lean Management","Throughput Accounting"];
+const PN16 = [
+  {c:0,q:"Strategic Cost Management focuses on:",o:["Short-term cost reduction","Long-term cost leadership","Budgeting only","None"],a:1},
+  {c:0,q:"Target costing starts with:",o:["Actual cost","Market price − desired profit","Budget","None"],a:1},
+  {c:0,q:"Kaizen costing means:",o:["Continuous improvement in cost","Setting standard costs","ABC","None"],a:0},
+  {c:1,q:"ABC allocates costs based on:",o:["Volume","Activities","Headcount","Revenue"],a:1},
+  {c:1,q:"A cost driver in ABC is:",o:["A cost pool","Something that causes cost","An overhead rate","None"],a:1},
+  {c:2,q:"Value chain analysis was introduced by:",o:["Kaplan","Porter","Drucker","Deming"],a:1},
+  {c:2,q:"Primary activities in Porter's value chain include:",o:["HRM","Procurement","Inbound logistics","Technology development"],a:2},
+  {c:3,q:"Lean management aims to eliminate:",o:["Profits","Waste (Muda)","Employees","Costs"],a:1},
+  {c:3,q:"5S methodology does NOT include:",o:["Sort","Standardise","Spend","Shine"],a:2},
+  {c:4,q:"Throughput accounting focuses on:",o:["Reducing inventory","Maximising throughput while reducing constraints","Budgeting","None"],a:1},
+  {c:4,q:"In TOC, a bottleneck is:",o:["A constraint that limits output","A marketing barrier","A tax issue","None"],a:0},
+  {c:0,q:"Life Cycle Costing considers costs:",o:["Only at launch","Across the entire product life","Only at maturity","None"],a:1},
+  {c:1,q:"Cost pool in ABC refers to:",o:["Group of costs driven by same activity","Group of revenues","Total overhead","None"],a:0},
+  {c:2,q:"Linkages in value chain represent:",o:["Relationships between activities","Financial links","None","Both"],a:0},
+  {c:3,q:"JIT (Just-In-Time) inventory system aims to:",o:["Increase inventory","Reduce inventory to zero/minimal","Improve quality","Both b and c"],a:3},
+  {c:3,q:"TQM stands for:",o:["Total Quality Management","Total Quantity Management","Total Quality Measurement","None"],a:0},
+];
+const PN17_CHAPTERS = ["Corporate Financial Reporting","Ind AS","Consolidation","Financial Instruments","Revenue Recognition"];
+const PN17 = [
+  {c:0,q:"Ind AS are based on:",o:["US GAAP","IFRS","UK GAAP","None"],a:1},
+  {c:0,q:"Ind AS 1 deals with:",o:["Revenue","Presentation of Financial Statements","Inventories","None"],a:1},
+  {c:1,q:"Ind AS 2 deals with:",o:["Inventories","Revenue","Leases","None"],a:0},
+  {c:1,q:"FIFO and Weighted Average are methods under Ind AS 2 for valuing:",o:["Fixed assets","Inventories","Financial instruments","None"],a:1},
+  {c:2,q:"Consolidation of accounts is required when a company holds:",o:["Minority stake","Majority (>50%) stake","Equal stake","None"],a:1},
+  {c:2,q:"Non-controlling interest (NCI) appears in:",o:["Parent's balance sheet","Consolidated balance sheet","Subsidiary's balance sheet","None"],a:1},
+  {c:3,q:"Ind AS 109 deals with:",o:["Leases","Financial Instruments","Revenues","None"],a:1},
+  {c:3,q:"FVTPL means:",o:["Fair Value Through Profit or Loss","Foreign Value Transfer","Fixed Value Tax Planning","None"],a:0},
+  {c:4,q:"Ind AS 115 deals with:",o:["Revenue from Contracts with Customers","Leases","Financial Instruments","None"],a:0},
+  {c:4,q:"The 5-step model in Ind AS 115 starts with:",o:["Measuring transaction price","Identifying the contract","Allocating price","Recognising revenue"],a:1},
+  {c:0,q:"Other Comprehensive Income (OCI) is reported in:",o:["P&L Statement","Statement of Comprehensive Income","Balance Sheet","None"],a:1},
+  {c:1,q:"NRV stands for:",o:["Net Realisable Value","Nominal Reserve Value","Net Revenue Value","None"],a:0},
+  {c:2,q:"Goodwill on consolidation = Cost of acquisition minus:",o:["Net assets of subsidiary","Total equity","Debt","None"],a:0},
+  {c:3,q:"ECL model under Ind AS 109 stands for:",o:["Expected Credit Loss","External Credit Limit","Effective Cost of Lending","None"],a:0},
+  {c:4,q:"Performance obligation under Ind AS 115 is satisfied when:",o:["Invoice is raised","Control of good/service is transferred","Payment is received","None"],a:1},
+  {c:4,q:"Ind AS 116 deals with:",o:["Leases","Revenue","Financial Instruments","Inventories"],a:0},
+];
+const PN18_CHAPTERS = ["Indirect Tax Laws","GST Advanced","Customs Advanced","Foreign Trade Policy","Goods Classification"];
+const PN18 = [
+  {c:0,q:"GST Council is chaired by:",o:["Finance Minister of India","Prime Minister","RBI Governor","None"],a:0},
+  {c:0,q:"GST was introduced by which Constitutional Amendment?",o:["100th","101st","102nd","103rd"],a:1},
+  {c:1,q:"GSTR-1 is filed for:",o:["Input tax credit","Outward supplies","Payment","Annual return"],a:1},
+  {c:1,q:"GSTR-3B is a:",o:["Monthly summary return","Annual return","Refund claim","None"],a:0},
+  {c:1,q:"Zero-rated supply under GST includes:",o:["Export and SEZ supply","Nil-rated supply","Exempt supply","None"],a:0},
+  {c:2,q:"Section of the Customs Act dealing with prohibited goods is:",o:["Section 11","Section 20","Section 30","None"],a:0},
+  {c:2,q:"The Customs Tariff is based on:",o:["HS Code","SIC Code","NIC Code","None"],a:0},
+  {c:3,q:"Foreign Trade Policy is issued by:",o:["RBI","DGFT","SEBI","None"],a:1},
+  {c:3,q:"MEIS stands for:",o:["Merchandise Exports from India Scheme","Manufacturing Export Incentive Scheme","None","Both"],a:0},
+  {c:4,q:"HSN stands for:",o:["Harmonised System of Nomenclature","Home Supply Network","None","Both"],a:0},
+  {c:1,q:"E-way bill is required for movement of goods exceeding:",o:["₹10,000","₹50,000","₹1,00,000","₹5,00,000"],a:1},
+  {c:2,q:"IGCR Rules in customs relate to:",o:["Input goods for manufacture under concessional duty","Import of goods for charity","None","Both"],a:0},
+  {c:1,q:"Composition scheme under GST is available to taxpayers with turnover up to:",o:["₹1 crore","₹1.5 crore","₹75 lakhs","₹2 crore"],a:1},
+  {c:1,q:"ITC is not available on:",o:["Raw materials","Capital goods","Motor vehicles (personal use)","None"],a:2},
+  {c:0,q:"GST is a ______ based tax:",o:["Origin","Destination","Both","None"],a:1},
+  {c:1,q:"QRMP scheme under GST allows filing GSTR-1 on:",o:["Monthly basis","Quarterly basis","Annual basis","None"],a:1},
+];
+const PN19_CHAPTERS = ["Cost & Management Accounting Advanced","Budgeting","Performance Measurement","Transfer Pricing Cost","Decision Making"];
+const PN19 = [
+  {c:0,q:"Marginal costing treats fixed costs as:",o:["Product cost","Period cost","Both","None"],a:1},
+  {c:0,q:"Contribution = Sales minus:",o:["Total cost","Variable cost","Fixed cost","None"],a:1},
+  {c:0,q:"P/V ratio = Contribution / :",o:["Total cost","Sales","Fixed cost","None"],a:1},
+  {c:1,q:"Zero-based budgeting (ZBB) starts from:",o:["Previous year budget","Scratch (zero base)","Half of last year","Inflation-adjusted base"],a:1},
+  {c:1,q:"Flexible budget is prepared for:",o:["One level of activity","Multiple levels of activity","Fixed activity","None"],a:1},
+  {c:2,q:"Balanced Scorecard has how many perspectives?",o:["2","3","4","5"],a:2},
+  {c:2,q:"ROI = (Net Income / :",o:["Sales)","Total Assets)","Equity)","None"],a:1},
+  {c:2,q:"EVA = NOPAT − (WACC × :",o:["Sales","Capital employed","Equity","None"],a:1},
+  {c:3,q:"Transfer price set at marginal cost is appropriate when:",o:["Excess capacity exists","Full capacity exists","Imports are used","None"],a:0},
+  {c:3,q:"Negotiated transfer price is agreed:",o:["By government","Between divisions","By auditors","None"],a:1},
+  {c:4,q:"In make-or-buy decision, relevant costs include:",o:["Only variable costs","Only fixed costs","Avoidable costs and opportunity costs","None"],a:2},
+  {c:4,q:"Linear programming is used for:",o:["Budget preparation","Optimal resource allocation","Tax planning","None"],a:1},
+  {c:0,q:"BEP = Fixed Cost / :",o:["Selling price","P/V ratio","Variable cost","None"],a:1},
+  {c:1,q:"Master budget includes:",o:["Sales, production, cash budgets","Only cash budget","Only production budget","None"],a:0},
+  {c:2,q:"Throughput accounting ratio = Throughput per unit / :",o:["Variable cost","Total factory cost","Fixed cost","None"],a:1},
+  {c:4,q:"Shutdown decision is based on:",o:["Whether contribution covers fixed costs","Whether profit is positive","Book value of assets","None"],a:0},
+];
+const PN20_CHAPTERS = ["Strategic Management","Business Ethics","Corporate Governance","Sustainability","Risk Management"];
+const PN20 = [
+  {c:0,q:"SWOT analysis stands for:",o:["Strengths, Weaknesses, Opportunities, Threats","Strategy, Work, Operations, Tactics","None","Both"],a:0},
+  {c:0,q:"Porter's Five Forces does NOT include:",o:["Bargaining power of suppliers","Threat of substitutes","Government regulations","Rivalry among competitors"],a:2},
+  {c:0,q:"BCG Matrix classifies products into:",o:["2 categories","3 categories","4 categories","5 categories"],a:2},
+  {c:1,q:"Corporate ethics deals with:",o:["Tax evasion","Moral principles in business conduct","Profit maximization only","None"],a:1},
+  {c:1,q:"Whistleblowing refers to:",o:["Reporting illegal activities within an organization","Loud criticism","Financial reporting","None"],a:0},
+  {c:2,q:"Corporate governance ensures:",o:["Directors get maximum salary","Accountability and transparency","Tax savings","None"],a:1},
+  {c:2,q:"SEBI's Clause 49 relates to:",o:["Corporate governance for listed companies","Foreign investment","Insider trading","None"],a:0},
+  {c:3,q:"ESG stands for:",o:["Environmental, Social, Governance","Economic, Social, Government","None","Both"],a:0},
+  {c:3,q:"Triple bottom line considers:",o:["Profit, People, Planet","Revenue, Cost, Profit","None","Both"],a:0},
+  {c:4,q:"ERM stands for:",o:["Enterprise Risk Management","Effective Resource Monitoring","None","Both"],a:0},
+  {c:4,q:"Risk mitigation means:",o:["Eliminating all risks","Reducing likelihood or impact of risks","Accepting risks","None"],a:1},
+  {c:0,q:"Ansoff Matrix deals with:",o:["Growth strategies","Porter's forces","SWOT analysis","None"],a:0},
+  {c:1,q:"Code of ethics provides:",o:["Legal immunity","Moral guidelines for conduct","Tax benefits","None"],a:1},
+  {c:2,q:"Board independence means:",o:["Board works independently of shareholders","Independent directors have no management relationship","None","Both"],a:1},
+  {c:3,q:"Carbon footprint measures:",o:["Total greenhouse gas emissions","Economic growth","Water usage","None"],a:0},
+  {c:4,q:"VaR (Value at Risk) measures:",o:["Maximum potential loss at given confidence level","Market value","Book value","None"],a:0},
+];
+
+const FINAL_PAPERS = {
+  pn13:{ id:'pn13', name:'Corporate & Economic Laws', paper:'Paper 13', group:'Group 3', grClass:'gn1', chapters:PN13_CHAPTERS, data:PN13 },
+  pn14:{ id:'pn14', name:'Strategic Financial Management', paper:'Paper 14', group:'Group 3', grClass:'gn2', chapters:PN14_CHAPTERS, data:PN14 },
+  pn15:{ id:'pn15', name:'Direct Tax Laws & Intl. Tax', paper:'Paper 15', group:'Group 3', grClass:'gn1', chapters:PN15_CHAPTERS, data:PN15 },
+  pn16:{ id:'pn16', name:'Strategic Cost Management & Decision Making', paper:'Paper 16', group:'Group 3', grClass:'gn3', chapters:PN16_CHAPTERS, data:PN16 },
+  pn17:{ id:'pn17', name:'Cost & Management Audit', paper:'Paper 17', group:'Group 4', grClass:'gn1', chapters:PN17_CHAPTERS, data:PN17 },
+  pn18:{ id:'pn18', name:'Corporate Financial Reporting', paper:'Paper 18', group:'Group 4', grClass:'gn4', chapters:PN18_CHAPTERS, data:PN18 },
+  pn19:{ id:'pn19', name:'Indirect Tax Laws & Practice', paper:'Paper 19', group:'Group 4', grClass:'gn3', chapters:PN19_CHAPTERS, data:PN19 },
+  pn20:{ id:'pn20', name:'Strategic Performance Mgmt & Business Valuation', paper:'Paper 20', group:'Group 4', grClass:'gn2', chapters:PN20_CHAPTERS, data:PN20 },
+};
+
+// ════════════════════════════════════════════════════
+// LEVEL CONFIG
+// ════════════════════════════════════════════════════
+let activeLevel = 'inter'; // 'foundation' | 'inter' | 'final'
+
+const LEVEL_CONFIG = {
+  foundation: {
+    label:'🌱 CMA Foundation', name:'Foundation',
+    heroGrad:'linear-gradient(160deg,#022c22 0%,#0d7a4e 100%)',
+    badge:'foundation',
+    papers: FOUNDATION_PAPERS,
+    groups: null,
+    paperCount:'4 Papers',
+  },
+  inter: {
+    label:'⚡ CMA Inter', name:'Inter',
+    heroGrad:'linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,var(--blue) 100%)',
+    badge:'inter',
+    papers: PAPERS,
+    groups:[
+      { title:'Group 1', icon:'📘', gc:'gr1', badge:'4 Papers', papers:['p5','p6','p7','p8'] },
+      { title:'Group 2', icon:'📗', gc:'gr2', badge:'4 Papers', papers:['p9','p10','p11','p12'] },
+    ],
+    paperCount:'2 Groups · 8 Papers',
+  },
+  final: {
+    label:'🏆 CMA Final', name:'Final',
+    heroGrad:'linear-gradient(160deg,#451a03 0%,#b45309 100%)',
+    badge:'final',
+    papers: FINAL_PAPERS,
+    groups:[
+      { title:'Group 3', icon:'📕', gc:'gn1', badge:'4 Papers', papers:['pn13','pn14','pn15','pn16'] },
+      { title:'Group 4', icon:'📒', gc:'gn4', badge:'4 Papers', papers:['pn17','pn18','pn19','pn20'] },
+    ],
+    paperCount:'2 Groups · 8 Papers',
+  },
+};
+
+function openLevel(level) {
+  activeLevel = level;
+  const cfg = LEVEL_CONFIG[level];
+  const allPapers = cfg.papers;
+
+  // Update platform hero
+  const badge = document.getElementById('platformLevelBadge');
+  badge.textContent = cfg.label;
+  badge.className = `levelIndicator ${cfg.badge}`;
+  document.getElementById('pLevelName').textContent = cfg.name;
+  document.getElementById('pLevelSub').textContent =
+    level === 'inter'
+      ? 'The Institute of Cost Accountants of India • CMA VIDYARTHI'
+      : `CMA ${cfg.name} • The Institute of Cost Accountants of India • ICMAI Syllabus 2022`;
+  document.getElementById('pPaperCount').textContent = `📚 ${cfg.paperCount}`;
+
+  // Update header badge
+  document.getElementById('headerBadge').textContent = `CMA ${cfg.name.toUpperCase()}`;
+
+  // Render groups
+  renderPlatformGroups(cfg, allPapers);
+
+  showScreen('platformScreen');
+}
+
+function renderPlatformGroups(cfg, allPapers) {
+  const body = document.getElementById('platformBody');
+  let html = '';
+
+  // Foundation: flat layout — no group banners, just a single paper grid
+  if (!cfg.groups) {
+    html += `<div class="paperGrid" style="border:1px solid var(--g200);border-radius:var(--r-lg);background:white;padding:18px;">
+      ${Object.keys(allPapers).map(pid => {
+        const p = allPapers[pid];
+        return `<div class="paperCard ${p.grClass}" onclick="openPaper('${pid}')">
+          <div class="pcBar ${p.grClass}"></div>
+          <div class="pcTop">
+            <div class="pcNum ${p.grClass}">${p.paper}</div>
+            <div class="pcName">${p.name}</div>
+          </div>
+          <div class="pcBottom">
+            <span class="pcQCount">${p.data.length}+ Questions</span>
+            <div class="pcArrow ${p.grClass}">→</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+    body.innerHTML = html;
+    return;
+  }
+
+  cfg.groups.forEach((grp, gi) => {
+    const tagClass = grp.gc === 'gr1' ? 'gr1' : grp.gc === 'gr2' ? 'gr2'
+      : grp.gc === 'gf1' ? 'gf' : grp.gc === 'gf2' ? 'gf'
+      : grp.gc === 'gn1' ? 'gn' : grp.gc === 'gn2' ? 'gn2c'
+      : grp.gc === 'gn3' ? 'gn3c' : 'gn4c';
+    html += `
+      <div class="sHead" ${gi>0?'style="margin-top:32px;"':''}>
+        <div class="sHeadLine"></div>
+        <div class="sHeadTag ${tagClass}">${grp.icon} ${grp.title}</div>
+        <div class="sHeadLine"></div>
+      </div>
+      <div class="groupBanner">
+        <div class="groupBannerHeader ${grp.gc}">
+          <div class="gBannerIcon">${grp.icon}</div>
+          <div>
+            <div class="gBannerTitle">${grp.title}</div>
+            <div class="gBannerSub">${grp.papers.map(p=>allPapers[p].paper).join(' · ')}</div>
+          </div>
+          <div class="gBannerRight"><div class="gBannerBadge">${grp.badge}</div></div>
+        </div>
+        <div class="paperGrid">
+          ${grp.papers.map(pid => {
+            const p = allPapers[pid];
+            const isPlaceholder = activeLevel !== 'inter';
+            return `<div class="paperCard ${p.grClass}" onclick="openPaper('${pid}')">
+              <div class="pcBar ${p.grClass}"></div>
+              <div class="pcTop">
+                <div class="pcNum ${p.grClass}">${p.paper}</div>
+                <div class="pcName">${p.name}</div>
+              </div>
+              <div class="pcBottom">
+                <span class="pcQCount">${isPlaceholder ? p.data.length + '+ Questions' : p.data.length + '+ Questions'}</span>
+                <div class="pcArrow ${p.grClass}">→</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  });
+  body.innerHTML = html;
+}
 
 
 // ════════════════════════════════════════════════════
@@ -3465,47 +4082,11 @@ setTimeout(() => {
 
 const userId = localStorage.getItem("userId");
 
-function addExam() {
-    let exam_name = document.getElementById("exam_name").value;
-    let marks = document.getElementById("marks").value;
-    let total = document.getElementById("total").value;
+// addExam / loadExams removed (legacy localhost API — use Firestore submitTest instead)
 
-    fetch("http://localhost:5000/addExam", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: userId,
-            exam_name,
-            marks,
-            total,
-            date: new Date().toLocaleDateString()
-        })
-    })
-    .then(() => loadExams());
-}
 
-function loadExams() {
-    fetch("http://localhost:5000/getExams/" + userId)
-    .then(res => res.json())
-    .then(data => {
-        let list = document.getElementById("examList");
-        list.innerHTML = "";
 
-        data.forEach(e => {
-            let percent = (e.marks / e.total) * 100;
 
-            list.innerHTML += `
-                <li>
-                    ${e.exam_name} - ${percent.toFixed(2)}%
-                </li>
-            `;
-        });
-    });
-}
-
-loadExams();
 
 
 
@@ -3522,8 +4103,16 @@ function showScreen(id) {
   window.scrollTo(0,0);
 }
 
+function goToLevelSelect() {
+  clearInterval(timerInterval);
+  document.getElementById('headerBadge').textContent = 'PLATFORM';
+  showScreen('levelScreen');
+}
+
 function openPaper(pid) {
-  activePaper = PAPERS[pid];
+  // look up from the correct level's paper registry
+  const cfg = LEVEL_CONFIG[activeLevel];
+  activePaper = cfg.papers[pid];
   selectedChapter = 'all';
   const p = activePaper;
   const gc = p.grClass;
@@ -3595,7 +4184,7 @@ function selectChapterAll() {
 
 function goToPlatform() {
   clearInterval(timerInterval);
-  document.getElementById('headerBadge').textContent = 'PLATFORM';
+  document.getElementById('headerBadge').textContent = `CMA ${LEVEL_CONFIG[activeLevel].name.toUpperCase()}`;
   showScreen('platformScreen');
 }
 
@@ -3742,12 +4331,7 @@ async function submitTest() {
 
   try {
 
-    const userId = localStorage.getItem("userId");
-
-    if (!userId) {
-      alert("User not logged in!");
-      return;
-    }
+    const userId = localStorage.getItem("userId") || "guest";
 
     let correct = 0;
     let wrong = 0;
@@ -3784,18 +4368,27 @@ async function submitTest() {
 
     console.log("⏳ Saving result...", payload);
 
-    // 🚀 async firestore save
-    const docRef = await db.collection("exams").add(payload);
+    // 🚀 async firestore save (only if db is available)
+    if (db) {
+      try {
+        const docRef = await db.collection("exams").add(payload);
+        console.log("✅ Saved successfully with ID:", docRef.id);
+      } catch(dbErr) {
+        console.warn("⚠️ Firestore save failed (offline?):", dbErr.message);
+      }
+    } else {
+      console.warn("⚠️ Firestore not available — result not saved to cloud.");
+    }
 
-    console.log("✅ Saved successfully with ID:", docRef.id);
-
-    // 🎯 show result screen only after save starts (or you can move before await if you want instant UI)
+    // 🎯 always show result screen regardless of save status
     buildResults();
     showScreen('resultScreen');
 
   } catch (error) {
-    console.error("❌ Error saving exam:", error);
-    alert("Failed to save result. Check console.");
+    console.error("❌ Error in submitTest:", error);
+    // Still show results even if something went wrong
+    buildResults();
+    showScreen('resultScreen');
   }
 }
 
