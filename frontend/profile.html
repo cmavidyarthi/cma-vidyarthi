@@ -122,7 +122,10 @@ button {
     </div>
 
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init("2kBMPm1OSY3L3WAQF");
+</script>
 <!-- 🔥 FIREBASE -->
 <script type="module">
 
@@ -191,38 +194,40 @@ window.saveProfile = async function () {
     let mobile = document.getElementById("mobile").value.trim();
     let level = document.getElementById("level").value;
 
-    // ✅ NAME REQUIRED
+    // ✅ Name validation
     if (!name) {
-        alert("Please enter your name");
+        alert("Enter Name");
         return;
     }
 
-    // ✅ MOBILE OPTIONAL
-    // BUT if entered → must be exactly 10 digits
-    if (mobile !== "") {
-
-        // remove spaces
-        mobile = mobile.replace(/\s/g, '');
-
-        // check only digits + 10 length
-        const mobilePattern = /^[0-9]{10}$/;
-
-        if (!mobilePattern.test(mobile)) {
-            alert("Mobile number must be exactly 10 digits");
-            return;
-        }
+    // ✅ Mobile optional but must be 10 digits
+    if (mobile !== "" && !/^[0-9]{10}$/.test(mobile)) {
+        alert("Mobile number must be 10 digits");
+        return;
     }
 
     try {
 
+        // ✅ SAVE PROFILE
         await setDoc(doc(db, "users", userId), {
             name: name,
             mobile: mobile,
             level: level
         });
 
+        // ✅ SEND WELCOME EMAIL
+        await emailjs.send(
+            "service_vj9tauu",
+            "template_9ea3jb6",
+            {
+                name: name,
+                email: userId
+            }
+        );
+
         alert("Profile Saved ✅");
 
+        // ✅ Redirect
         window.location.href = "Student.html";
 
     } catch (error) {
@@ -230,6 +235,7 @@ window.saveProfile = async function () {
         console.error(error);
 
         alert("Error saving profile");
+
     }
 
 };
