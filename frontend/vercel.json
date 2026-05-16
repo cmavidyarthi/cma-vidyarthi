@@ -5,6 +5,11 @@
       "source": "/login",
       "destination": "/login.html"
     },
+
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
     {
       "source": "/signup",
       "destination": "/signup.html"
