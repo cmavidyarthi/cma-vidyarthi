@@ -3,7 +3,6 @@
 <head>
 
     <title>CMA Vidyarthi Login</title>
-    <link rel="icon" type="image/png" href="logo.png">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,17 +17,15 @@
         }
 
         body{
-    background:linear-gradient(135deg,#0a1f44,#1746a2);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    overflow-y:auto;
-
-    padding:20px;
-}
+            background:linear-gradient(135deg,#0a1f44,#1746a2);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            overflow-y:auto;
+            padding:20px;
+        }
 
         /* TOP SECTION */
 
@@ -95,6 +92,27 @@
             outline:none;
             border-color:#2563eb;
             box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+        }
+
+        /* PASSWORD BOX */
+
+        .password-box{
+            position:relative;
+        }
+
+        .password-box input{
+            width:100%;
+            padding-right:50px;
+        }
+
+        .password-box span{
+            position:absolute;
+            right:15px;
+            top:50%;
+            transform:translateY(-50%);
+            cursor:pointer;
+            font-size:18px;
+            user-select:none;
         }
 
         button{
@@ -235,10 +253,20 @@
                    placeholder="Enter Email"
                    required>
 
-            <input type="password"
-                   id="password"
-                   placeholder="Enter Password"
-                   required>
+            <!-- PASSWORD WITH SHOW/HIDE -->
+
+            <div class="password-box">
+
+                <input type="password"
+                       id="password"
+                       placeholder="Enter Password"
+                       required>
+
+                <span onclick="togglePassword()">
+                    👁️
+                </span>
+
+            </div>
 
             <button type="submit" class="login-btn">
                 Login
@@ -318,13 +346,15 @@ window.login = function(event){
 
     if(
         role === "admin" &&
-        email === "admin@gmail.com" &&
-        password === "admin123"
+        email === "cmavidyarthi1@gmail.com" &&
+        password === "Cmainter@2002"
     ){
 
         localStorage.setItem("userId","admin");
 
-        window.location.href = "index.html";
+        localStorage.setItem("admin","true");
+
+        window.location.href = "admin.html";
 
         return;
     }
@@ -390,6 +420,27 @@ window.googleLogin = function(){
     });
 
 };
+
+
+/* SHOW/HIDE PASSWORD */
+
+window.togglePassword = function(){
+
+    let password =
+    document.getElementById("password");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+
+    }
+    else{
+
+        password.type = "password";
+
+    }
+
+}
 
 </script>
 
