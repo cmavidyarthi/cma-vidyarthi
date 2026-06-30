@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/login.html"
+    },
+    {
       "source": "/login",
       "destination": "/login.html"
     },
@@ -12,10 +16,6 @@
     {
       "source": "/admin",
       "destination": "/admin.html"
-    },
-    {
-      "source": "/home",
-      "destination": "/index.html"
     },
     {
       "source": "/student",
