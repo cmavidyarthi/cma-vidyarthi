@@ -152,7 +152,7 @@ const db = getFirestore(app);
 let userId = localStorage.getItem("userId");
 
 if (!userId) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
 }
 
 /* 🔥 LOAD PROFILE */
@@ -162,7 +162,7 @@ window.onload = async function () {
     let editMode = localStorage.getItem("editMode");
 
     if (!userId) {
-        window.location.href = "login.html";
+        window.location.href = "index.html";
         return;
     }
 
