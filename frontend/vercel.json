@@ -1,13 +1,5 @@
 {
   "cleanUrls": true,
-
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/login",
-    }
-  ],
-
   "rewrites": [
     {
       "source": "/login",
@@ -34,8 +26,16 @@
       "destination": "/profile.html"
     },
     {
+      "source": "/progress",
+      "destination": "/progress.html"
+    },
+    {
       "source": "/stats",
       "destination": "/stats.html"
+    },
+    {
+      "source": "/exam",
+      "destination": "/exam.html"
     }
   ]
 }
