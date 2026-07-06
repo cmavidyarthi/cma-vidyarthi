@@ -801,6 +801,9 @@ body{
   </div>
 </div>
 
+<script src="paper13.js"></script>
+<script src="script.js"></script>
+
 <script>
 
 
@@ -3402,25 +3405,6 @@ const FOUNDATION_PAPERS = {
 // ════════════════════════════════════════════════════
 // FINAL PAPER DATA (Placeholder — add questions)
 // ════════════════════════════════════════════════════
-const PN13_CHAPTERS = ["Corporate Law","IBC 2016","SEBI Regulations","FEMA","Competition Act","DPDP Act"];
-const PN13 = [
-  {c:0,q:"Minimum paid-up capital for a public company under Companies Act 2013 is:",o:["₹1 lakh","₹5 lakh","No minimum prescribed","₹10 lakh"],a:2},
-  {c:0,q:"A company can be wound up under Companies Act by:",o:["Tribunal only","Members only","Creditors only","Both Tribunal and voluntarily"],a:3},
-  {c:1,q:"IBC 2016 stands for:",o:["Insolvency and Bankruptcy Code","Indian Business Code","Insolvency Banking Code","None"],a:0},
-  {c:1,q:"CIRP under IBC must be completed within:",o:["90 days","180 days (extendable to 330)","1 year","6 months"],a:1},
-  {c:1,q:"The Insolvency Professional is appointed by:",o:["NCLT","Creditors","Debtor","IBBI"],a:0},
-  {c:2,q:"SEBI was established in the year:",o:["1988","1992","1990","1996"],a:0},
-  {c:2,q:"SEBI (LODR) Regulations govern:",o:["Listing Obligations and Disclosure Requirements","Loan Obligations","Licensing of Dealers","None"],a:0},
-  {c:3,q:"FEMA stands for:",o:["Foreign Exchange Management Act","Foreign Economy Management Act","Federal Exchange Management Act","None"],a:0},
-  {c:3,q:"Under FEMA, transactions are classified as:",o:["Current account and Capital account","Revenue and Capital","Domestic and International","None"],a:0},
-  {c:4,q:"Competition Act 2002 prohibits:",o:["Cartels and abuse of dominant position","Foreign investment","Mergers","None"],a:0},
-  {c:4,q:"CCI stands for:",o:["Competition Commission of India","Corporate Commission of India","Credit Commission of India","None"],a:0},
-  {c:5,q:"DPDP Act 2023 relates to:",o:["Digital data protection","Drug Policy","Defence Procurement","None"],a:0},
-  {c:5,q:"Under DPDP Act, a Data Principal is:",o:["The data processor","The person whose data is collected","Government","None"],a:1},
-  {c:5,q:"Data Fiduciary under DPDP Act must provide:",o:["Notice and consent to data principal","Free internet","Tax exemption","None"],a:0},
-  {c:0,q:"Doctrine of Ultra Vires means an act:",o:["Beyond the powers of the company","Within powers","Approved by directors","None"],a:0},
-  {c:0,q:"A Memorandum of Association defines the:",o:["Internal rules","External scope and objects of company","Dividend policy","None"],a:1},
-];
 const PN14_CHAPTERS = ["Strategic Financial Management","Portfolio Management","Derivatives","International Finance","Corporate Valuation"];
 const PN14 = [
   {c:0,q:"WACC stands for:",o:["Weighted Average Cost of Capital","Working Average Capital Cost","Wide Area Capital Cost","None"],a:0},
@@ -3702,7 +3686,7 @@ function renderPlatformGroups(cfg, allPapers) {
 // STATE
 // ════════════════════════════════════════════════════
 let activePaper = null;
-let selectedChapter = 'all';
+let selectedChapters = [];
 let testQuestions = [];
 let currentQ = 0;
 let answers = [];
@@ -3767,7 +3751,7 @@ function openPaper(pid) {
   // look up from the correct level's paper registry
   const cfg = LEVEL_CONFIG[activeLevel];
   activePaper = cfg.papers[pid];
-  selectedChapter = 'all';
+  selectedChapters = [];
   const p = activePaper;
   const gc = p.grClass;
 
@@ -3797,43 +3781,93 @@ function openPaper(pid) {
 }
 
 function buildChapterGrid(p, gc) {
-  const counts = Array(p.chapters.length).fill(0);
-  p.data.forEach(q => counts[q.c]++);
-  const grid = document.getElementById('chapterGrid');
-  grid.innerHTML = p.chapters.map((name, i) => `
-    <div class="chCard ${gc}" id="chCard${i}" onclick="selectChapter(${i}, this)">
-      <div class="ccNum ${gc}">Chapter ${i+1}</div>
-      <div class="ccName">${name}</div>
-      <div class="ccMeta">
-        <span class="ccCount">${counts[i]} Qs</span>
-        <div class="ccCheck" id="ccCheck${i}"></div>
-      </div>
-    </div>`).join('');
+
+    const counts = Array(p.chapters.length).fill(0);
+
+    p.data.forEach(q => counts[q.c]++);
+
+    const grid = document.getElementById("chapterGrid");
+
+    grid.innerHTML = p.chapters.map((name,i)=>`
+
+    <div class="chCard ${gc}" id="chCard${i}"
+         onclick="toggleChapter(${i})">
+
+        <div class="ccNum ${gc}">
+            Chapter ${i+1}
+        </div>
+
+        <div class="ccName">
+            ${name}
+        </div>
+
+        <div class="ccMeta">
+            <span class="ccCount">
+                ${counts[i]} Questions
+            </span>
+
+            <div class="ccCheck" id="ccCheck${i}"></div>
+
+        </div>
+
+    </div>
+
+    `).join("");
+
 }
 
-function selectChapter(ch, el) {
-  selectedChapter = ch;
-  const gc = activePaper.grClass;
-  document.getElementById('btnAll').className = `allChBtn ${gc}`;
-  document.querySelectorAll('.chCard').forEach(c => {
-    c.classList.remove('sel');
-    c.className = `chCard ${gc}`;
-  });
-  document.querySelectorAll('[id^=ccCheck]').forEach(c => c.textContent = '');
-  if (ch === 'all') {
-    document.getElementById('btnAll').className = `allChBtn sel ${gc}`;
-  } else {
-    el.className = `chCard ${gc} sel`;
-    el.querySelector(`[id^=ccCheck]`).textContent = '✓';
-  }
+function toggleChapter(ch){
+
+    const gc = activePaper.grClass;
+
+    const card = document.getElementById("chCard"+ch);
+
+    const check = document.getElementById("ccCheck"+ch);
+
+    if(selectedChapters.includes(ch)){
+
+        selectedChapters =
+            selectedChapters.filter(x=>x!=ch);
+
+        card.className="chCard "+gc;
+
+        check.innerHTML="";
+
+    }else{
+
+        selectedChapters.push(ch);
+
+        card.className="chCard "+gc+" sel";
+
+        check.innerHTML="✓";
+
+    }
+
+    document.getElementById("btnAll").className="allChBtn "+gc;
+
 }
 
-function selectChapterAll() {
-  selectedChapter = 'all';
-  const gc = activePaper.grClass;
-  document.getElementById('btnAll').className = `allChBtn sel ${gc}`;
-  document.querySelectorAll('.chCard').forEach(c => c.className = `chCard ${gc}`);
-  document.querySelectorAll('[id^=ccCheck]').forEach(c => c.textContent = '');
+function selectChapterAll(){
+
+    selectedChapters=[];
+
+    const gc=activePaper.grClass;
+
+    document.querySelectorAll(".chCard").forEach(card=>{
+
+        card.className="chCard "+gc;
+
+    });
+
+    document.querySelectorAll("[id^=ccCheck]").forEach(c=>{
+
+        c.innerHTML="";
+
+    });
+
+    document.getElementById("btnAll").className=
+        "allChBtn sel "+gc;
+
 }
 
 function goToPlatform() {
@@ -3850,23 +3884,58 @@ function goToPaper() {
 // ════════════════════════════════════════════════════
 // TEST
 // ════════════════════════════════════════════════════
-function startTest() {
-  const p = activePaper;
-  let pool = selectedChapter === 'all' ? [...p.data] : p.data.filter(q => q.c === selectedChapter);
-  if (pool.length < 15) { alert(`Only ${pool.length} questions available. Need at least 15.`); return; }
-  testQuestions = pool.sort(() => Math.random() - 0.5).slice(0, 15);
-  answers = Array(15).fill(-1);
-  currentQ = 0; timeLeft = 1800;
-  const gc = p.grClass;
+function startTest(){
 
-  // Style test screen elements
-  document.getElementById('tpNums').className = `tpNums ${gc}`;
-  document.getElementById('tpFill').className = `tpFill ${gc}`;
-  document.getElementById('timerDisplay').className = `timerDisplay ${gc} normal`;
-  document.getElementById('nextBtn').className = `navBtn primary ${gc}`;
+    const p=activePaper;
 
-  showScreen('testScreen');
-  buildNavDots(); renderQuestion(); startTimer();
+    let pool=[];
+
+    if(selectedChapters.length==0){
+
+        pool=[...p.data];
+
+    }else{
+
+        pool=p.data.filter(q=>selectedChapters.includes(q.c));
+
+    }
+
+    if(pool.length<15){
+
+        alert(
+        "Only "+pool.length+
+        " questions available."
+        );
+
+        return;
+
+    }
+
+    pool.sort(()=>Math.random()-0.5);
+
+    testQuestions=pool.slice(0,15);
+
+    answers=Array(15).fill(-1);
+
+    currentQ=0;
+
+    timeLeft=1800;
+
+    const gc=p.grClass;
+
+    document.getElementById("tpNums").className=`tpNums ${gc}`;
+    document.getElementById("tpFill").className=`tpFill ${gc}`;
+    document.getElementById("timerDisplay").className=`timerDisplay ${gc} normal`;
+    document.getElementById("nextBtn").className=`navBtn primary ${gc}`;
+
+    showScreen("testScreen");
+
+    buildNavDots();
+
+    renderQuestion();
+
+    startTimer();
+
 }
 
 function startTimer() {
@@ -4007,9 +4076,12 @@ async function submitTest() {
       student_id: userId,
       paper: activePaper.paper,
       subject: activePaper.name,
-      chapter: selectedChapter === 'all'
-        ? "Mixed"
-        : activePaper.chapters[selectedChapter],
+chapter:
+selectedChapters.length==0
+? "All Chapters"
+: selectedChapters
+      .map(c=>activePaper.chapters[c])
+      .join(", "),
 
       score,
       total,
