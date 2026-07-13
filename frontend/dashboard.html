@@ -541,6 +541,7 @@ body{
 </head>
 <body>
 
+  
 <!-- ✅ Welcome banner -->
 <div id="betaBanner" class="beta-banner">
     <div class="bb-icon">🎓</div>
@@ -562,6 +563,7 @@ body{
     <div id="dropdown" class="dropdown">
         <p onclick="goProfile()">👤 Profile</p>
         <p onclick="goStats()">📊 My Stats</p>
+        <p onclick="goToNotesScreen()">📚 Study Notes</p>
         <p onclick="logout()">🚪 Logout</p>
     </div>
 
@@ -695,6 +697,14 @@ body{
     </div>
   </div>
 
+
+
+
+
+
+
+
+  
   <div class="pBody" id="platformBody">
     <!-- dynamically rendered by renderPlatformGroups() -->
   </div>
@@ -4203,7 +4213,9 @@ function goProfile() {
     window.location.href = "profile.html";
 }
 
-
+function goToNotesScreen(){
+  window.location.href = "studynotes.html"
+}
 
 function goStats() {
     window.location.href = "stats.html";
