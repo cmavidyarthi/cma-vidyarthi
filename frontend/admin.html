@@ -4,526 +4,291 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CMA Vidyarthi Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial,sans-serif;
-        }
-        body{
-            display:flex;
-            min-height:100vh;
-            background:#f8fafc;
-        }
-        /* SIDEBAR */
-        .sidebar{
-            width:270px;
-            background:linear-gradient(180deg,#0a1f44,#1746a2);
-            color:white;
-            padding:25px;
-            position:fixed;
-            height:100vh;
-            left:0;
-            top:0;
-            box-shadow:5px 0 20px rgba(0,0,0,0.1);
-        }
-        .logo{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            margin-bottom:40px;
-        }
-        .logo img{
-            width:58px;
-            height:58px;
-            border-radius:50%;
-            border:3px solid white;
-        }
-        .logo h2{
-            font-size:24px;
-        }
-        .menu a{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            color:white;
-            text-decoration:none;
-            padding:15px;
-            border-radius:14px;
-            margin-bottom:12px;
-            transition:0.3s;
-        }
-        .menu a:hover, .menu a.active-link{
-            background:rgba(255,255,255,0.15);
-            transform:translateX(5px);
-        }
-        .logout{
-            position:absolute;
-            bottom:30px;
-            width:82%;
-        }
-        .logout button{
-            width:100%;
-            padding:14px;
-            border:none;
-            border-radius:12px;
-            background:#ef4444;
-            color:white;
-            cursor:pointer;
-            font-weight:bold;
-        }
-        .logout button:hover{
-            background:#dc2626;
-        }
-        /* MAIN */
-        .main{
-            margin-left:270px;
-            width:calc(100% - 270px);
-            padding:30px;
-        }
-        /* TOPBAR */
-        .topbar{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:30px;
-            gap:20px;
-        }
-        .search-box{
-            background:white;
-            padding:14px 18px;
-            border-radius:16px;
-            width:350px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            box-shadow:0 8px 20px rgba(0,0,0,0.08);
-        }
-        .search-box input{
-            border:none;
-            outline:none;
-            width:100%;
-            font-size:15px;
-        }
-        .admin-profile{
-            display:flex;
-            align-items:center;
-            gap:14px;
-            background:white;
-            padding:10px 16px;
-            border-radius:18px;
-            box-shadow:0 8px 20px rgba(0,0,0,0.08);
-        }
-        .admin-profile img{
-            width:60px;
-            height:60px;
-            border-radius:50%;
-            object-fit:cover;
-            border:3px solid white;
-            box-shadow:0 8px 20px rgba(0,0,0,0.18);
-        }
-        /* DARK MODE */
-        .dark{
-            background:#0f172a;
-            color:white;
-        }
-        .dark .card,
-        .dark .table-section,
-        .dark .search-box,
-        .dark .admin-profile{
-            background:#1e293b;
-            color:white;
-        }
-        .dark table{
-            color:white;
-        }
-        /* CARDS */
-        .cards{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-            gap:20px;
-            margin-bottom:30px;
-        }
-        .card{
-            background:white;
-            padding:28px;
-            border-radius:24px;
-            box-shadow:0 8px 25px rgba(0,0,0,0.08);
-            transition:0.3s;
-        }
-        .card:hover{
-            transform:translateY(-6px);
-        }
-        .card i{
-            font-size:34px;
-            color:#1746a2;
-            margin-bottom:16px;
-        }
-        .card h2{
-            margin-bottom:8px;
-            color:#0a1f44;
-            font-size:30px;
-        }
-        .card p{
-            color:#64748b;
-        }
-        a.card{
-            display:block;
-            text-decoration:none;
-            cursor:pointer;
-            position:relative;
-        }
-        a.card .card-hint{
-            position:absolute;
-            top:20px;
-            right:22px;
-            font-size:11px;
-            font-weight:bold;
-            color:#94a3b8;
-            display:flex;
-            align-items:center;
-            gap:4px;
-        }
-        a.card:hover .card-hint{ color:#1746a2; }
-        .dark a.card .card-hint{ color:#64748b; }
-        /* QUICK ACTIONS */
-        .quick-actions-section {
-            background: white;
-            padding: 25px;
-            border-radius: 24px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .action-card-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px;
-            background: #f8fafc;
-            border: 2px dashed #e2e8f0;
-            border-radius: 16px;
-            color: #1746a2;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-        .action-card-btn:hover {
-            background: #f0f5ff;
-            border-color: #1746a2;
-            transform: translateY(-3px);
-        }
-        .action-card-btn i {
-            font-size: 24px;
-        }
-        .dark .quick-actions-section {
-            background: #1e293b;
-        }
-        .dark .action-card-btn {
-            background: #0f172a;
-            border-color: #334155;
-            color: #38bdf8;
-        }
-        .dark .action-card-btn:hover {
-            background: #1e293b;
-            border-color: #38bdf8;
-        }
-        /* TABLE */
-        .table-section{
-            background:white;
-            padding:25px;
-            border-radius:24px;
-            box-shadow:0 8px 25px rgba(0,0,0,0.08);
-            margin-top:30px;
-        }
-        .table-header{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:20px;
-        }
-        .add-btn{
-            background:#1746a2;
-            color:white;
-            border:none;
-            padding:12px 18px;
-            border-radius:12px;
-            cursor:pointer;
-        }
-        .add-btn:hover{
-            background:#0a1f44;
-        }
-        table{
-            width:100%;
-            border-collapse:collapse;
-        }
-        tbody tr{
-            transition:0.3s;
-        }
-        tbody tr:hover{
-            background:#f8fbff;
-            transform:scale(1.003);
-        }
-        th, td{
-            padding:18px;
-            text-align:center;
-            border-bottom:1px solid #e2e8f0;
-        }
-        th{
-            background:#f8fafc;
-            color:#0a1f44;
-        }
-        .status{
-            padding:8px 14px;
-            border-radius:20px;
-            font-size:13px;
-            font-weight:bold;
-        }
-        .active{
-            background:linear-gradient(135deg,#22c55e,#16a34a);
-            color:white;
-        }
-        .action-btn{
-            border:none;
-            padding:10px 14px;
-            border-radius:10px;
-            cursor:pointer;
-            margin-right:6px;
-            color:white;
-            font-weight:bold;
-        }
-        .delete{ background:#ef4444; }
-        .block{ background:#f59e0b; }
-        .email{ background:#2563eb; }
-        
-        #loader{
-            text-align:center;
-            padding:20px;
-            font-size:18px;
-            color:#1746a2;
-            font-weight:bold;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(at 0% 0%, #f0f7ff 0px, transparent 50%), 
+                        radial-gradient(at 100% 100%, #eff6ff 0px, transparent 50%), 
+                        #ffffff;
+            color: #0f172a;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* RESPONSIVE CSS STYLES */
-        @media(max-width:992px){
-            .sidebar{ width:90px; padding:18px 10px; }
-            .logo{ justify-content:center; }
-            .logo h2, .menu span{ display:none; }
-            .menu a{ justify-content:center; padding:16px; }
-            .logout{ width:70%; left:15%; }
-            .main{ margin-left:90px; width:calc(100% - 90px); padding:20px; }
-            .cards{ grid-template-columns:repeat(2,1fr); }
+        /* Unique Soft-Glow Elevated Cards */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            box-shadow: 0 4px 30px rgba(37, 99, 235, 0.02), 0 1px 3px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @media(max-width:768px){
-            body{ flex-direction:column; }
-            .sidebar{ width:100%; height:auto; position:relative; display:flex; flex-direction:column; padding:15px; border-radius:0 0 20px 20px; }
-            .logo{ justify-content:center; margin-bottom:20px; }
-            .logo h2{ display:block; font-size:22px; }
-            .menu{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-            .menu a{ flex-direction:column; justify-content:center; align-items:center; padding:14px 8px; text-align:center; font-size:12px; }
-            .menu span{ display:block; font-size:11px; }
-            .logout{ position:relative; width:100%; margin-top:20px; bottom:0; left:0; }
-            .main{ margin-left:0; width:100%; padding:15px; }
-            .topbar{ flex-direction:column; align-items:stretch; gap:18px; }
-            .search-box{ width:100%; }
-            .admin-profile{ width:100%; justify-content:center; }
-            .cards{ grid-template-columns:1fr; gap:16px; }
-            .card{ padding:22px; border-radius:20px; }
-            .card h2{ font-size:26px; }
-            .table-section{ overflow-x:auto; padding:18px; }
-            table{ min-width:700px; }
-            th, td{ padding:14px; font-size:14px; }
-            .action-btn{ margin-bottom:6px; padding:8px 10px; font-size:12px; }
+        .premium-card:hover {
+            border-color: rgba(37, 99, 235, 0.16);
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.04);
         }
-        @media(max-width:480px){
-            .menu{ grid-template-columns:repeat(2,1fr); }
-            .topbar h1{ font-size:26px; }
-            .search-box{ padding:12px; }
-            .admin-profile{ flex-direction:column; text-align:center; }
-            .admin-profile img{ width:70px; height:70px; }
-            .card{ padding:18px; }
-            .card i{ font-size:28px; }
-            .card h2{ font-size:24px; }
+
+        /* Sleek Modern Input Fields */
+        .premium-input {
+            background: rgba(248, 250, 252, 0.7);
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            transition: all 0.25s ease;
         }
+        .premium-input:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        /* Sidebar Navigation Layout styling */
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
+        }
+
+        /* Table Specific Styling overrides */
+        table { border-collapse: collapse; }
+        tbody tr { transition: all 0.2s ease; }
+        tbody tr:hover { 
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.02) 0%, transparent 100%); 
+        }
+
+        /* Dark Mode Configurations overrides */
+        body.dark {
+            background: radial-gradient(at 0% 0%, #0f172a 0px, transparent 50%), 
+                        radial-gradient(at 100% 100%, #020617 0px, transparent 50%), 
+                        #090d16;
+            color: #f8fafc;
+        }
+        .dark .premium-card {
+            background: rgba(30, 41, 59, 0.45);
+            border-color: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+        }
+        .dark .premium-card:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        .dark .premium-input {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+        }
+        .dark .premium-input:focus {
+            border-color: #6366f1;
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .dark tbody tr:hover {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
+        }
+
+        /* Smooth scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body>
+<body class="min-h-screen selection:bg-blue-500/20 antialiased flex flex-col md:flex-row">
 
-<div class="sidebar">
-    <div class="logo">
-        <img src="logo.png" alt="Logo">
-        <h2>CMA Admin</h2>
+<div class="w-full md:w-[275px] sidebar-gradient text-white p-6 flex flex-col md:fixed md:h-screen left-0 top-0 z-40 shadow-xl shadow-blue-950/20">
+    <div class="flex items-center gap-3 mb-10 pb-4 border-b border-white/10">
+        <img src="logo.png" alt="Logo" class="w-12 h-12 rounded-2xl border-2 border-white/20 shadow-md object-cover" onerror="this.src='https://ui-avatars.com/api/?name=CMA&background=2563eb&color=fff'">
+        <div>
+            <h2 class="text-lg font-black tracking-tight leading-tight">CMA Admin</h2>
+            <span class="text-[10px] text-blue-300 font-bold uppercase tracking-widest">Vidyarthi Portal</span>
+        </div>
     </div>
 
-    <div class="menu">
-        <a href="admin.html" class="active-link">
-            <i class="fa-solid fa-chart-line"></i>
+    <div class="flex flex-col gap-1.5 flex-1 overflow-y-auto">
+        <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider bg-white/15 text-white shadow-sm transition-all duration-150">
+            <i class="fa-solid fa-chart-line text-sm w-5"></i>
             <span>Dashboard</span>
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-users"></i>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-users text-sm w-5"></i>
             <span>Students</span>
         </a>
 
-        <a href="admin/manageNotes.html">
-            <i class="fa-solid fa-book"></i>
+        <a href="admin/manageNotes.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-book text-sm w-5"></i>
             <span>Manage Notes</span>
         </a>
 
-        <a href="admin/upload-notes.html">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
+        <a href="admin/upload-notes.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-cloud-arrow-up text-sm w-5"></i>
             <span>Upload Notes</span>
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-file-circle-question"></i>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-file-circle-question text-sm w-5"></i>
             <span>Mock Tests</span>
         </a>
 
-        <a href="#">
-            <i class="fa-solid fa-chart-pie"></i>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-chart-pie text-sm w-5"></i>
             <span>Analytics</span>
         </a>
 
-        <a href="#" onclick="exportCSV()">
-            <i class="fa-solid fa-file-csv"></i>
+        <a href="#" onclick="exportCSV()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-file-csv text-sm w-5"></i>
             <span>Export CSV</span>
         </a>
 
-        <a href="#" onclick="toggleDarkMode()">
-            <i class="fa-solid fa-moon"></i>
+        <a href="#" onclick="toggleDarkMode()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
+            <i class="fa-solid fa-moon text-sm w-5"></i>
             <span>Dark Mode</span>
         </a>
     </div>
 
-    <div class="logout">
-        <button onclick="logout()">Logout</button>
+    <div class="pt-4 border-t border-white/10 mt-4">
+        <button onclick="logout()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold uppercase tracking-wider py-3 rounded-xl text-xs shadow-md transition-all active:scale-[0.98] cursor-pointer">
+            <i class="fa-solid fa-power-off mr-2"></i>Logout
+        </button>
     </div>
 </div>
 
-<div class="main">
+<div class="flex-1 md:ml-[275px] p-4 md:p-10 space-y-8">
 
-    <div class="topbar">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-6 border-b border-slate-100 dark:border-slate-800">
         <div>
-            <h1>Welcome Admin 👋</h1>
-            <p style="color:#64748b;margin-top:6px;">Manage students and platform activities.</p>
-            <h3 id="clock" style="margin-top:10px;color:#1746a2;"></h3>
+            <h1 class="text-3xl font-black tracking-tight md:text-4xl">Welcome Admin 👋</h1>
+            <p class="text-slate-400 dark:text-slate-400 text-sm mt-1">Supervising students and dynamic architecture platform components.</p>
+            <div class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold rounded-lg text-xs">
+                <i class="fa-regular fa-clock"></i> <span id="clock"></span>
+            </div>
         </div>
 
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search students..." id="searchInput" onkeyup="searchStudents()">
-        </div>
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 w-full lg:w-auto">
+            <div class="relative w-full sm:w-[280px]">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" placeholder="Search parameters..." id="searchInput" onkeyup="searchStudents()" class="w-full premium-input pl-11 pr-4 py-3 rounded-xl text-xs font-medium placeholder-slate-400">
+            </div>
 
-        <div class="admin-profile">
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300&auto=format&fit=crop" alt="Profile">
-            <div>
-                <h4>Admin</h4>
-                <p style="font-size:13px;color:#64748b;">Super Admin</p>
+            <div class="premium-card px-4 py-2 rounded-xl flex items-center gap-3 bg-white text-left min-w-[160px]">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop" alt="Profile" class="w-9 h-9 rounded-xl object-cover border border-slate-200">
+                <div>
+                    <h4 class="text-xs font-black">Kumar Admin</h4>
+                    <p class="text-[10px] text-slate-400">Super Admin</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="cards">
-        <div class="card">
-            <i class="fa-solid fa-users"></i>
-            <h2 id="totalUsers">0</h2>
-            <p>Total Students</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
+        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
+            <div class="w-10 h-10 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-users text-lg"></i></div>
+            <h2 id="totalUsers" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">0</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Total Students</p>
         </div>
 
-        <!-- 📚 Notes by tier — click any card to jump straight into Manage Notes,
-             already filtered to that course. Counts pull live from Firestore. -->
-        <a class="card" href="admin/manageNotes.html">
-            <span class="card-hint">Manage <i class="fa-solid fa-arrow-right"></i></span>
-            <i class="fa-solid fa-seedling"></i>
-            <h2 id="countFoundation">–</h2>
-            <p>Foundation Notes</p>
-        </a>
-        <a class="card" href="admin/manageNotes.html">
-            <span class="card-hint">Manage <i class="fa-solid fa-arrow-right"></i></span>
-            <i class="fa-solid fa-bolt"></i>
-            <h2 id="countIntermediate">–</h2>
-            <p>Intermediate Notes</p>
-        </a>
-        <a class="card" href="admin/manageNotes.html">
-            <span class="card-hint">Manage <i class="fa-solid fa-arrow-right"></i></span>
-            <i class="fa-solid fa-trophy"></i>
-            <h2 id="countFinal">–</h2>
-            <p>Final Notes</p>
+        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
+            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
+            <div class="w-10 h-10 bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-seedling text-lg"></i></div>
+            <h2 id="countFoundation" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Foundation</p>
         </a>
 
-        <div class="card">
-            <i class="fa-solid fa-file-pen"></i>
-            <h2>180</h2>
-            <p>Mock Tests</p>
-        </div>
-        <div class="card">
-            <i class="fa-solid fa-chart-column"></i>
-            <h2>92%</h2>
-            <p>Student Success</p>
-        </div>
-    </div>
+        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
+            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
+            <div class="w-10 h-10 bg-amber-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-bolt text-lg"></i></div>
+            <h2 id="countIntermediate" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Intermediate</p>
+        </a>
 
-    <div class="quick-actions-section">
-        <h2>Quick Control Hub</h2>
-        <div class="action-grid">
-            <a href="admin/upload-notes.html" class="action-card-btn">
-                <i class="fa-solid fa-file-pdf"></i>
-                <span>+ Upload Notes</span>
-            </a>
-            <a href="admin/manageNotes.html" class="action-card-btn">
-                <i class="fa-solid fa-book"></i>
-                <span>Manage Notes</span>
-            </a>
-            <a href="#" class="action-card-btn" style="opacity: 0.6; cursor: not-allowed;">
-                <i class="fa-solid fa-video"></i>
-                <span>+ Upload Video (Soon)</span>
-            </a>
-            <a href="#" class="action-card-btn" style="opacity: 0.6; cursor: not-allowed;">
-                <i class="fa-solid fa-square-poll-horizontal"></i>
-                <span>+ New Mock Test</span>
-            </a>
+        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
+            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
+            <div class="w-10 h-10 bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-trophy text-lg"></i></div>
+            <h2 id="countFinal" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Final Notes</p>
+        </a>
+
+        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
+            <div class="w-10 h-10 bg-purple-50 dark:bg-slate-800 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-file-pen text-lg"></i></div>
+            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">180</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Mock Tests</p>
+        </div>
+
+        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
+            <div class="w-10 h-10 bg-pink-50 dark:bg-slate-800 text-pink-600 dark:text-pink-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-chart-column text-lg"></i></div>
+            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">92%</h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Success Rate</p>
         </div>
     </div>
 
-    <div class="card">
-        <h2 style="margin-bottom:15px;">Recent Activity</h2>
-        <p>✅ New student registered</p><br>
-        <p>✅ Mock test completed</p><br>
-        <p>✅ Course updated</p><br>
-        <p>✅ Student login success</p>
-    </div>
-
-    <div class="table-section">
-        <div class="table-header">
-            <h2>Registered Students</h2>
-            <button class="add-btn">+ Add Student</button>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div class="lg:col-span-2 premium-card p-6 rounded-2xl bg-white space-y-4">
+            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-cubes text-blue-600"></i> Quick Control Hub
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                <a href="admin/upload-notes.html" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 bg-slate-50/50 dark:bg-slate-800/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50/30 transition-all group">
+                    <i class="fa-solid fa-file-pdf text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300">+ Upload Notes</span>
+                </a>
+                <a href="admin/manageNotes.html" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 bg-slate-50/50 dark:bg-slate-800/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50/30 transition-all group">
+                    <i class="fa-solid fa-book text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300">Manage Notes</span>
+                </a>
+                <div class="opacity-40 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 text-slate-400">
+                    <i class="fa-solid fa-video text-xl mb-2"></i>
+                    <span class="text-xs font-bold uppercase tracking-wide">+ Add Video</span>
+                </div>
+                <div class="opacity-40 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 text-slate-400">
+                    <i class="fa-solid fa-square-poll-horizontal text-xl mb-2"></i>
+                    <span class="text-xs font-bold uppercase tracking-wide">+ Mock Test</span>
+                </div>
+            </div>
         </div>
-        <div id="loader">Loading Students...</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="studentsTable"></tbody>
-        </table>
+
+        <div class="premium-card p-6 rounded-2xl bg-white space-y-4">
+            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-amber-500"></i> Platform Feed Activity
+            </h2>
+            <div class="space-y-3.5 text-xs font-medium text-slate-600 dark:text-slate-300">
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> <span>New student registered</span></div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> <span>Mock test completed architecture</span></div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> <span>Course schemas updated live</span></div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> <span>Student login verification validated</span></div>
+            </div>
+        </div>
     </div>
 
+    <div class="premium-card rounded-2xl overflow-hidden bg-white">
+        <div class="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/20">
+            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2.5">
+                <span class="p-2 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-xs"><i class="fa-solid fa-address-book"></i></span>
+                Registered Students Enrollment Grid
+            </h2>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl text-xs shadow-md shadow-blue-600/10 transition-colors cursor-pointer">
+                + Add Student
+            </button>
+        </div>
+
+        <div id="loader" class="text-center py-12 text-sm font-bold text-blue-600 dark:text-blue-400">
+            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading Student Registry...
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm min-w-[750px]">
+                <thead>
+                    <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10">
+                        <th class="p-4 text-center">Name Information</th>
+                        <th class="p-4 text-center">Email Anchor Pointer</th>
+                        <th class="p-4 text-center">System Status Flag</th>
+                        <th class="p-4 text-center">Actions Management</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTable" class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300 font-medium">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script type="module">
@@ -559,19 +324,21 @@ async function loadStudents(){
             const data = docSnap.data();
             count++;
             html += `
-            <tr>
-                <td>
-                    <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'Student')}" style="width:42px; height:42px; border-radius:50%;">
-                        <span>${data.name || "Student"}</span>
+            <tr class="hover:bg-slate-50/50">
+                <td class="p-4 text-center">
+                    <div class="flex items-center justify-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'Student')}&background=eff6ff&color=2563eb&bold=true" class="w-9 h-9 rounded-full border border-slate-100">
+                        <span class="font-bold text-slate-900 dark:text-white">${data.name || "Student"}</span>
                     </div>
                 </td>
-                <td>${data.email || "No Email Found"}</td>
-                <td><span class="status active">Active</span></td>
-                <td>
-                    <button class="action-btn block">Block</button>
-                    <button class="action-btn email" onclick="sendMail('${data.email}')">Email</button>
-                    <button class="action-btn delete" onclick="deleteUser('${docSnap.id}')">Delete</button>
+                <td class="p-4 text-center text-xs font-mono text-slate-500 dark:text-slate-400">${data.email || "No Email Found"}</td>
+                <td class="p-4 text-center"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[11px] font-bold uppercase tracking-wider">Active</span></td>
+                <td class="p-4 text-center">
+                    <div class="flex items-center justify-center gap-1.5">
+                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-amber-50 hover:bg-amber-100 text-amber-600 transition-colors">Block</button>
+                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors" onclick="sendMail('${data.email}')">Email</button>
+                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors" onclick="deleteUser('${docSnap.id}')">Delete</button>
+                    </div>
                 </td>
             </tr>`;
         });
@@ -622,7 +389,10 @@ window.exportCSV = function(){
     document.querySelectorAll("#studentsTable tr").forEach((row)=>{
         let cols = row.querySelectorAll("td");
         if(cols.length > 1){
-            csv += cols[0].innerText + "," + cols[1].innerText + "\n";
+            // Grabbing clean text inner data structures
+            const nameSpan = cols[0].querySelector("span");
+            const nameText = nameSpan ? nameSpan.innerText : "Student";
+            csv += nameText + "," + cols[1].innerText + "\n";
         }
     });
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -649,13 +419,10 @@ window.sendMail = function(email){
     }
 }
 
-// SIGN-OUT LOGOUT ENGINE
-function logout() {
-
-
+// FIX: ATTACHED DIRECTLY TO THE WINDOW OBJECT TO ENABLE INLINE ACTION TARGETING
+window.logout = function() {
     alert("Logged out successfully!");
-
-    // Redirect to login page
+    localStorage.removeItem("admin"); // Recommended to drop validation parameters
     window.location.href = "index.html";
 }
 
