@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Notes | NotesVault Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(at 0% 0%, #f0f7ff 0px, transparent 50%), 
+                        radial-gradient(at 100% 100%, #eff6ff 0px, transparent 50%), 
+                        #ffffff;
+            color: #0f172a;
+        }
+
+        /* Unique Soft-Glow Elevated Cards */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            box-shadow: 0 4px 30px rgba(37, 99, 235, 0.02),
+                        0 1px 3px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            border-color: rgba(37, 99, 235, 0.16);
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.04);
+        }
+
+        /* Sleek Modern Input Fields */
+        .premium-input {
+            background: rgba(248, 250, 252, 0.7);
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            transition: all 0.25s ease;
+        }
+        .premium-input:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        /* Table Specific Styling overrides */
+        table { border-collapse: collapse; }
+        tbody tr { transition: all 0.2s ease; }
+        tbody tr:hover { 
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.02) 0%, transparent 100%); 
+        }
+
+        /* Elegant Custom Switch Component */
+        .toggle-checkbox:checked + .toggle-slot {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Smooth scrollbars for dynamic layouts */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen selection:bg-blue-500/20 antialiased py-10 px-4 md:px-12">
+
+    <div id="toast-container" class="fixed top-6 right-6 z-50 flex flex-col gap-3"></div>
+
+    <div class="max-w-7xl mx-auto">
+
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12 pb-6 border-b border-slate-100">
+            <div>
+                <div class="flex items-center gap-2.5 text-xs font-bold tracking-widest text-blue-600 uppercase mb-2">
+                    <span class="bg-blue-600 text-white px-2 py-0.5 rounded-md font-extrabold text-[10px]">LMS</span>
+                    <span>NotesVault Studio</span> 
+                    <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i> 
+                    <span class="text-slate-400 normal-case font-medium">Content Manager</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
+                    Manage Notes
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">
+                    Supervising <span id="totalCount" class="font-bold text-blue-600">0</span> assets across Foundation, Intermediate & Final tiers.
+                </p>
+            </div>
+            
+            <a href="upload-notes.html" class="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-700 hover:opacity-95 text-white font-bold uppercase tracking-wider px-5 py-3.5 rounded-xl text-xs shadow-md shadow-blue-600/10 hover:shadow-xl hover:shadow-blue-600/20 hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 active:scale-[0.99] cursor-pointer">
+                <i class="fa-solid fa-cloud-arrow-up text-xs"></i> Upload Notes
+            </a>
+        </div>
+
+        <div class="premium-card p-4 rounded-2xl mb-6 bg-white flex flex-wrap gap-4 items-center">
+            <div class="relative flex-1 min-w-[260px]">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input id="searchInput" type="text" placeholder="Search parameters by title, subject, or faculty..."
+                    class="w-full premium-input pl-11 pr-4 py-3 rounded-xl text-sm placeholder-slate-400 font-medium">
+            </div>
+            <div class="relative min-w-[170px]">
+                <select id="courseFilter" class="w-full premium-input px-4 py-3 rounded-xl text-sm appearance-none cursor-pointer bg-white text-slate-700 font-medium">
+                    <option value="">All Academic Courses</option>
+                    <option value="Foundation">Foundation Tier</option>
+                    <option value="Intermediate">Intermediate Tier</option>
+                    <option value="Final">Final Tier</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+            </div>
+            <div class="relative min-w-[160px]">
+                <select id="statusFilter" class="w-full premium-input px-4 py-3 rounded-xl text-sm appearance-none cursor-pointer bg-white text-slate-700 font-medium">
+                    <option value="">All Status Enums</option>
+                    <option value="Published">Published Live</option>
+                    <option value="Draft">Internal Draft</option>
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+            </div>
+        </div>
+
+        <div id="bulkBar" class="hidden premium-card p-4 rounded-2xl mb-6 items-center justify-between text-sm bg-blue-50/40 border border-blue-100">
+            <span class="text-slate-700 font-medium"><i class="fa-solid fa-circle-check text-blue-600 mr-2"></i><span id="bulkCount" class="font-extrabold text-blue-600">0</span> nodes selected</span>
+            <div class="flex gap-2">
+                <button id="bulkPublish" class="px-4 py-2 rounded-xl text-xs font-bold uppercase bg-white border border-emerald-200 text-emerald-600 hover:bg-emerald-50 transition-colors shadow-xs">Publish</button>
+                <button id="bulkDraft" class="px-4 py-2 rounded-xl text-xs font-bold uppercase bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 transition-colors shadow-xs">Move to Draft</button>
+                <button id="bulkDelete" class="px-4 py-2 rounded-xl text-xs font-bold uppercase bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 transition-colors shadow-xs">Delete Selection</button>
+            </div>
+        </div>
+
+        <div class="premium-card rounded-2xl overflow-hidden bg-white">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[950px]">
+                    <thead>
+                        <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-100 bg-slate-50/60">
+                            <th class="p-4 w-12"><input type="checkbox" id="selectAll" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500/20"></th>
+                            <th class="p-4">Note Context & Metadata</th>
+                            <th class="p-4">Course / Stream Subject</th>
+                            <th class="p-4">Faculty Mentor</th>
+                            <th class="p-4"><i class="fa-solid fa-download mr-1 text-slate-300"></i> Downloads</th>
+                            <th class="p-4"><i class="fa-solid fa-eye mr-1 text-slate-300"></i> Views</th>
+                            <th class="p-4">Status Flag</th>
+                            <th class="p-4">Creation Date</th>
+                            <th class="p-4 text-right">Actions Matrix</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notesTableBody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="emptyState" class="hidden text-center py-20 text-slate-400 bg-slate-50/20">
+                <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-200 text-slate-400">
+                    <i class="fa-regular fa-folder-open text-2xl"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-800">No active assets detected</p>
+                <p class="text-xs text-slate-400 mt-1">Adjust your filter matrices or upload a brand new resource entry file set.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="editOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md hidden items-center justify-center z-[60] p-4">
+        <div class="premium-card w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-0 shadow-2xl border border-slate-100">
+            
+            <div class="flex justify-between items-center p-6 border-b border-slate-100 bg-slate-50/50">
+                <h3 class="text-base font-black text-slate-900 flex items-center gap-2.5">
+                    <span class="p-2 bg-blue-50 text-blue-600 rounded-lg text-xs"><i class="fa-solid fa-pen-to-square"></i></span>
+                    Modify Core Asset
+                </h3>
+                <button id="closeEdit" class="text-slate-400 hover:text-slate-900 text-2xl leading-none transition-colors">&times;</button>
+            </div>
+            
+            <form id="editForm" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <input type="hidden" id="editId">
+                
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Document Bundle Title</label>
+                    <input id="editTitle" type="text" required class="w-full premium-input px-4 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Target Course Stream</label>
+                    <div class="relative">
+                        <select id="editCourse" class="w-full premium-input px-4 py-3.5 rounded-xl text-sm appearance-none cursor-pointer bg-white font-medium">
+                            <option value="Foundation">Foundation Tier</option>
+                            <option value="Intermediate">Intermediate Tier</option>
+                            <option value="Final">Final Tier</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subject Context Mapping</label>
+                    <input id="editSubject" type="text" required class="w-full premium-input px-4 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Chapter Matrix</label>
+                    <input id="editChapter" type="text" class="w-full premium-input px-4 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Faculty Mentor Anchor</label>
+                    <input id="editFaculty" type="text" class="w-full premium-input px-4 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Curriculum Summary Index</label>
+                    <textarea id="editDescription" rows="3" class="w-full premium-input px-4 py-3.5 rounded-xl text-sm resize-none font-medium"></textarea>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Visibility Processing Gateway</label>
+                    <div class="relative">
+                        <select id="editStatus" class="w-full premium-input px-4 py-3.5 rounded-xl text-sm appearance-none cursor-pointer bg-white font-medium">
+                            <option value="Draft" class="text-amber-600 font-bold">Draft Status Mode</option>
+                            <option value="Published" class="text-emerald-600 font-bold">Published Live Action Mode</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2 flex justify-end gap-3 pt-4 border-t border-slate-100 mt-2">
+                    <button type="button" id="cancelEdit" class="px-5 py-3 rounded-xl text-xs font-bold uppercase bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors">Cancel</button>
+                    <button type="submit" class="px-5 py-3 rounded-xl text-xs font-bold uppercase bg-gradient-to-r from-blue-600 to-blue-700 hover:opacity-95 text-white shadow-md shadow-blue-600/10">Commit Asset Revisions</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../js/manageNotes.js"></script>
+</body>
+</html>
