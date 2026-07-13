@@ -3,289 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMA Vidyarthi Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>CMA Vidyarthi — Admin Ledger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(at 0% 0%, #f0f7ff 0px, transparent 50%), 
-                        radial-gradient(at 100% 100%, #eff6ff 0px, transparent 50%), 
-                        #ffffff;
-            color: #0f172a;
-            transition: background 0.3s ease, color 0.3s ease;
+        :root{
+            --ink:#0b1120;
+            --deep:#1e3a8a;
+            --blue:#2563eb;
+            --sky:#eff6ff;
+            --paper:#fbfdff;
+            --line:#dbe7fb;
+            --amber:#b45309;
+        }
+        *{ -webkit-font-smoothing:antialiased; }
+        body{
+            font-family:'Inter',sans-serif;
+            color:var(--ink);
+            background-color:var(--paper);
+            background-image:
+                repeating-linear-gradient(to bottom, rgba(37,99,235,0.055) 0px, rgba(37,99,235,0.055) 1px, transparent 1px, transparent 34px),
+                repeating-linear-gradient(to right, rgba(37,99,235,0.035) 0px, rgba(37,99,235,0.035) 1px, transparent 1px, transparent 120px);
+            transition:background-color .3s ease, color .3s ease;
+        }
+        .font-display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+        .font-mono{ font-family:'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+
+        /* Ledger spine card: a single ruled vertical accent, folio index in the corner */
+        .ledger-card{
+            position:relative;
+            background:var(--paper);
+            border:1px solid var(--line);
+            border-left:3px solid var(--deep);
+            box-shadow:0 1px 2px rgba(15,23,42,.03);
+            transition:box-shadow .25s ease, transform .2s ease, border-color .25s ease;
+        }
+        .ledger-card:hover{ box-shadow:0 12px 28px -12px rgba(30,58,138,.18); transform:translateY(-2px); }
+        .ledger-card .folio{
+            position:absolute; top:10px; right:14px;
+            font-family:'JetBrains Mono', monospace;
+            font-size:10px; color:#93a5c9; letter-spacing:.08em;
         }
 
-        /* Unique Soft-Glow Elevated Cards */
-        .premium-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(37, 99, 235, 0.08);
-            box-shadow: 0 4px 30px rgba(37, 99, 235, 0.02), 0 1px 3px rgba(0, 0, 0, 0.01);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .premium-input{
+            background:#ffffff; border:1px solid var(--line); color:var(--ink);
+            transition:all .2s ease;
         }
-        .premium-card:hover {
-            border-color: rgba(37, 99, 235, 0.16);
-            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.04);
+        .premium-input:focus{ border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12); outline:none; }
+
+        /* Rail navigation — bound ledger spine on the left edge of the app */
+        .rail{
+            background:linear-gradient(180deg, var(--ink) 0%, var(--deep) 130%);
+            position:relative;
+        }
+        .rail::after{
+            content:""; position:absolute; top:0; right:0; bottom:0; width:3px;
+            background:repeating-linear-gradient(to bottom, #f59e0b 0 6px, transparent 6px 14px);
+            opacity:.5;
+        }
+        .rail a.active{ background:rgba(255,255,255,.12); box-shadow:inset 3px 0 0 #f59e0b; }
+        .rail a{ transition:all .15s ease; }
+        .rail a:hover{ background:rgba(255,255,255,.06); }
+
+        table{ border-collapse:collapse; }
+        thead th{ font-family:'JetBrains Mono', monospace; letter-spacing:.06em; }
+        tbody tr{ transition:background .15s ease; border-bottom:1px dashed var(--line); }
+        tbody tr:hover{ background:var(--sky); }
+        tbody td{ font-variant-numeric: tabular-nums; }
+
+        .stamp{
+            display:inline-flex; align-items:center; gap:6px;
+            border:1px solid var(--line); border-radius:4px;
+            padding:3px 8px; font-family:'JetBrains Mono', monospace;
+            font-size:10px; letter-spacing:.05em; color:var(--deep);
+            background:var(--sky);
         }
 
-        /* Sleek Modern Input Fields */
-        .premium-input {
-            background: rgba(248, 250, 252, 0.7);
-            border: 1px solid #e2e8f0;
-            color: #0f172a;
-            transition: all 0.25s ease;
+        /* Dark mode */
+        body.dark{
+            --paper:#0a0f1c; --ink:#e6ecfb; --line:#1d2b4d; --sky:#111a30;
+            background-image:
+                repeating-linear-gradient(to bottom, rgba(99,140,255,0.06) 0px, rgba(99,140,255,0.06) 1px, transparent 1px, transparent 34px),
+                repeating-linear-gradient(to right, rgba(99,140,255,0.04) 0px, rgba(99,140,255,0.04) 1px, transparent 1px, transparent 120px);
         }
-        .premium-input:focus {
-            border-color: #2563eb;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            outline: none;
-        }
+        .dark .ledger-card{ background:#0d1526; }
+        .dark .premium-input{ background:#0d1526; color:#e6ecfb; }
+        .dark .stamp{ background:#0d1526; color:#93b4ff; }
 
-        /* Sidebar Navigation Layout styling */
-        .sidebar-gradient {
-            background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
-        }
+        ::-webkit-scrollbar{ width:6px; height:6px; }
+        ::-webkit-scrollbar-track{ background:transparent; }
+        ::-webkit-scrollbar-thumb{ background:#b9c9ee; border-radius:10px; }
+        .dark ::-webkit-scrollbar-thumb{ background:#2a3a63; }
 
-        /* Table Specific Styling overrides */
-        table { border-collapse: collapse; }
-        tbody tr { transition: all 0.2s ease; }
-        tbody tr:hover { 
-            background: linear-gradient(90deg, rgba(37, 99, 235, 0.02) 0%, transparent 100%); 
+        @media (prefers-reduced-motion: reduce){
+            *{ transition:none !important; animation:none !important; }
         }
-
-        /* Dark Mode Configurations overrides */
-        body.dark {
-            background: radial-gradient(at 0% 0%, #0f172a 0px, transparent 50%), 
-                        radial-gradient(at 100% 100%, #020617 0px, transparent 50%), 
-                        #090d16;
-            color: #f8fafc;
-        }
-        .dark .premium-card {
-            background: rgba(30, 41, 59, 0.45);
-            border-color: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
-        }
-        .dark .premium-card:hover {
-            border-color: rgba(99, 102, 241, 0.2);
-        }
-        .dark .premium-input {
-            background: rgba(15, 23, 42, 0.6);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #f8fafc;
-        }
-        .dark .premium-input:focus {
-            border-color: #6366f1;
-            background: rgba(15, 23, 42, 0.8);
-        }
-        .dark tbody tr:hover {
-            background: linear-gradient(90deg, rgba(99, 102, 241, 0.04) 0%, transparent 100%);
-        }
-
-        /* Smooth scrollbars */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
-<body class="min-h-screen selection:bg-blue-500/20 antialiased flex flex-col md:flex-row">
+<body class="min-h-screen selection:bg-blue-500/20 flex flex-col md:flex-row">
 
-<div class="w-full md:w-[275px] sidebar-gradient text-white p-6 flex flex-col md:fixed md:h-screen left-0 top-0 z-40 shadow-xl shadow-blue-950/20">
-    <div class="flex items-center gap-3 mb-10 pb-4 border-b border-white/10">
-        <img src="logo.png" alt="Logo" class="w-12 h-12 rounded-2xl border-2 border-white/20 shadow-md object-cover" onerror="this.src='https://ui-avatars.com/api/?name=CMA&background=2563eb&color=fff'">
+<div class="w-full md:w-[264px] rail text-white p-6 flex flex-col md:fixed md:h-screen left-0 top-0 z-40">
+    <div class="flex items-center gap-3 mb-8 pb-5 border-b border-white/10">
+        <img src="logo.png" alt="Logo" class="w-11 h-11 rounded-lg border border-white/20 object-cover" onerror="this.src='https://ui-avatars.com/api/?name=CMA&background=2563eb&color=fff'">
         <div>
-            <h2 class="text-lg font-black tracking-tight leading-tight">CMA Admin</h2>
-            <span class="text-[10px] text-blue-300 font-bold uppercase tracking-widest">Vidyarthi Portal</span>
+            <h2 class="text-base font-display font-bold tracking-tight leading-tight">CMA Vidyarthi</h2>
+            <span class="text-[10px] text-amber-400 font-mono uppercase tracking-[0.15em]">Ledger · Admin</span>
         </div>
     </div>
 
-    <div class="flex flex-col gap-1.5 flex-1 overflow-y-auto">
-        <a href="admin.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider bg-white/15 text-white shadow-sm transition-all duration-150">
-            <i class="fa-solid fa-chart-line text-sm w-5"></i>
-            <span>Dashboard</span>
+    <div class="flex flex-col gap-1 flex-1 overflow-y-auto">
+        <p class="px-4 text-[10px] font-mono uppercase tracking-[0.15em] text-white/35 mb-1">Registers</p>
+        <a href="admin.html" class="active flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white">
+            <i class="fa-solid fa-chart-line text-sm w-5"></i><span>Dashboard</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-users text-sm w-5"></i><span>Students</span>
+        </a>
+        <a href="admin/manageNotes.html" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-book text-sm w-5"></i><span>Manage Notes</span>
+        </a>
+        <a href="admin/upload-notes.html" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-cloud-arrow-up text-sm w-5"></i><span>Upload Notes</span>
         </a>
 
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-users text-sm w-5"></i>
-            <span>Students</span>
+        <p class="px-4 text-[10px] font-mono uppercase tracking-[0.15em] text-white/35 mt-5 mb-1">Operations</p>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-file-circle-question text-sm w-5"></i><span>Mock Tests</span>
         </a>
-
-        <a href="admin/manageNotes.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-book text-sm w-5"></i>
-            <span>Manage Notes</span>
+        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-chart-pie text-sm w-5"></i><span>Analytics</span>
         </a>
-
-        <a href="admin/upload-notes.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-cloud-arrow-up text-sm w-5"></i>
-            <span>Upload Notes</span>
+        <a href="#" onclick="exportCSV()" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-file-csv text-sm w-5"></i><span>Export CSV</span>
         </a>
-
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-file-circle-question text-sm w-5"></i>
-            <span>Mock Tests</span>
-        </a>
-
-        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-chart-pie text-sm w-5"></i>
-            <span>Analytics</span>
-        </a>
-
-        <a href="#" onclick="exportCSV()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-file-csv text-sm w-5"></i>
-            <span>Export CSV</span>
-        </a>
-
-        <a href="#" onclick="toggleDarkMode()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/5 transition-all duration-150">
-            <i class="fa-solid fa-moon text-sm w-5"></i>
-            <span>Dark Mode</span>
+        <a href="#" onclick="toggleDarkMode()" class="flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wide text-white/65 hover:text-white">
+            <i class="fa-solid fa-moon text-sm w-5"></i><span>Dark Mode</span>
         </a>
     </div>
 
     <div class="pt-4 border-t border-white/10 mt-4">
-        <button onclick="logout()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold uppercase tracking-wider py-3 rounded-xl text-xs shadow-md transition-all active:scale-[0.98] cursor-pointer">
+        <button onclick="logout()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold uppercase tracking-wide py-2.5 rounded-md text-xs transition-colors cursor-pointer">
             <i class="fa-solid fa-power-off mr-2"></i>Logout
         </button>
     </div>
 </div>
 
-<div class="flex-1 md:ml-[275px] p-4 md:p-10 space-y-8">
+<div class="flex-1 md:ml-[264px] p-4 md:p-10 space-y-8">
 
-    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-6 border-b border-dashed" style="border-color:var(--line)">
         <div>
-            <h1 class="text-3xl font-black tracking-tight md:text-4xl">Welcome Admin 👋</h1>
-            <p class="text-slate-400 dark:text-slate-400 text-sm mt-1">Supervising students and dynamic architecture platform components.</p>
-            <div class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold rounded-lg text-xs">
+            <p class="stamp mb-3"><i class="fa-solid fa-book-open-reader"></i> Folio 001 · Admin Register</p>
+            <h1 class="text-3xl md:text-4xl font-display font-bold tracking-tight">Welcome back, Admin</h1>
+            <p class="text-sm mt-1.5 opacity-60">Every student, note and mock test — entered, tallied, up to date.</p>
+            <div class="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-md text-xs font-mono" style="background:var(--sky); color:var(--deep)">
                 <i class="fa-regular fa-clock"></i> <span id="clock"></span>
             </div>
         </div>
 
         <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 w-full lg:w-auto">
-            <div class="relative w-full sm:w-[280px]">
+            <div class="relative w-full sm:w-[270px]">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" placeholder="Search parameters..." id="searchInput" onkeyup="searchStudents()" class="w-full premium-input pl-11 pr-4 py-3 rounded-xl text-xs font-medium placeholder-slate-400">
+                <input type="text" placeholder="Search the register..." id="searchInput" onkeyup="searchStudents()" class="w-full premium-input pl-11 pr-4 py-3 rounded-lg text-xs font-medium placeholder-slate-400">
             </div>
-
-            <div class="premium-card px-4 py-2 rounded-xl flex items-center gap-3 bg-white text-left min-w-[160px]">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop" alt="Profile" class="w-9 h-9 rounded-xl object-cover border border-slate-200">
+            <div class="ledger-card px-4 py-2 rounded-lg flex items-center gap-3 min-w-[160px]">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop" alt="Profile" class="w-9 h-9 rounded-md object-cover border" style="border-color:var(--line)">
                 <div>
-                    <h4 class="text-xs font-black">Kumar Admin</h4>
-                    <p class="text-[10px] text-slate-400">Super Admin</p>
+                    <h4 class="text-xs font-display font-semibold">Kumar Admin</h4>
+                    <p class="text-[10px] font-mono opacity-50 uppercase tracking-wide">Super Admin</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
-        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
-            <div class="w-10 h-10 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-users text-lg"></i></div>
-            <h2 id="totalUsers" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">0</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Total Students</p>
+        <div class="ledger-card p-6 rounded-xl">
+            <span class="folio">№ 01</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:var(--sky); color:var(--blue)"><i class="fa-solid fa-users text-base"></i></div>
+            <h2 id="totalUsers" class="text-3xl font-mono font-bold tracking-tight">0</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Total Students</p>
         </div>
 
-        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
-            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
-            <div class="w-10 h-10 bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-seedling text-lg"></i></div>
-            <h2 id="countFoundation" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Foundation</p>
+        <a class="ledger-card p-6 rounded-xl relative block" href="admin/manageNotes.html">
+            <span class="folio">№ 02</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:#ecfdf5; color:#059669"><i class="fa-solid fa-seedling text-base"></i></div>
+            <h2 id="countFoundation" class="text-3xl font-mono font-bold tracking-tight">—</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Foundation</p>
+            <span class="absolute bottom-4 right-4 text-[10px] font-mono opacity-40">manage →</span>
         </a>
 
-        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
-            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
-            <div class="w-10 h-10 bg-amber-50 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-bolt text-lg"></i></div>
-            <h2 id="countIntermediate" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Intermediate</p>
+        <a class="ledger-card p-6 rounded-xl relative block" href="admin/manageNotes.html">
+            <span class="folio">№ 03</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:#fffbeb; color:#b45309"><i class="fa-solid fa-bolt text-base"></i></div>
+            <h2 id="countIntermediate" class="text-3xl font-mono font-bold tracking-tight">—</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Intermediate</p>
+            <span class="absolute bottom-4 right-4 text-[10px] font-mono opacity-40">manage →</span>
         </a>
 
-        <a class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group block" href="admin/manageNotes.html">
-            <span class="absolute top-4 right-4 text-[10px] font-bold text-slate-300 group-hover:text-blue-500 transition-colors">Manage <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
-            <div class="w-10 h-10 bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-trophy text-lg"></i></div>
-            <h2 id="countFinal" class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">—</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Final Notes</p>
+        <a class="ledger-card p-6 rounded-xl relative block" href="admin/manageNotes.html">
+            <span class="folio">№ 04</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:#eef2ff; color:#4338ca"><i class="fa-solid fa-trophy text-base"></i></div>
+            <h2 id="countFinal" class="text-3xl font-mono font-bold tracking-tight">—</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Final Notes</p>
+            <span class="absolute bottom-4 right-4 text-[10px] font-mono opacity-40">manage →</span>
         </a>
 
-        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
-            <div class="w-10 h-10 bg-purple-50 dark:bg-slate-800 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-file-pen text-lg"></i></div>
-            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">180</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Mock Tests</p>
+        <div class="ledger-card p-6 rounded-xl">
+            <span class="folio">№ 05</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:#fdf4ff; color:#a21caf"><i class="fa-solid fa-file-pen text-base"></i></div>
+            <h2 class="text-3xl font-mono font-bold tracking-tight">180</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Mock Tests</p>
         </div>
 
-        <div class="premium-card p-6 rounded-2xl bg-white relative overflow-hidden group">
-            <div class="w-10 h-10 bg-pink-50 dark:bg-slate-800 text-pink-600 dark:text-pink-400 rounded-xl flex items-center justify-center mb-4"><i class="fa-solid fa-chart-column text-lg"></i></div>
-            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">92%</h2>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mt-1">Success Rate</p>
+        <div class="ledger-card p-6 rounded-xl">
+            <span class="folio">№ 06</span>
+            <div class="w-9 h-9 rounded-md flex items-center justify-center mb-4" style="background:#fdf2f8; color:#be185d"><i class="fa-solid fa-chart-column text-base"></i></div>
+            <h2 class="text-3xl font-mono font-bold tracking-tight">92%</h2>
+            <p class="opacity-50 text-[11px] font-semibold uppercase tracking-wide mt-1">Success Rate</p>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div class="lg:col-span-2 premium-card p-6 rounded-2xl bg-white space-y-4">
-            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-cubes text-blue-600"></i> Quick Control Hub
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 ledger-card p-6 rounded-xl space-y-4">
+            <h2 class="text-xs font-mono font-semibold uppercase tracking-[0.1em] flex items-center gap-2" style="color:var(--deep)">
+                <i class="fa-solid fa-cubes"></i> Quick Control Hub
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                <a href="admin/upload-notes.html" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 bg-slate-50/50 dark:bg-slate-800/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50/30 transition-all group">
+                <a href="admin/upload-notes.html" class="flex flex-col items-center justify-center p-5 rounded-xl border-2 border-dashed hover:border-blue-500 transition-all group" style="border-color:var(--line); color:var(--blue)">
                     <i class="fa-solid fa-file-pdf text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                    <span class="text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300">+ Upload Notes</span>
+                    <span class="text-xs font-semibold uppercase tracking-wide opacity-80">+ Upload Notes</span>
                 </a>
-                <a href="admin/manageNotes.html" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 bg-slate-50/50 dark:bg-slate-800/30 text-blue-600 dark:text-blue-400 hover:bg-blue-50/30 transition-all group">
+                <a href="admin/manageNotes.html" class="flex flex-col items-center justify-center p-5 rounded-xl border-2 border-dashed hover:border-blue-500 transition-all group" style="border-color:var(--line); color:var(--blue)">
                     <i class="fa-solid fa-book text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                    <span class="text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300">Manage Notes</span>
+                    <span class="text-xs font-semibold uppercase tracking-wide opacity-80">Manage Notes</span>
                 </a>
-                <div class="opacity-40 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 text-slate-400">
+                <div class="opacity-35 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-xl border-2 border-dashed" style="border-color:var(--line)">
                     <i class="fa-solid fa-video text-xl mb-2"></i>
-                    <span class="text-xs font-bold uppercase tracking-wide">+ Add Video</span>
+                    <span class="text-xs font-semibold uppercase tracking-wide">+ Add Video</span>
                 </div>
-                <div class="opacity-40 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30 text-slate-400">
+                <div class="opacity-35 cursor-not-allowed flex flex-col items-center justify-center p-5 rounded-xl border-2 border-dashed" style="border-color:var(--line)">
                     <i class="fa-solid fa-square-poll-horizontal text-xl mb-2"></i>
-                    <span class="text-xs font-bold uppercase tracking-wide">+ Mock Test</span>
+                    <span class="text-xs font-semibold uppercase tracking-wide">+ Mock Test</span>
                 </div>
             </div>
         </div>
 
-        <div class="premium-card p-6 rounded-2xl bg-white space-y-4">
-            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-bolt text-amber-500"></i> Platform Feed Activity
+        <div class="ledger-card p-6 rounded-xl space-y-4">
+            <h2 class="text-xs font-mono font-semibold uppercase tracking-[0.1em] flex items-center gap-2" style="color:var(--amber)">
+                <i class="fa-solid fa-bolt"></i> Feed Activity
             </h2>
-            <div class="space-y-3.5 text-xs font-medium text-slate-600 dark:text-slate-300">
-                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> <span>New student registered</span></div>
-                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> <span>Mock test completed architecture</span></div>
-                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> <span>Course schemas updated live</span></div>
-                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> <span>Student login verification validated</span></div>
+            <div class="space-y-3 text-xs font-medium opacity-80">
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 rounded-full" style="background:#059669"></span> New student registered</div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 rounded-full" style="background:var(--blue)"></span> Mock test completed</div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 rounded-full" style="background:#a21caf"></span> Course schemas updated</div>
+                <div class="flex items-center gap-2.5"><span class="w-1.5 h-1.5 rounded-full" style="background:#059669"></span> Login verification validated</div>
             </div>
         </div>
     </div>
 
-    <div class="premium-card rounded-2xl overflow-hidden bg-white">
-        <div class="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/20">
-            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2.5">
-                <span class="p-2 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-xs"><i class="fa-solid fa-address-book"></i></span>
-                Registered Students Enrollment Grid
+    <div class="ledger-card rounded-xl overflow-hidden">
+        <div class="flex items-center justify-between p-6 border-b" style="border-color:var(--line); background:var(--sky)">
+            <h2 class="text-xs font-mono font-semibold uppercase tracking-[0.1em] flex items-center gap-2.5" style="color:var(--deep)">
+                <span class="p-2 rounded-md text-xs" style="background:#fff; color:var(--blue)"><i class="fa-solid fa-address-book"></i></span>
+                Student Register
             </h2>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl text-xs shadow-md shadow-blue-600/10 transition-colors cursor-pointer">
+            <button class="text-white font-semibold uppercase tracking-wide px-4 py-2.5 rounded-lg text-xs transition-colors cursor-pointer" style="background:var(--blue)">
                 + Add Student
             </button>
         </div>
 
-        <div id="loader" class="text-center py-12 text-sm font-bold text-blue-600 dark:text-blue-400">
-            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading Student Registry...
+        <div id="loader" class="text-center py-12 text-sm font-mono font-semibold" style="color:var(--blue)">
+            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading register…
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-sm min-w-[750px]">
                 <thead>
-                    <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10">
-                        <th class="p-4 text-center">Name Information</th>
-                        <th class="p-4 text-center">Email Anchor Pointer</th>
-                        <th class="p-4 text-center">System Status Flag</th>
-                        <th class="p-4 text-center">Actions Management</th>
+                    <tr class="text-left text-[10px] uppercase opacity-50 border-b" style="border-color:var(--line)">
+                        <th class="p-4 text-center">Name</th>
+                        <th class="p-4 text-center">Email</th>
+                        <th class="p-4 text-center">Status</th>
+                        <th class="p-4 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="studentsTable" class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300 font-medium">
-                    </tbody>
+                <tbody id="studentsTable" class="font-medium"></tbody>
             </table>
         </div>
     </div>
@@ -324,20 +326,20 @@ async function loadStudents(){
             const data = docSnap.data();
             count++;
             html += `
-            <tr class="hover:bg-slate-50/50">
+            <tr>
                 <td class="p-4 text-center">
                     <div class="flex items-center justify-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'Student')}&background=eff6ff&color=2563eb&bold=true" class="w-9 h-9 rounded-full border border-slate-100">
-                        <span class="font-bold text-slate-900 dark:text-white">${data.name || "Student"}</span>
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'Student')}&background=eff6ff&color=2563eb&bold=true" class="w-9 h-9 rounded-md border" style="border-color:var(--line)">
+                        <span class="font-semibold">${data.name || "Student"}</span>
                     </div>
                 </td>
-                <td class="p-4 text-center text-xs font-mono text-slate-500 dark:text-slate-400">${data.email || "No Email Found"}</td>
-                <td class="p-4 text-center"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[11px] font-bold uppercase tracking-wider">Active</span></td>
+                <td class="p-4 text-center text-xs font-mono opacity-70">${data.email || "No Email Found"}</td>
+                <td class="p-4 text-center"><span class="px-2.5 py-1 rounded-md text-[10px] font-mono font-semibold uppercase tracking-wide" style="background:#ecfdf5; color:#059669">Active</span></td>
                 <td class="p-4 text-center">
                     <div class="flex items-center justify-center gap-1.5">
-                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-amber-50 hover:bg-amber-100 text-amber-600 transition-colors">Block</button>
-                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors" onclick="sendMail('${data.email}')">Email</button>
-                        <button class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors" onclick="deleteUser('${docSnap.id}')">Delete</button>
+                        <button class="px-3 py-1.5 rounded-md text-[10px] font-semibold uppercase tracking-wide transition-colors" style="background:#fffbeb; color:#b45309">Block</button>
+                        <button class="px-3 py-1.5 rounded-md text-[10px] font-semibold uppercase tracking-wide transition-colors" style="background:var(--sky); color:var(--blue)" onclick="sendMail('${data.email}')">Email</button>
+                        <button class="px-3 py-1.5 rounded-md text-[10px] font-semibold uppercase tracking-wide transition-colors" style="background:#fef2f2; color:#dc2626" onclick="deleteUser('${docSnap.id}')">Delete</button>
                     </div>
                 </td>
             </tr>`;
@@ -389,7 +391,6 @@ window.exportCSV = function(){
     document.querySelectorAll("#studentsTable tr").forEach((row)=>{
         let cols = row.querySelectorAll("td");
         if(cols.length > 1){
-            // Grabbing clean text inner data structures
             const nameSpan = cols[0].querySelector("span");
             const nameText = nameSpan ? nameSpan.innerText : "Student";
             csv += nameText + "," + cols[1].innerText + "\n";
@@ -422,7 +423,7 @@ window.sendMail = function(email){
 // FIX: ATTACHED DIRECTLY TO THE WINDOW OBJECT TO ENABLE INLINE ACTION TARGETING
 window.logout = function() {
     alert("Logged out successfully!");
-    localStorage.removeItem("admin"); // Recommended to drop validation parameters
+    localStorage.removeItem("admin");
     window.location.href = "index.html";
 }
 
