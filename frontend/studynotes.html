@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMA Vidyarthi — Notes Vault</title>
+
+  <!-- Font and Icon Assets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    /* ════════════════════════════════════════════════════
+       🎨 PREMIUM BLUE & WHITE — DESIGN TOKENS (unchanged palette)
+       ════════════════════════════════════════════════════ */
+    :root {
+      --bg-global: #f4f7fc;
+      --bg-card: #ffffff;
+
+      --primary: #0f52ba;
+      --primary-gradient: linear-gradient(135deg, #0f52ba, #1e3a8a);
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --accent-hover: #1d4ed8;
+
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --border-color: #e2e8f0;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-md: 0 10px 15px -3px rgb(15 82 186 / 0.08), 0 4px 6px -4px rgb(15 82 186 / 0.08);
+
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --header-h: 68px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--bg-global); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    ::selection { background: var(--accent-light); color: var(--primary); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ════════════════════════════════════════════════════
+       🧭 HEADER
+       ════════════════════════════════════════════════════ */
+    .appHeader {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 24px;
+      height: var(--header-h);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .headerContainer {
+      max-width: 1400px;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brandSection { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+    .logoContainer {
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      overflow: hidden; border: 2px solid var(--accent-light);
+      box-shadow: var(--shadow-sm); flex-shrink: 0;
+    }
+    .logoContainer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .brandTitle { font-size: 16px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px; white-space: nowrap; }
+    .brandSub { font-size: 11.5px; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+
+    .backBtn {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      padding: 9px 16px; border-radius: var(--radius-md);
+      color: var(--text-muted); font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .backBtn:hover { color: var(--primary); border-color: var(--primary); background: var(--accent-light); transform: translateX(-2px); }
+    .backBtn .lbl { display: inline; }
+
+    /* ════════════════════════════════════════════════════
+       📱 MOBILE TAB BAR (replaces sidebar under 968px)
+       ════════════════════════════════════════════════════ */
+    .mobileTabBar {
+      display: none;
+      position: sticky;
+      top: var(--header-h);
+      z-index: 190;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 8px;
+    }
+    .mobileTabBar::-webkit-scrollbar { display: none; }
+
+    .mobileTabBtn {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 16px; border-radius: 999px;
+      border: 1px solid var(--border-color); background: var(--bg-global);
+      color: var(--text-muted); font-size: 13px; font-weight: 600;
+      white-space: nowrap; cursor: pointer; transition: var(--transition);
+    }
+    .mobileTabBtn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; box-shadow: var(--shadow-md); }
+
+    /* ════════════════════════════════════════════════════
+       💻 MAIN LAYOUT
+       ════════════════════════════════════════════════════ */
+    .appContent {
+      max-width: 1400px; width: 100%; margin: 28px auto; padding: 0 24px;
+      display: grid; grid-template-columns: 260px 1fr; gap: 28px; flex: 1;
+      align-items: start;
+    }
+
+    .sidebarFilter {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      padding: 22px; border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm); height: fit-content; position: sticky; top: calc(var(--header-h) + 20px);
+    }
+    .sidebarTitle { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); font-weight: 700; margin-bottom: 14px; }
+    .filterButtonGroup { display: flex; flex-direction: column; gap: 7px; }
+
+    .filterBtn {
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+      padding: 13px 15px; background: none; border: 1px solid transparent; border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 600; color: var(--text-muted); text-align: left; cursor: pointer;
+      transition: var(--transition);
+    }
+    .filterBtn i { font-size: 15px; opacity: 0.65; transition: var(--transition); }
+    .filterBtn:hover { background: var(--bg-global); color: var(--text-main); }
+    .filterBtn.active { background: var(--primary-gradient); color: #fff; box-shadow: var(--shadow-md); }
+    .filterBtn.active i { opacity: 1; transform: translateX(2px); }
+
+    /* Right workspace */
+    .viewDisplay { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+    .viewHeaderCard {
+      background: var(--primary-gradient); border-radius: var(--radius-lg);
+      padding: 28px; color: #fff; box-shadow: var(--shadow-md);
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .viewHeaderCard::before {
+      content: ''; position: absolute; top: -50px; right: -50px;
+      width: 180px; height: 180px; background: rgba(255,255,255,0.06); border-radius: 50%;
+    }
+    .viewHeaderTop { position: relative; z-index: 1; }
+    .viewHeaderBadge {
+      display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px;
+      border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+    .viewHeaderTitle { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+    .viewHeaderCount { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 500; }
+
+    /* Search bar sits inside the header card, relative z-index above the ::before circle */
+    .searchRow { position: relative; z-index: 1; }
+    .searchBox {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-md); padding: 11px 14px; backdrop-filter: blur(6px);
+    }
+    .searchBox i { color: rgba(255,255,255,0.8); font-size: 14px; }
+    .searchBox input {
+      background: none; border: none; outline: none; color: #fff;
+      font-size: 14px; font-weight: 500; width: 100%;
+    }
+    .searchBox input::placeholder { color: rgba(255,255,255,0.7); }
+
+    /* Grid */
+    .notesGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+
+    .noteCard {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      padding: 22px; display: flex; flex-direction: column; justify-content: space-between;
+      cursor: pointer; box-shadow: var(--shadow-sm); position: relative; transition: var(--transition);
+    }
+    .noteCard:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 20px -8px rgb(15 82 186 / 0.15); }
+    .noteCard:active { transform: translateY(-1px); }
+
+    .cardHeaderMeta { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+    .cardIconBox {
+      width: 44px; height: 44px; background: var(--accent-light); color: var(--primary);
+      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0; transition: var(--transition);
+    }
+    .noteCard:hover .cardIconBox { background: var(--primary); color: #fff; }
+
+    .cardTitleWrap { min-width: 0; flex: 1; }
+    .cardTopRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .cardSubjectTag { display: inline-block; font-size: 10.5px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .03em; }
+    .premiumTag {
+      font-size: 10px; font-weight: 700; color: #92400e; background: #fef3c7;
+      padding: 2px 8px; border-radius: 999px; flex-shrink: 0;
+    }
+    .cardMainTitle { font-size: 14.5px; font-weight: 700; color: var(--text-main); line-height: 1.4; margin-top: 3px; }
+
+
+
+    .cardActionFooter {
+      border-top: 1px solid var(--border-color); padding-top: 13px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; font-weight: 600; color: var(--accent);
+    }
+    .cardActionFooter span { display: flex; align-items: center; gap: 6px; }
+
+    /* ════════════════════════════════════════════════════
+       🔄 SKELETON LOADING
+       ════════════════════════════════════════════════════ */
+    .skeletonCard {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      padding: 22px; height: 168px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .skelLine, .skelBox {
+      background: linear-gradient(90deg, #eef1f6 25%, #f7f9fc 37%, #eef1f6 63%);
+      background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius: 8px;
+    }
+    .skelBox { width: 44px; height: 44px; border-radius: var(--radius-md); }
+    .skelLine.w60 { width: 60%; height: 12px; }
+    .skelLine.w40 { width: 40%; height: 10px; }
+    .skelLine.w90 { width: 90%; height: 10px; }
+    .skelLine.w70 { width: 70%; height: 10px; }
+    @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+    /* Empty / error states */
+    .emptyContainer {
+      grid-column: 1 / -1; background: var(--bg-card); border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg); padding: 56px 32px; text-align: center;
+    }
+    .emptyContainer i { font-size: 40px; color: var(--text-light); margin-bottom: 14px; }
+    .emptyTitle { font-weight: 700; font-size: 15.5px; color: var(--text-main); margin-bottom: 6px; }
+    .emptySub { font-size: 13px; color: var(--text-muted); max-width: 380px; margin: 0 auto; }
+
+    /* ════════════════════════════════════════════════════
+       📱 RESPONSIVE BREAKPOINTS
+       ════════════════════════════════════════════════════ */
+    @media (max-width: 968px) {
+      .appContent { grid-template-columns: 1fr; margin: 18px auto; padding: 0 16px; gap: 18px; }
+      .sidebarFilter { display: none; }
+      .mobileTabBar { display: flex; }
+      .viewHeaderTitle { font-size: 19px; }
+      .appHeader { padding: 0 16px; }
+    }
+
+    @media (max-width: 560px) {
+      .brandSub { display: none; }
+      .backBtn .lbl { display: none; }
+      .backBtn { padding: 9px 12px; }
+      .viewHeaderCard { padding: 20px; }
+      .notesGrid { grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+
+  <!-- Firebase Core -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+  <header class="appHeader">
+    <div class="headerContainer">
+      <div class="brandSection">
+        <div class="logoContainer">
+          <img src="https://i.postimg.cc/VN4vmgr0/IMG-20260331-230419-988.jpg" alt="CMA Vidyarthi logo">
+        </div>
+        <div>
+          <div class="brandTitle">CMA Vidyarthi</div>
+          <div class="brandSub">Study Notes</div>
+        </div>
+      </div>
+      <a class="backBtn" href="javascript:void(0)" onclick="window.history.back()">
+        <i class="fa-solid fa-arrow-left"></i> <span class="lbl">Exit Vault</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Mobile tab bar (visible under 968px) -->
+  <nav class="mobileTabBar" id="mobileTabBar">
+    <button class="mobileTabBtn active" data-course="Foundation">🌱 Foundation</button>
+    <button class="mobileTabBtn" data-course="Intermediate">⚡ Intermediate</button>
+    <button class="mobileTabBtn" data-course="Final">🏆 Final</button>
+  </nav>
+
+  <main class="appContent">
+
+    <!-- Desktop sidebar (hidden under 968px) -->
+    <aside class="sidebarFilter">
+      <div class="sidebarTitle">Course Tracks</div>
+      <div class="filterButtonGroup" id="filterTrackGroup">
+        <button class="filterBtn active" data-course="Foundation">
+          <span>🌱 Foundation</span> <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button class="filterBtn" data-course="Intermediate">
+          <span>⚡ Intermediate</span> <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button class="filterBtn" data-course="Final">
+          <span>🏆 Final</span> <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </aside>
+
+    <section class="viewDisplay">
+      <div class="viewHeaderCard">
+        <div class="viewHeaderTop">
+          <div class="viewHeaderBadge" id="bannerLevelTag">Track Active</div>
+          <div class="viewHeaderTitle" id="bannerDisplayTitle">Study Resources Vault</div>
+          <div class="viewHeaderCount" id="bannerCount"></div>
+        </div>
+        <div class="searchRow">
+          <div class="searchBox">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search by title or subject...">
+          </div>
+        </div>
+      </div>
+
+      <div class="notesGrid" id="liveCardsDestination"></div>
+    </section>
+
+  </main>
+
+  <script>
+    // ════════════════════════════════════════════════════
+    // ⚙️ FIREBASE INIT
+    // ════════════════════════════════════════════════════
+    const firebaseConfig = {
+      apiKey: "AIzaSyA9sSSCsEW_XWsOpz1sGJtFIuEEDLSxaj8",
+      authDomain: "cma-vidyarthi-3c892.firebaseapp.com",
+      projectId: "cma-vidyarthi-3c892",
+      storageBucket: "cma-vidyarthi-3c892.firebasestorage.app",
+      messagingSenderId: "752274115998",
+      appId: "1:752274115998:web:384d4cf2d36fdec126da8f",
+      measurementId: "G-8P3QWMYSXY"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    let currentNotes = [];   // notes currently loaded for the active track
+    let currentCourse = "Foundation";
+
+    /* ---------------- Fetch notes for a track ---------------- */
+    async function fetchSyncedNotes(course) {
+      currentCourse = course;
+      syncActiveButtons(course);
+
+      const bannerTag = document.getElementById("bannerLevelTag");
+      const bannerTitle = document.getElementById("bannerDisplayTitle");
+      const bannerCount = document.getElementById("bannerCount");
+      const grid = document.getElementById("liveCardsDestination");
+
+      bannerTag.innerText = `${course} Materials`;
+      bannerTitle.innerText = `Browse All ${course} Handouts`;
+      bannerCount.innerText = "";
+
+      renderSkeletons(grid);
+
+      try {
+        // Matches exactly what the admin uploader writes: field "course",
+        // values "Foundation" | "Intermediate" | "Final", and only notes
+        // the admin has actually published (drafts stay hidden from students).
+        const snapshot = await db.collection("notes")
+          .where("course", "==", course)
+          .where("status", "==", "Published")
+          .get();
+
+        if (snapshot.empty) {
+          currentNotes = [];
+          renderEmpty(grid);
+          return;
+        }
+
+        currentNotes = snapshot.docs.map((d) => d.data());
+        bannerCount.innerText = `${currentNotes.length} resource${currentNotes.length === 1 ? "" : "s"} available`;
+        renderCards(currentNotes, grid);
+      } catch (error) {
+        console.error("Notes fetch failed:", error);
+        renderError(grid);
+      }
+    }
+
+    function syncActiveButtons(course) {
+      document.querySelectorAll(".filterBtn, .mobileTabBtn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.course === course);
+      });
+    }
+
+    /* ---------------- Render helpers ---------------- */
+    function renderSkeletons(grid) {
+      let html = "";
+      for (let i = 0; i < 6; i++) {
+        html += `
+          <div class="skeletonCard">
+            <div style="display:flex; gap:14px; align-items:flex-start;">
+              <div class="skelBox"></div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                <div class="skelLine w40"></div>
+                <div class="skelLine w60"></div>
+              </div>
+            </div>
+            <div class="skelLine w90"></div>
+            <div class="skelLine w70"></div>
+          </div>`;
+      }
+      grid.innerHTML = html;
+    }
+
+    function renderEmpty(grid) {
+      grid.innerHTML = `
+        <div class="emptyContainer">
+          <i class="fa-regular fa-folder-open"></i>
+          <div class="emptyTitle">No Study Materials Shared</div>
+          <div class="emptySub">Our workspace hasn't published resources for this track yet — check back soon.</div>
+        </div>`;
+    }
+
+    function renderError(grid) {
+      grid.innerHTML = `
+        <div class="emptyContainer" style="border-color:#fee2e2;">
+          <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i>
+          <div class="emptyTitle" style="color:#991b1b;">Connection Refused</div>
+          <div class="emptySub">Couldn't load notes right now. Check your connection and try again.</div>
+        </div>`;
+    }
+
+    function renderCards(notes, grid) {
+      if (!notes.length) { renderEmpty(grid); return; }
+      grid.innerHTML = "";
+      notes.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "noteCard";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `Open ${item.title || "note"}`);
+
+        const open = () => {
+          if (item.pdfURL || item.fileUrl) window.open(item.pdfURL || item.fileUrl, "_blank", "noopener");
+          else alert("This resource's file link looks broken — please contact an admin.");
+        };
+        card.onclick = open;
+        card.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } };
+
+        card.innerHTML = `
+          <div>
+            <div class="cardHeaderMeta">
+              <div class="cardIconBox"><i class="fa-regular fa-file-lines"></i></div>
+              <div class="cardTitleWrap">
+                <div class="cardTopRow">
+                  <span class="cardSubjectTag">${escapeHtml(item.subject || "Reference Document")}</span>
+                  ${item.premium ? '<span class="premiumTag">Premium</span>' : ""}
+                </div>
+                <h3 class="cardMainTitle">${escapeHtml(item.title || "Untitled Reference")}</h3>
+              </div>
+            </div>
+            <p class="cardDescription">${escapeHtml(item.description || "Tap to view this resource.")}</p>
+          </div>
+          <div class="cardActionFooter">
+            <span>View Resource File</span>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+      }[c]));
+    }
+
+    /* ---------------- Client-side search within loaded track ---------------- */
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      const term = e.target.value.trim().toLowerCase();
+      const grid = document.getElementById("liveCardsDestination");
+      if (!term) { renderCards(currentNotes, grid); return; }
+      const filtered = currentNotes.filter((n) =>
+        `${n.title || ""} ${n.subject || ""}`.toLowerCase().includes(term)
+      );
+      renderCards(filtered, grid);
+    });
+
+    /* ---------------- Wire track buttons (desktop + mobile) ---------------- */
+    document.querySelectorAll(".filterBtn, .mobileTabBtn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.getElementById("searchInput").value = "";
+        fetchSyncedNotes(btn.dataset.course);
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => fetchSyncedNotes("Foundation"));
+  </script>
+</body>
+</html>
