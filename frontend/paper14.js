@@ -262,8 +262,6 @@ const PN14 = [
 { c:6, q:"Which of the following is an example of a hybrid mutual fund strategy?", o:["60% equity, 40% debt allocation", "100% cash allocation", "Only corporate bonds", "Only sector-specific stocks"], a:0 },
 { c:6, q:"Systematic Withdrawal Plan (SWP) allows investors to:", o:["Withdraw a fixed amount periodically from their mutual fund investment", "Invest in new units automatically", "Avoid all taxes", "Only withdraw principal"], a:0 },
 { c:6, q:"The beta of a mutual fund indicates:", o:["Volatility of the fund relative to the market", "Fund manager's experience", "Total NAV", "Dividend yield"], a:0 },
-
-
 { c:0, q:"The primary objective of capital budgeting is to", o:["Maximize shareholders' wealth","Increase sales","Reduce operating cost","Increase inventory"], a:0 },
 { c:0, q:"Which method considers the time value of money?", o:["Payback Period","Accounting Rate of Return","Net Present Value","Average Profit"], a:2 },
 { c:0, q:"If PI is greater than 1, the project should be", o:["Rejected","Accepted","Deferred","Ignored"], a:1 },
@@ -279,7 +277,6 @@ const PN14 = [
 { c:0, q:"Depreciation is added back while computing cash flow because it is", o:["Revenue","Non-cash expense","Current asset","Liability"], a:1 },
 { c:0, q:"Which cost is ignored in capital budgeting?", o:["Relevant Cost","Opportunity Cost","Sunk Cost","Incremental Cost"], a:2 },
 { c:0, q:"Replacement decision mainly compares", o:["Old asset with new asset","Debt with Equity","Sales with Profit","Fixed cost with Variable cost"], a:0 },
-
 { c:1, q:"Sensitivity analysis studies the effect of change in", o:["One variable at a time","All variables together","Only sales","Only tax"], a:0 },
 { c:1, q:"Scenario analysis considers", o:["Single variable","Multiple variables simultaneously","Only inflation","Only cost"], a:1 },
 { c:1, q:"Decision tree is useful when", o:["Sequential decisions exist","No uncertainty exists","Only accounting data is available","Tax planning"], a:0 },
@@ -290,7 +287,6 @@ const PN14 = [
 { c:1, q:"Risk adjusted discount rate generally", o:["Increases with risk","Decreases with risk","Remains constant","Becomes zero"], a:0 },
 { c:1, q:"Certainty equivalent approach adjusts", o:["Cash flows","Discount rate","Depreciation","Tax"], a:0 },
 { c:1, q:"Probability values always lie between", o:["0 and 1","1 and 2","-1 and 1","0 and 100"], a:0 },
-
 { c:2, q:"Operating lease is generally", o:["Short-term","Long-term","Perpetual","Compulsory"], a:0 },
 { c:2, q:"Finance lease generally covers", o:["Major part of asset life","Only one month","Only maintenance period","None"], a:0 },
 { c:2, q:"Ownership in operating lease remains with", o:["Lessee","Lessor","Government","Bank"], a:1 },
@@ -301,7 +297,6 @@ const PN14 = [
 { c:2, q:"Lease or Buy decision is based mainly on", o:["NPV Comparison","Trial Balance","Sales","Production"], a:0 },
 { c:2, q:"Maintenance responsibility in finance lease is generally of", o:["Lessee","Lessor","Government","Bank"], a:0 },
 { c:2, q:"Lease agreement is between", o:["Lessor and Lessee","Shareholder and Company","Bank and Customer","Debtor and Creditor"], a:0 },
-
 { c:3, q:"Assets pooled for securitization are generally", o:["Income generating","Idle assets","Fixed deposits","Inventory"], a:0 },
 { c:3, q:"SPV stands for", o:["Special Purpose Vehicle","Special Payment Value","Security Protection Vehicle","Standard Portfolio Value"], a:0 },
 { c:3, q:"Securitization improves", o:["Liquidity","Pollution","Inflation","Tax"], a:0 },
@@ -312,7 +307,6 @@ const PN14 = [
 { c:3, q:"Securitization mainly converts", o:["Illiquid assets into marketable securities","Cash into inventory","Equity into debt","Debt into equity"], a:0 },
 { c:3, q:"Pass Through Certificates are issued by", o:["SPV","Government","Depositor","Borrower"], a:0 },
 { c:3, q:"One advantage of securitization is", o:["Better liquidity","Higher pollution","Lower production","Inventory increase"], a:0 },
-
 { c:4, q:"Fundamental analysis primarily focuses on", o:["Intrinsic value of securities","Daily price fluctuations","Market rumours","Trading volume only"], a:0 },
 { c:4, q:"Technical analysis is mainly based on", o:["Price and volume movements","Financial statements","GDP only","Tax rates"], a:0 },
 { c:4, q:"Top-down approach begins with", o:["Economic Analysis","Company Analysis","Ratio Analysis","Dividend Analysis"], a:0 },
@@ -328,7 +322,6 @@ const PN14 = [
 { c:4, q:"Inflation generally reduces", o:["Purchasing power","Tax","Production","Sales"], a:0 },
 { c:4, q:"Leading indicators predict", o:["Future economic activity","Past activity","Current assets","Sales only"], a:0 },
 { c:4, q:"Lagging indicators reflect", o:["Past performance","Future demand","Current tax","Future dividends"], a:0 },
-
 { c:5, q:"Dividend Discount Model values", o:["Equity shares","Debentures","Preference shares only","Bonds only"], a:0 },
 { c:5, q:"Bond value is equal to", o:["PV of interest + PV of principal","Face value only","Coupon only","Market value only"], a:0 },
 { c:5, q:"Current yield equals", o:["Annual Coupon / Market Price","Coupon / Face Value","Market Price / Coupon","Dividend / EPS"], a:0 },
@@ -344,7 +337,6 @@ const PN14 = [
 { c:5, q:"Puttable bond gives right to", o:["Investor","Issuer","Bank","SEBI"], a:0 },
 { c:5, q:"Coupon rate is based on", o:["Face value","Market value","Book value","NAV"], a:0 },
 { c:5, q:"Required rate of return is also known as", o:["Discount rate","Tax rate","Inflation rate","Dividend rate"], a:0 },
-
 { c:6, q:"NAV stands for", o:["Net Asset Value","Net Annual Value","New Asset Value","Net Average Value"], a:0 },
 { c:6, q:"Open-ended funds allow", o:["Continuous purchase and redemption","Fixed maturity only","No redemption","Trading only on exchange"], a:0 },
 { c:6, q:"Closed-ended funds are generally traded on", o:["Stock Exchange","Bank","AMC only","RBI"], a:0 },
@@ -360,12 +352,6 @@ const PN14 = [
 { c:6, q:"Trustees protect the interest of", o:["Investors","AMC","Government","Banks"], a:0 },
 { c:6, q:"Load charged at purchase is", o:["Entry Load","Exit Load","Switch Load","Tax Load"], a:0 },
 { c:6, q:"Exit load is charged when", o:["Units are redeemed","Units are purchased","NAV rises","Dividend is paid"], a:0 },
-
-
-// ==========================
-// Chapter 7 - Portfolio Theory & Practice
-// ==========================
-
 { c:7, q:"Portfolio means", o:["Collection of investments","Single share","Bank account","Loan account"], a:0 },
 { c:7, q:"Diversification helps in reducing", o:["Unsystematic Risk","Systematic Risk","Interest Rate","Inflation"], a:0 },
 { c:7, q:"Market risk is also known as", o:["Systematic Risk","Business Risk","Diversifiable Risk","Financial Risk"], a:0 },
@@ -381,11 +367,6 @@ const PN14 = [
 { c:7, q:"Portfolio beta measures", o:["Systematic Risk","Business Risk","Financial Risk","Default Risk"], a:0 },
 { c:7, q:"Diversification is effective when securities are", o:["Low correlated","Perfectly positively correlated","Identical","Same industry only"], a:0 },
 { c:7, q:"Risk-free asset has beta of", o:["0","1","-1","2"], a:0 },
-
-// ==========================
-// Chapter 8 - Asset Pricing Theories
-// ==========================
-
 { c:8, q:"CAPM was developed by", o:["Sharpe","Taylor","Marshall","Fisher"], a:0 },
 { c:8, q:"CAPM establishes relationship between", o:["Risk and Return","Sales and Profit","Assets and Liabilities","Cost and Revenue"], a:0 },
 { c:8, q:"Beta measures", o:["Systematic Risk","Unsystematic Risk","Liquidity","Inflation"], a:0 },
@@ -401,11 +382,6 @@ const PN14 = [
 { c:8, q:"Negative Alpha indicates", o:["Poor performance","Excellent performance","Risk free","No investment"], a:0 },
 { c:8, q:"SML intercept represents", o:["Risk Free Rate","Market Return","Dividend Yield","EPS"], a:0 },
 { c:8, q:"Capital Market Line applies to", o:["Efficient Portfolios","Individual Securities","Only Bonds","Only Mutual Funds"], a:0 },
-
-// ==========================
-// Chapter 9 - Portfolio Performance Evaluation
-// ==========================
-
 { c:9, q:"Sharpe Ratio uses", o:["Total Risk","Beta","Sales","Tax"], a:0 },
 { c:9, q:"Treynor Ratio uses", o:["Beta","Standard Deviation","Dividend","Face Value"], a:0 },
 { c:9, q:"Jensen Measure is based on", o:["Alpha","NAV","Dividend","Book Value"], a:0 },
@@ -421,11 +397,6 @@ const PN14 = [
 { c:9, q:"Positive Jensen Alpha indicates", o:["Superior Performance","Inferior Performance","Loss","No Return"], a:0 },
 { c:9, q:"Portfolio manager aims to", o:["Maximize Risk Adjusted Return","Increase Taxes","Reduce Sales","Increase Borrowings"], a:0 },
 { c:9, q:"Performance evaluation is useful for", o:["Investment Decisions","GST Filing","Salary Calculation","Inventory Control"], a:0 },
-
-// ==========================
-// Chapter 10 - Efficient Market Hypothesis
-// ==========================
-
 { c:10, q:"EMH was proposed by", o:["Eugene Fama","Sharpe","Keynes","Marshall"], a:0 },
 { c:10, q:"Weak form efficiency reflects", o:["Past Price Information","Private Information","Inside Information","Government Policy"], a:0 },
 { c:10, q:"Semi-strong form includes", o:["Public Information","Private Information","Rumours","Insider Trading"], a:0 },
@@ -441,13 +412,6 @@ const PN14 = [
 { c:10, q:"Weak form rejects usefulness of", o:["Chart Analysis","Fundamental Analysis","Ratio Analysis","SWOT"], a:0 },
 { c:10, q:"Strong form efficiency assumes even", o:["Insider Information is reflected","No dividends","No profits","No investors"], a:0 },
 { c:10, q:"EMH promotes", o:["Fair Pricing","Price Manipulation","Insider Trading","Speculation"], a:0 },
-
-
-
-// ==========================
-// Chapter 11 - Risks in Financial Market
-// ==========================
-
 { c:11, q:"Risk arising due to changes in market prices is called", o:["Market Risk","Credit Risk","Operational Risk","Legal Risk"], a:0 },
 { c:11, q:"Failure of borrower to repay loan results in", o:["Credit Risk","Market Risk","Liquidity Risk","Settlement Risk"], a:0 },
 { c:11, q:"Liquidity risk refers to", o:["Inability to convert assets into cash quickly","Default by borrower","Interest rate increase","Currency fluctuation"], a:0 },
@@ -463,11 +427,6 @@ const PN14 = [
 { c:11, q:"Risk management aims to", o:["Reduce potential losses","Eliminate profit","Increase tax","Reduce revenue"], a:0 },
 { c:11, q:"Hedging is mainly used to", o:["Reduce Risk","Increase Risk","Increase Dividend","Reduce Sales"], a:0 },
 { c:11, q:"Diversification mainly reduces", o:["Unsystematic Risk","Market Risk","Interest Rate Risk","Inflation Risk"], a:0 },
-
-// ==========================
-// Chapter 12 - Financial Derivatives
-// ==========================
-
 { c:12, q:"A derivative derives its value from", o:["Underlying Asset","Cash","Sales","Profit"], a:0 },
 { c:12, q:"Forward contract is traded", o:["OTC","Stock Exchange","SEBI","RBI"], a:0 },
 { c:12, q:"Futures contracts are traded on", o:["Organized Exchanges","OTC","Banks","Companies"], a:0 },
@@ -483,11 +442,6 @@ const PN14 = [
 { c:12, q:"Derivatives are mainly used for", o:["Hedging","Increasing Inflation","Tax Collection","Accounting"], a:0 },
 { c:12, q:"Speculators primarily seek", o:["Profit from Price Changes","Stable Income","Tax Savings","Inventory"], a:0 },
 { c:12, q:"Arbitrage means", o:["Riskless Profit","Guaranteed Loss","Long-term Investment","Dividend Planning"], a:0 },
-
-// ==========================
-// Chapter 13 - International Financial Environment
-// ==========================
-
 { c:13, q:"Globalization has increased", o:["International Capital Flows","Inflation","Tax Rates","Inventory"], a:0 },
 { c:13, q:"IMF stands for", o:["International Monetary Fund","Indian Monetary Fund","International Market Forum","Investment Market Fund"], a:0 },
 { c:13, q:"World Bank mainly finances", o:["Development Projects","Share Markets","Mutual Funds","Insurance"], a:0 },
@@ -503,11 +457,6 @@ const PN14 = [
 { c:13, q:"International liquidity is supported by", o:["IMF","SEBI","RBI","IRDAI"], a:0 },
 { c:13, q:"Global capital market consists of", o:["Debt and Equity Markets","Only Equity","Only Debt","Commodity Market"], a:0 },
 { c:13, q:"International finance focuses on", o:["Cross-border Financial Decisions","Domestic Accounting","GST","Payroll"], a:0 },
-
-// ==========================
-// Chapter 14 - Foreign Exchange Market
-// ==========================
-
 { c:14, q:"Forex market deals in", o:["Currencies","Shares","Gold","Real Estate"], a:0 },
 { c:14, q:"Exchange rate means", o:["Price of one currency in terms of another","Interest Rate","Inflation Rate","Tax Rate"], a:0 },
 { c:14, q:"Spot exchange transaction settles generally within", o:["2 Business Days","30 Days","60 Days","90 Days"], a:0 },
@@ -523,12 +472,6 @@ const PN14 = [
 { c:14, q:"Foreign exchange reserves are maintained by", o:["Central Bank","SEBI","IRDAI","Stock Exchange"], a:0 },
 { c:14, q:"Spot market is used for", o:["Immediate Delivery","Future Delivery","Long-term Lease","Insurance"], a:0 },
 { c:14, q:"Forward premium arises when", o:["Forward Rate > Spot Rate","Forward Rate < Spot Rate","Rates Equal","No Quote"], a:0 },
-
-
-// ==========================
-// Chapter 15 - Foreign Exchange Risk Management
-// ==========================
-
 { c:15, q:"Transaction exposure arises due to", o:["Foreign currency receivables and payables","Fixed assets","Inventory valuation","Domestic sales"], a:0 },
 { c:15, q:"Translation exposure is also known as", o:["Accounting Exposure","Economic Exposure","Operating Exposure","Market Exposure"], a:0 },
 { c:15, q:"Economic exposure affects", o:["Future cash flows","Past transactions","Accounting records only","Inventory only"], a:0 },
@@ -544,8 +487,6 @@ const PN14 = [
 { c:15, q:"Foreign exchange exposure exists when", o:["Cash flows are denominated in foreign currency","Only domestic sales exist","No imports or exports","Only cash sales"], a:0 },
 { c:15, q:"An exporter expecting foreign currency receipts usually", o:["Sells forward","Buys forward","Buys call option","Borrows locally"], a:0 },
 { c:15, q:"An importer expecting foreign currency payment generally", o:["Buys forward","Sells forward","Sells call option","Buys domestic currency"], a:0 },
-
-
 { c:16, q:"Digital finance primarily uses", o:["Technology to deliver financial services","Only paper documents","Only cash transactions","Only bank branches"], a:0 },
 { c:16, q:"UPI stands for", o:["Unified Payments Interface","Universal Payment Integration","Unique Payment Interface","Unified Processing Interface"], a:0 },
 { c:16, q:"NEFT is mainly used for", o:["Electronic fund transfer","Cash withdrawal","Cheque printing","Loan sanction"], a:0 },
